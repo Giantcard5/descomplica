@@ -1,4 +1,3 @@
-import { IndustryDashboardLayout } from '@/components/industry/dashboard-layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -13,7 +12,7 @@ import {
 
 export default function ReportsLoading() {
     return (
-        <IndustryDashboardLayout>
+        <>
             <div className="flex items-center justify-between space-y-2">
                 <Skeleton className="h-10 w-[150px]" />
                 <Skeleton className="h-10 w-[150px]" />
@@ -115,6 +114,6 @@ export default function ReportsLoading() {
                     </CardContent>
                 </Card>
             </Tabs>
-        </IndustryDashboardLayout>
+        </>
     );
 }

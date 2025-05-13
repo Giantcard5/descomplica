@@ -1,79 +1,79 @@
+'use client';
+
+import { useRef } from 'react';
+
 import Link from 'next/link';
-import Image from 'next/image';
-import type { Metadata } from 'next';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { ModeToggle } from '@/components/mode-toggle';
+import { Checkbox } from '@/components/ui/checkbox';
 
-export const metadata: Metadata = {
-    title: 'Sign Up - Descomplica',
-    description: 'Create your Descomplica account',
-};
+import Header from '@/components/auth/header';
 
-export default function SignUpPage() {
+export default function Login() {
+    const emailRef = useRef<HTMLInputElement>(null);
+    const passwordRef = useRef<HTMLInputElement>(null);
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        const email = emailRef.current?.value ?? '';
+        const password = passwordRef.current?.value ?? '';
+
+        console.log('Email: ', email, ' Password: ', password);
+    };
+
     return (
-        <div className="flex min-h-screen flex-col">
-            <div className="flex h-16 items-center justify-between px-6 border-b">
-                <Link href="/" className="flex items-center gap-2">
-                    <Image
-                        src="/placeholder.svg?height=32&width=32"
-                        alt="Descomplica Logo"
-                        width={32}
-                        height={32}
-                        className="rounded"
-                    />
-                    <span className="text-xl font-bold">Descomplica</span>
-                </Link>
-                <ModeToggle />
-            </div>
+        <form className="flex min-h-screen flex-col" onSubmit={handleSubmit}>
+            <Header/>
             <div className="flex flex-1 items-center justify-center p-4">
                 <div className="mx-auto w-full max-w-md space-y-6">
                     <div className="space-y-2 text-center">
-                        <h1 className="text-3xl font-bold">Create an account</h1>
+                        <h1 className="text-3xl font-bold">Welcome back</h1>
                         <p className="text-muted-foreground">
-                            Enter your information to get started
+                            Enter your credentials to access your account
                         </p>
                     </div>
                     <div className="space-y-4">
                         <div className="space-y-2">
-                            <Label htmlFor="name">Full Name</Label>
-                            <Input id="name" placeholder="John Doe" required />
-                        </div>
-                        <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
-                            <Input id="email" placeholder="m@example.com" type="email" required />
+                            <Input
+                                ref={emailRef}
+                                id="email"
+                                placeholder="Email"
+                                type="email"
+                                required
+                            />
                         </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="password">Password</Label>
-                            <Input id="password" placeholder='examplePassword' type="password" required />
+                        <div className="space-y-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="password">Password</Label>
+                                <Input
+                                    ref={passwordRef}
+                                    id="password"
+                                    placeholder="Password"
+                                    type="password"
+                                    required
+                                />
+                            </div>
                         </div>
-                        <div className="space-y-2">
-                            <Label>Account Type</Label>
-                            <RadioGroup defaultValue="retailer" className="grid grid-cols-2 gap-4">
-                                <div className="flex items-center space-x-2 rounded-md border p-3">
-                                    <RadioGroupItem value="retailer" id="retailer" />
-                                    <Label htmlFor="retailer" className="flex flex-col">
-                                        <span>Retailer</span>
-                                        <span className="text-xs text-muted-foreground">
-                                            Small store owner
-                                        </span>
-                                    </Label>
-                                </div>
-                                <div className="flex items-center space-x-2 rounded-md border p-3">
-                                    <RadioGroupItem value="industry" id="industry" />
-                                    <Label htmlFor="industry" className="flex flex-col">
-                                        <span>Industry</span>
-                                        <span className="text-xs text-muted-foreground">
-                                            Company analyst
-                                        </span>
-                                    </Label>
-                                </div>
-                            </RadioGroup>
+                        <div className="space-y-4">
+                            <Link
+                                href="/auth/forgot-password"
+                                className="text-sm text-primary hover:underline underline-offset-4"
+                            >
+                                Forgot password?
+                            </Link>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <Checkbox id="remember" />
+                            <Label htmlFor="remember" className="text-sm font-normal">
+                                Remember me
+                            </Label>
                         </div>
                         <Button type="submit" className="w-full">
-                            Create Account
+                            Login
                         </Button>
                         <div className="relative">
                             <div className="absolute inset-0 flex items-center">
@@ -81,7 +81,7 @@ export default function SignUpPage() {
                             </div>
                             <div className="relative flex justify-center text-xs uppercase">
                                 <span className="bg-background px-2 text-muted-foreground">
-                                    
+                                    Or continue with
                                 </span>
                             </div>
                         </div>
@@ -123,16 +123,16 @@ export default function SignUpPage() {
                         </div>
                     </div>
                     <div className="text-center text-sm">
-                        Already have an account?{' '}
+                        Don&apos;t have an account?{' '}
                         <Link
-                            href="/auth/login"
+                            href="/auth/register"
                             className="text-primary hover:underline underline-offset-4"
                         >
-                            Login
+                            Register
                         </Link>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     );
-}
+};

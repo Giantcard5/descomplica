@@ -1,7 +1,7 @@
 import type React from 'react';
 import type { Metadata } from 'next/types';
 import { Inter } from 'next/font/google';
-import { ThemeProvider } from '@/provider/theme-provider';
+import { ThemeProvider } from '@/providers/theme-provider';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import '../styles/globals.css';
 
@@ -23,9 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     disableTransitionOnChange
                 >
                     <SidebarProvider>
-                        <div className="w-full min-h-screen">
-                            {children}
-                        </div>
+                        <div className="w-full min-h-screen">{children}</div>
                     </SidebarProvider>
                 </ThemeProvider>
             </body>

@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { IndustryDashboardLayout } from '@/components/industry/dashboard-layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -64,7 +63,7 @@ export default function AnalyticsPage() {
     ];
 
     return (
-        <IndustryDashboardLayout>
+        <>
             <div className="flex items-center justify-between space-y-2">
                 <h2 className="text-3xl font-bold tracking-tight">Analytics</h2>
                 <div className="flex items-center space-x-2">
@@ -292,6 +291,6 @@ export default function AnalyticsPage() {
                     </Card>
                 </TabsContent>
             </Tabs>
-        </IndustryDashboardLayout>
+        </>
     );
 }

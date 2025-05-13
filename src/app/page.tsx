@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { ModeToggle } from '@/components/mode-toggle';
+import { ModeToggle } from '@/components/ui/mode-toggle';
 import { ChevronRight, BarChart3, ShoppingBag, Upload, PieChart } from 'lucide-react';
 
 export default function Home() {
@@ -46,8 +46,8 @@ export default function Home() {
                                 Login
                             </Button>
                         </Link>
-                        <Link href="/auth/signup">
-                            <Button size="sm">Sign Up</Button>
+                        <Link href="/auth/register">
+                            <Button size="sm">Register</Button>
                         </Link>
                     </div>
                 </div>
@@ -68,12 +68,12 @@ export default function Home() {
                                     </p>
                                 </div>
                                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                                    <Link href="/auth/signup?role=retailer">
+                                    <Link href="/auth/register?role=retailer">
                                         <Button size="lg" className="gap-1">
                                             Join as Retailer <ChevronRight className="h-4 w-4" />
                                         </Button>
                                     </Link>
-                                    <Link href="/auth/signup?role=industry">
+                                    <Link href="/auth/register?role=industry">
                                         <Button size="lg" variant="outline" className="gap-1">
                                             Join as Industry <ChevronRight className="h-4 w-4" />
                                         </Button>
@@ -472,12 +472,12 @@ export default function Home() {
                                 </p>
                             </div>
                             <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                                <Link href="/auth/signup?role=retailer">
+                                <Link href="/auth/register?role=retailer">
                                     <Button size="lg" variant="secondary" className="gap-1">
                                         Join as Retailer <ChevronRight className="h-4 w-4" />
                                     </Button>
                                 </Link>
-                                <Link href="/auth/signup?role=industry">
+                                <Link href="/auth/register?role=industry">
                                     <Button
                                         size="lg"
                                         variant="outline"

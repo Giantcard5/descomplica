@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { IndustryDashboardLayout } from '@/components/industry/dashboard-layout';
 import {
     Card,
     CardContent,
@@ -108,7 +107,7 @@ export default function ReportsPage() {
     };
 
     return (
-        <IndustryDashboardLayout>
+        <>
             <div className="flex items-center justify-between space-y-2">
                 <h2 className="text-3xl font-bold tracking-tight">Reports</h2>
                 <div className="flex items-center space-x-2">
@@ -405,6 +404,6 @@ export default function ReportsPage() {
                     </Card>
                 </TabsContent>
             </Tabs>
-        </IndustryDashboardLayout>
+        </>
     );
 }

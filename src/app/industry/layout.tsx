@@ -4,7 +4,16 @@ import type React from 'react';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Upload, MessageSquare, History, Award, Bell, Settings, LogOut } from 'lucide-react';
+import {
+    BarChart3,
+    Home,
+    Users,
+    PieChart,
+    Megaphone,
+    CreditCard,
+    Settings,
+    LogOut,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
     Sidebar,
@@ -20,14 +29,9 @@ import {
     SidebarGroupContent,
 } from '@/components/ui/sidebar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { ModeToggle } from '@/components/mode-toggle';
-import { Badge } from '@/components/ui/badge';
+import { ModeToggle } from '@/components/ui/mode-toggle';
 
-interface RetailerDashboardLayoutProps {
-    children: React.ReactNode;
-}
-
-export function RetailerDashboardLayout({ children }: RetailerDashboardLayoutProps) {
+export default function  IndustryDashboardLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
 
     const isActive = (path: string) => {
@@ -39,7 +43,7 @@ export function RetailerDashboardLayout({ children }: RetailerDashboardLayoutPro
             <Sidebar>
                 <SidebarHeader>
                     <div className="flex items-center gap-2 px-2">
-                        <Link href="/retailer/dashboard" className="flex items-center gap-2">
+                        <Link href="/industry/" className="flex items-center gap-2">
                             <Avatar className="h-8 w-8">
                                 <AvatarImage src="/placeholder.svg?height=32&width=32" alt="Logo" />
                                 <AvatarFallback>DC</AvatarFallback>
@@ -56,9 +60,9 @@ export function RetailerDashboardLayout({ children }: RetailerDashboardLayoutPro
                                 <SidebarMenuItem>
                                     <SidebarMenuButton
                                         asChild
-                                        isActive={isActive('/retailer/dashboard')}
+                                        isActive={isActive('/industry/')}
                                     >
-                                        <Link href="/retailer/dashboard">
+                                        <Link href="/industry/">
                                             <Home className="h-5 w-5" />
                                             <span>Dashboard</span>
                                         </Link>
@@ -67,33 +71,33 @@ export function RetailerDashboardLayout({ children }: RetailerDashboardLayoutPro
                                 <SidebarMenuItem>
                                     <SidebarMenuButton
                                         asChild
-                                        isActive={isActive('/retailer/upload')}
+                                        isActive={isActive('/industry/analytics')}
                                     >
-                                        <Link href="/retailer/upload">
-                                            <Upload className="h-5 w-5" />
-                                            <span>Upload Receipt</span>
+                                        <Link href="/industry/analytics">
+                                            <BarChart3 className="h-5 w-5" />
+                                            <span>Analytics</span>
                                         </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton
                                         asChild
-                                        isActive={isActive('/retailer/chatbot')}
+                                        isActive={isActive('/industry/retailers')}
                                     >
-                                        <Link href="/retailer/chatbot">
-                                            <MessageSquare className="h-5 w-5" />
-                                            <span>Chatbot</span>
+                                        <Link href="/industry/retailers">
+                                            <Users className="h-5 w-5" />
+                                            <span>Retailers</span>
                                         </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton
                                         asChild
-                                        isActive={isActive('/retailer/history')}
+                                        isActive={isActive('/industry/reports')}
                                     >
-                                        <Link href="/retailer/history">
-                                            <History className="h-5 w-5" />
-                                            <span>History</span>
+                                        <Link href="/industry/reports">
+                                            <PieChart className="h-5 w-5" />
+                                            <span>Reports</span>
                                         </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
@@ -101,31 +105,28 @@ export function RetailerDashboardLayout({ children }: RetailerDashboardLayoutPro
                         </SidebarGroupContent>
                     </SidebarGroup>
                     <SidebarGroup>
-                        <SidebarGroupLabel>Engagement</SidebarGroupLabel>
+                        <SidebarGroupLabel>Marketing</SidebarGroupLabel>
                         <SidebarGroupContent>
                             <SidebarMenu>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton
                                         asChild
-                                        isActive={isActive('/retailer/rewards')}
+                                        isActive={isActive('/industry/campaigns')}
                                     >
-                                        <Link href="/retailer/rewards">
-                                            <Award className="h-5 w-5" />
-                                            <span>Rewards</span>
+                                        <Link href="/industry/campaigns">
+                                            <Megaphone className="h-5 w-5" />
+                                            <span>Campaigns</span>
                                         </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                                 <SidebarMenuItem>
                                     <SidebarMenuButton
                                         asChild
-                                        isActive={isActive('/retailer/notifications')}
+                                        isActive={isActive('/industry/billing')}
                                     >
-                                        <Link href="/retailer/notifications">
-                                            <Bell className="h-5 w-5" />
-                                            <span>Notifications</span>
-                                            <Badge className="ml-auto" variant="secondary">
-                                                3
-                                            </Badge>
+                                        <Link href="/industry/billing">
+                                            <CreditCard className="h-5 w-5" />
+                                            <span>Billing</span>
                                         </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
@@ -136,8 +137,8 @@ export function RetailerDashboardLayout({ children }: RetailerDashboardLayoutPro
                 <SidebarFooter>
                     <SidebarMenu>
                         <SidebarMenuItem>
-                            <SidebarMenuButton asChild isActive={isActive('/retailer/settings')}>
-                                <Link href="/retailer/settings">
+                            <SidebarMenuButton asChild isActive={isActive('/industry/settings')}>
+                                <Link href="/industry/settings">
                                     <Settings className="h-5 w-5" />
                                     <span>Settings</span>
                                 </Link>
@@ -158,17 +159,31 @@ export function RetailerDashboardLayout({ children }: RetailerDashboardLayoutPro
                 <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-6">
                     <SidebarTrigger />
                     <div className="flex-1">
-                        <h1 className="text-lg font-semibold">Retailer Dashboard</h1>
+                        <h1 className="text-lg font-semibold">Industry Dashboard</h1>
                     </div>
                     <div className="flex items-center gap-4">
                         <ModeToggle />
                         <Button variant="outline" size="icon" className="rounded-full">
-                            <Bell className="h-5 w-5" />
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="h-5 w-5"
+                            >
+                                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                            </svg>
                             <span className="sr-only">Notifications</span>
                         </Button>
                         <Avatar>
                             <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User" />
-                            <AvatarFallback>JD</AvatarFallback>
+                            <AvatarFallback>AC</AvatarFallback>
                         </Avatar>
                     </div>
                 </header>

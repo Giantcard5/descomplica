@@ -18,6 +18,7 @@ This application is part of the **FIAP Challenge 2025**, proposed by **Astéria*
 ## 🧰 Technology Stack
 
 ### 🖥️ Core Technologies
+
 - **Framework**: [Next.js 15.2.4](https://nextjs.org/)
 - **Language**: TypeScript
 - **UI Library**: React 19
@@ -29,6 +30,7 @@ This application is part of the **FIAP Challenge 2025**, proposed by **Astéria*
 - **Notifications**: Sonner
 
 ### ⚙️ Dev Tools
+
 - Prettier (code formatting)
 - PostCSS
 - Tailwind CSS (utility-first styling)
@@ -41,7 +43,7 @@ This application is part of the **FIAP Challenge 2025**, proposed by **Astéria*
 ```
 src/
 ├── app/                # Next.js App Router
-│   ├── auth/           # Auth pages (login/signup)
+│   ├── auth/           # Auth pages (login/register)
 │   ├── industry/       # Industry dashboard and tools
 │   ├── retailer/       # Retailer dashboard and tools
 │   ├── layout.tsx      # Root layout
@@ -58,22 +60,25 @@ src/
 ## ✨ Key Features
 
 ### ✅ General
+
 - PWA-ready (installable, offline-first)
 - Light/Dark mode support
 - Responsive design (mobile-first)
 - Role-based access (Retailer / Industry)
 
 ### 🛒 Retailer Portal
+
 - Sell-out data submission via:
-  - 📷 OCR photo upload
-  - 💬 Chatbot interaction
-  - 📝 Manual form
-  - 📂 CSV/Excel file upload
+    - 📷 OCR photo upload
+    - 💬 Chatbot interaction
+    - 📝 Manual form
+    - 📂 CSV/Excel file upload
 - History of submissions
 - Gamification: points, engagement score, leaderboard
 - Notifications and campaign alerts
 
 ### 🏢 Industry Portal
+
 - Sell-out analytics (by region, product, date, retailer)
 - BI dashboard with charts
 - Retailer engagement insights
@@ -86,6 +91,7 @@ src/
 ## 📦 Getting Started
 
 ### 🔧 Prerequisites
+
 - Node.js (LTS version recommended)
 - `pnpm` package manager
 
@@ -120,6 +126,7 @@ pnpm prettier  # Format codebase
 ---
 
 ## 🛡️ Security Considerations
+
 - Role-based access control
 - Form validation and sanitization
 - Authentication handling (planned integration with OAuth or JWT)
@@ -127,6 +134,7 @@ pnpm prettier  # Format codebase
 ---
 
 ## 🚀 Performance Optimizations
+
 - Image optimization with Next.js
 - Code splitting by route/component
 - CSS optimizations with Tailwind JIT
