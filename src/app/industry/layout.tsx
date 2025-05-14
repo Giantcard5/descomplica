@@ -60,9 +60,9 @@ export default function  IndustryDashboardLayout({ children }: { children: React
                                 <SidebarMenuItem>
                                     <SidebarMenuButton
                                         asChild
-                                        isActive={isActive('/industry/')}
+                                        isActive={isActive('/industry')}
                                     >
-                                        <Link href="/industry/">
+                                        <Link href="/industry">
                                             <Home className="h-5 w-5" />
                                             <span>Dashboard</span>
                                         </Link>

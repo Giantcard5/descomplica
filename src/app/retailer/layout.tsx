@@ -54,9 +54,9 @@ export default function  RetailerDashboardLayout({ children }: { children: React
                                 <SidebarMenuItem>
                                     <SidebarMenuButton
                                         asChild
-                                        isActive={isActive('/retailer/')}
+                                        isActive={isActive('/retailer')}
                                     >
-                                        <Link href="/retailer/">
+                                        <Link href="/retailer">
                                             <Home className="h-5 w-5" />
                                             <span>Dashboard</span>
                                         </Link>
