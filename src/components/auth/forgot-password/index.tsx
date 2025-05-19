@@ -29,15 +29,10 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 export default function ForgotPassword() {
-    const {
-        register,
-        handleSubmit,
-        setError,
-        getValues
-    } = useForm<FormSchema>({
+    const { register, handleSubmit, setError, getValues } = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
     });
-    
+
     const router = useRouter();
 
     const [isLoading, setIsLoading] = useState(false);
@@ -47,7 +42,7 @@ export default function ForgotPassword() {
         if (!data.email) {
             setError('email', { message: 'Email is required' });
             return;
-        };
+        }
 
         try {
             setIsLoading(true);
@@ -61,7 +56,7 @@ export default function ForgotPassword() {
             console.error(err);
         } finally {
             setIsLoading(false);
-        };
+        }
     };
 
     return (
@@ -80,8 +75,8 @@ export default function ForgotPassword() {
                             <Check className="h-4 w-4 text-green-600" />
                             <AlertTitle className="text-green-800">Email sent</AlertTitle>
                             <AlertDescription className="text-green-700">
-                                If an account exists with the email {getValues('email')}, you will receive
-                                password reset instructions.
+                                If an account exists with the email {getValues('email')}, you will
+                                receive password reset instructions.
                             </AlertDescription>
                         </Alert>
                     ) : (

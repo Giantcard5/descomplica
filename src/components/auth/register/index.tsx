@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import Link from 'next/link';
 
@@ -21,22 +21,19 @@ const formSchema = z.object({
     fullName: z.string().min(1, { message: 'Full name is required' }),
     email: z.string().email({ message: 'Invalid email address' }),
     password: z.string().min(6, { message: 'Password must be at least 6 characters long' }),
-    type: z.enum(['retailer', 'industry'], { message: 'Account type is required' })
+    type: z.enum(['retailer', 'industry'], { message: 'Account type is required' }),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
 
 export default function Register() {
-    const {
-        register,
-        handleSubmit,
-        setValue,
-        watch,
-    } = useForm<FormSchema>({
+    const router = useRouter();
+    
+    const { register, handleSubmit, setValue, watch } = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            type: '' as 'retailer' | 'industry'
-        }
+            type: '' as 'retailer' | 'industry',
+        },
     });
 
     const pathName = useSearchParams();
@@ -53,15 +50,16 @@ export default function Register() {
     const handleRegister: SubmitHandler<FormSchema> = async (data) => {
         try {
             console.log(data);
+            router.push('/auth/onboarding?type=' + data.type);
         } catch (err) {
             console.error(err);
-        };
+        }
     };
 
     return (
-        <form className="flex min-h-screen flex-col" onSubmit={handleSubmit(handleRegister)}>
+        <div className="flex min-h-screen flex-col">
             <Header />
-            <div className="flex flex-1 items-center justify-center p-4">
+            <form className="flex flex-1 items-center justify-center p-4" onSubmit={handleSubmit(handleRegister)}>
                 <div className="mx-auto w-full max-w-md space-y-6">
                     <div className="space-y-2 text-center">
                         <h1 className="text-3xl font-bold">Create an account</h1>
@@ -72,31 +70,19 @@ export default function Register() {
                     <div className="space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="name">Full Name</Label>
-                            <Input
-                                {...register('fullName')}
-                                placeholder="John Doe"
-                            />
+                            <Input {...register('fullName')} placeholder="John Doe" />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
-                            <Input
-                                {...register('email')}
-                                placeholder="email@example.com"
-                            />
+                            <Input {...register('email')} placeholder="email@example.com" />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="password">Password</Label>
-                            <Input
-                                {...register('password')}
-                                placeholder="examplePassword"
-                            />
+                            <Input {...register('password')} placeholder="examplePassword" />
                         </div>
                         <div className="space-y-2">
                             <Label>Account Type</Label>
-                            <RadioGroup
-                                className="grid grid-cols-2 gap-4"
-                                value={watch('type')}
-                            >
+                            <RadioGroup className="grid grid-cols-2 gap-4" value={watch('type')}>
                                 <div className="flex items-center space-x-2 rounded-md border p-3">
                                     <RadioGroupItem
                                         value="retailer"
@@ -185,7 +171,7 @@ export default function Register() {
                         </Link>
                     </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     );
 }

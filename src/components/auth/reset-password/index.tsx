@@ -26,17 +26,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 const formSchema = z.object({
     password: z.string().min(6, { message: 'Password must be at least 6 characters long' }),
-    confirmPassword: z.string().min(6, { message: 'Password must be at least 6 characters long' })
+    confirmPassword: z.string().min(6, { message: 'Password must be at least 6 characters long' }),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
 
 export default function ResetPassword() {
-    const {
-        register,
-        handleSubmit,
-        setError
-    } = useForm<FormSchema>({
+    const { register, handleSubmit, setError } = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
     });
     const router = useRouter();
@@ -47,7 +43,7 @@ export default function ResetPassword() {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
-    
+
     const handleResetPassword: SubmitHandler<FormSchema> = async (data) => {
         if (data.password !== data.confirmPassword) {
             setError('confirmPassword', { message: 'Passwords do not match' });

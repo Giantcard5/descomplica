@@ -1,8 +1,13 @@
 import type React from 'react';
+
 import type { Metadata } from 'next/types';
+
 import { Inter } from 'next/font/google';
+
 import { ThemeProvider } from '@/providers/theme-provider';
 import { SidebarProvider } from '@/components/ui/sidebar';
+import { Toaster } from '@/components/ui/toaster';
+
 import '../styles/globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -24,9 +29,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 >
                     <SidebarProvider>
                         <div className="w-full min-h-screen">{children}</div>
+                        <Toaster />
                     </SidebarProvider>
                 </ThemeProvider>
             </body>
         </html>
     );
-}
+};

@@ -16,17 +16,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 const formSchema = z.object({
     email: z.string().email({ message: 'Invalid email address' }),
-    password: z.string().min(6, { message: 'Password must be at least 6 characters long' })
+    password: z.string().min(6, { message: 'Password must be at least 6 characters long' }),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
 
 export default function Login() {
-    const {
-        register,
-        handleSubmit
-    } = useForm<FormSchema>({
-        resolver: zodResolver(formSchema)
+    const { register, handleSubmit } = useForm<FormSchema>({
+        resolver: zodResolver(formSchema),
     });
 
     const handleLogin: SubmitHandler<FormSchema> = async (data) => {
@@ -34,7 +31,7 @@ export default function Login() {
             console.log(data);
         } catch (err) {
             console.error(err);
-        };
+        }
     };
 
     return (
@@ -51,18 +48,12 @@ export default function Login() {
                     <div className="space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
-                            <Input
-                                {...register('email')}
-                                placeholder="Email"
-                            />
+                            <Input {...register('email')} placeholder="Email" />
                         </div>
                         <div className="space-y-4">
                             <div className="space-y-2">
                                 <Label htmlFor="password">Password</Label>
-                                <Input
-                                    {...register('password')}
-                                    placeholder="Password"
-                                />
+                                <Input {...register('password')} placeholder="Password" />
                             </div>
                         </div>
                         <div className="space-y-4">

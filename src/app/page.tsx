@@ -3,13 +3,7 @@ import Image from 'next/image';
 
 import { Button } from '@/components/ui/button';
 
-import { 
-    ChevronRight, 
-    BarChart3, 
-    ShoppingBag,
-    Upload, 
-    PieChart 
-} from 'lucide-react';
+import { ChevronRight, BarChart3, ShoppingBag, Upload, PieChart } from 'lucide-react';
 
 import Header from '@/components/home/header';
 import Footer from '@/components/home/footer';
