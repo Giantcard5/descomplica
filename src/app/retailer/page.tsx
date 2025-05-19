@@ -55,9 +55,7 @@ export default function RetailerDashboardPage() {
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">78/100</div>
-                        <p className="text-xs text-muted-foreground">
-                            +5 points from last month
-                        </p>
+                        <p className="text-xs text-muted-foreground">+5 points from last month</p>
                     </CardContent>
                 </Card>
                 <Card>
@@ -177,8 +175,8 @@ export default function RetailerDashboardPage() {
                                             {i === 1
                                                 ? 'Today'
                                                 : i === 2
-                                                    ? 'Yesterday'
-                                                    : '3 days ago'}
+                                                  ? 'Yesterday'
+                                                  : '3 days ago'}
                                         </p>
                                     </div>
                                     <Badge variant="outline">Processed</Badge>
@@ -193,9 +191,7 @@ export default function RetailerDashboardPage() {
                 <Card>
                     <CardHeader>
                         <CardTitle>Active Campaigns</CardTitle>
-                        <CardDescription>
-                            Current promotions from industry partners
-                        </CardDescription>
+                        <CardDescription>Current promotions from industry partners</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-4">
@@ -205,8 +201,8 @@ export default function RetailerDashboardPage() {
                                     <Badge>New</Badge>
                                 </div>
                                 <p className="text-sm text-muted-foreground mt-1">
-                                    Special discounts on summer products. Submit receipts to
-                                    earn 2x points.
+                                    Special discounts on summer products. Submit receipts to earn 2x
+                                    points.
                                 </p>
                                 <div className="mt-2 flex items-center text-sm text-muted-foreground">
                                     <Clock className="mr-1 h-3 w-3" />
@@ -219,8 +215,8 @@ export default function RetailerDashboardPage() {
                                     <Badge variant="outline">Active</Badge>
                                 </div>
                                 <p className="text-sm text-muted-foreground mt-1">
-                                    New product line available. Submit receipts with these
-                                    products for bonus rewards.
+                                    New product line available. Submit receipts with these products
+                                    for bonus rewards.
                                 </p>
                                 <div className="mt-2 flex items-center text-sm text-muted-foreground">
                                     <Clock className="mr-1 h-3 w-3" />

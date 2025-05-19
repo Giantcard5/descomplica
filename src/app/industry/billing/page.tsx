@@ -97,9 +97,7 @@ export default function BillingPage() {
                         <div>
                             <div className="flex items-center justify-between mb-1">
                                 <span className="text-sm font-medium">Data Storage</span>
-                                <span className="text-sm text-muted-foreground">
-                                    1.8 TB / 5 TB
-                                </span>
+                                <span className="text-sm text-muted-foreground">1.8 TB / 5 TB</span>
                             </div>
                             <Progress value={36} className="h-2" />
                         </div>
@@ -169,9 +167,7 @@ export default function BillingPage() {
                     <Card>
                         <CardHeader>
                             <CardTitle>Invoice History</CardTitle>
-                            <CardDescription>
-                                View and download your past invoices
-                            </CardDescription>
+                            <CardDescription>View and download your past invoices</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="rounded-md border">
@@ -221,20 +217,13 @@ export default function BillingPage() {
                                         status: 'Paid',
                                     },
                                 ].map((invoice, i) => (
-                                    <div
-                                        key={i}
-                                        className="grid grid-cols-12 gap-2 border-b p-4"
-                                    >
-                                        <div className="col-span-1 font-medium">
-                                            {invoice.id}
-                                        </div>
+                                    <div key={i} className="grid grid-cols-12 gap-2 border-b p-4">
+                                        <div className="col-span-1 font-medium">{invoice.id}</div>
                                         <div className="col-span-3">{invoice.date}</div>
                                         <div className="col-span-3">{invoice.period}</div>
                                         <div className="col-span-2">{invoice.amount}</div>
                                         <div className="col-span-1">
-                                            <Badge className="bg-green-500">
-                                                {invoice.status}
-                                            </Badge>
+                                            <Badge className="bg-green-500">{invoice.status}</Badge>
                                         </div>
                                         <div className="col-span-2 flex gap-2">
                                             <Button variant="outline" size="sm">
@@ -311,13 +300,8 @@ export default function BillingPage() {
                                         status: 'Successful',
                                     },
                                 ].map((payment, i) => (
-                                    <div
-                                        key={i}
-                                        className="grid grid-cols-12 gap-2 border-b p-4"
-                                    >
-                                        <div className="col-span-1 font-medium">
-                                            {payment.id}
-                                        </div>
+                                    <div key={i} className="grid grid-cols-12 gap-2 border-b p-4">
+                                        <div className="col-span-1 font-medium">{payment.id}</div>
                                         <div className="col-span-2">{payment.date}</div>
                                         <div className="col-span-3">{payment.description}</div>
                                         <div className="col-span-2">
@@ -390,10 +374,7 @@ export default function BillingPage() {
                                         notifications: ['Plan Changes'],
                                     },
                                 ].map((contact, i) => (
-                                    <div
-                                        key={i}
-                                        className="grid grid-cols-12 gap-2 border-b p-4"
-                                    >
+                                    <div key={i} className="grid grid-cols-12 gap-2 border-b p-4">
                                         <div className="col-span-3">
                                             <div className="flex items-center gap-3">
                                                 <Avatar className="h-8 w-8">
@@ -406,9 +387,7 @@ export default function BillingPage() {
                                                     </AvatarFallback>
                                                 </Avatar>
                                                 <div>
-                                                    <p className="font-medium">
-                                                        {contact.name}
-                                                    </p>
+                                                    <p className="font-medium">{contact.name}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -418,17 +397,15 @@ export default function BillingPage() {
                                         </div>
                                         <div className="col-span-2">
                                             <div className="flex flex-col gap-1">
-                                                {contact.notifications.map(
-                                                    (notification, j) => (
-                                                        <div
-                                                            key={j}
-                                                            className="flex items-center gap-1 text-xs"
-                                                        >
-                                                            <CheckCircle className="h-3 w-3 text-green-500" />
-                                                            <span>{notification}</span>
-                                                        </div>
-                                                    )
-                                                )}
+                                                {contact.notifications.map((notification, j) => (
+                                                    <div
+                                                        key={j}
+                                                        className="flex items-center gap-1 text-xs"
+                                                    >
+                                                        <CheckCircle className="h-3 w-3 text-green-500" />
+                                                        <span>{notification}</span>
+                                                    </div>
+                                                ))}
                                             </div>
                                         </div>
                                         <div className="col-span-2 flex gap-2">
@@ -515,9 +492,7 @@ export default function BillingPage() {
             <Card>
                 <CardHeader>
                     <CardTitle>Billing Support</CardTitle>
-                    <CardDescription>
-                        Get help with billing and subscription issues
-                    </CardDescription>
+                    <CardDescription>Get help with billing and subscription issues</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="grid gap-4 md:grid-cols-3">

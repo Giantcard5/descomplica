@@ -33,12 +33,8 @@ export default function RewardsPage() {
         <div className="space-y-6">
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div>
-                    <h2 className="text-2xl font-bold tracking-tight">
-                        Rewards & Achievements
-                    </h2>
-                    <p className="text-muted-foreground">
-                        Track your progress and redeem rewards.
-                    </p>
+                    <h2 className="text-2xl font-bold tracking-tight">Rewards & Achievements</h2>
+                    <p className="text-muted-foreground">Track your progress and redeem rewards.</p>
                 </div>
                 <div className="flex gap-2">
                     <Button variant="outline" className="gap-2">
@@ -82,16 +78,12 @@ export default function RewardsPage() {
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">8th</div>
-                        <p className="text-xs text-muted-foreground">
-                            Top 10% of all retailers
-                        </p>
+                        <p className="text-xs text-muted-foreground">Top 10% of all retailers</p>
                     </CardContent>
                 </Card>
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">
-                            Redeemable Rewards
-                        </CardTitle>
+                        <CardTitle className="text-sm font-medium">Redeemable Rewards</CardTitle>
                         <Gift className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
@@ -110,9 +102,7 @@ export default function RewardsPage() {
                     <div className="space-y-4">
                         <div>
                             <div className="flex items-center justify-between mb-1">
-                                <span className="text-sm font-medium">
-                                    1,250 / 1,500 points
-                                </span>
+                                <span className="text-sm font-medium">1,250 / 1,500 points</span>
                                 <span className="text-sm text-muted-foreground">83%</span>
                             </div>
                             <Progress value={83} className="h-2" />
@@ -258,21 +248,18 @@ export default function RewardsPage() {
                                 <CardHeader>
                                     <div className="flex items-center justify-between">
                                         <div
-                                            className={`rounded-full p-2 ${achievement.completed
+                                            className={`rounded-full p-2 ${
+                                                achievement.completed
                                                     ? 'bg-green-500/10 text-green-500'
                                                     : 'bg-muted text-muted-foreground'
-                                                }`}
+                                            }`}
                                         >
                                             {achievement.icon}
                                         </div>
                                         <Badge
-                                            variant={
-                                                achievement.completed ? 'default' : 'outline'
-                                            }
+                                            variant={achievement.completed ? 'default' : 'outline'}
                                         >
-                                            {achievement.completed
-                                                ? 'Completed'
-                                                : 'In Progress'}
+                                            {achievement.completed ? 'Completed' : 'In Progress'}
                                         </Badge>
                                     </div>
                                     <CardTitle className="mt-2">{achievement.title}</CardTitle>
@@ -287,17 +274,15 @@ export default function RewardsPage() {
                                                 </span>
                                                 <span className="text-sm text-muted-foreground">
                                                     {Math.round(
-                                                        (achievement.progress /
-                                                            achievement.total) *
-                                                        100
+                                                        (achievement.progress / achievement.total) *
+                                                            100
                                                     )}
                                                     %
                                                 </span>
                                             </div>
                                             <Progress
                                                 value={Math.round(
-                                                    (achievement.progress / achievement.total) *
-                                                    100
+                                                    (achievement.progress / achievement.total) * 100
                                                 )}
                                                 className="h-2"
                                             />
@@ -313,9 +298,7 @@ export default function RewardsPage() {
                     <Card>
                         <CardHeader>
                             <CardTitle>Monthly Leaderboard</CardTitle>
-                            <CardDescription>
-                                Top retailers by points this month
-                            </CardDescription>
+                            <CardDescription>Top retailers by points this month</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="space-y-6">
@@ -341,10 +324,11 @@ export default function RewardsPage() {
                                         className={`flex items-center gap-4 ${store.isYou ? 'bg-muted/50 p-3 rounded-lg' : ''}`}
                                     >
                                         <div
-                                            className={`flex h-8 w-8 items-center justify-center rounded-full ${store.position <= 3
+                                            className={`flex h-8 w-8 items-center justify-center rounded-full ${
+                                                store.position <= 3
                                                     ? 'bg-primary text-primary-foreground'
                                                     : 'bg-muted text-muted-foreground'
-                                                }`}
+                                            }`}
                                         >
                                             {store.position}
                                         </div>
@@ -356,9 +340,7 @@ export default function RewardsPage() {
                                                     {store.name} {store.isYou && '(You)'}
                                                 </p>
                                                 <Badge
-                                                    variant={
-                                                        store.isYou ? 'default' : 'outline'
-                                                    }
+                                                    variant={store.isYou ? 'default' : 'outline'}
                                                 >
                                                     {store.points} pts
                                                 </Badge>
@@ -439,8 +421,7 @@ export default function RewardsPage() {
                                     <div>
                                         <h4 className="font-semibold">Monthly Competition</h4>
                                         <p className="text-sm text-muted-foreground">
-                                            Top 3 retailers this month will receive special
-                                            rewards
+                                            Top 3 retailers this month will receive special rewards
                                         </p>
                                     </div>
                                 </div>

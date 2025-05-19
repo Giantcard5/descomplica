@@ -31,7 +31,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ModeToggle } from '@/components/ui/mode-toggle';
 
-export default function  IndustryDashboardLayout({ children }: { children: React.ReactNode }) {
+export default function IndustryDashboardLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
 
     const isActive = (path: string) => {
@@ -58,10 +58,7 @@ export default function  IndustryDashboardLayout({ children }: { children: React
                         <SidebarGroupContent>
                             <SidebarMenu>
                                 <SidebarMenuItem>
-                                    <SidebarMenuButton
-                                        asChild
-                                        isActive={isActive('/industry')}
-                                    >
+                                    <SidebarMenuButton asChild isActive={isActive('/industry')}>
                                         <Link href="/industry">
                                             <Home className="h-5 w-5" />
                                             <span>Dashboard</span>

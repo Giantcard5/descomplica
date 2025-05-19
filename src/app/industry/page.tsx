@@ -23,9 +23,7 @@ export default function IndustryDashboardPage() {
         <div className="space-y-6">
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div>
-                    <h2 className="text-2xl font-bold tracking-tight">
-                        Welcome back, Acme Corp!
-                    </h2>
+                    <h2 className="text-2xl font-bold tracking-tight">Welcome back, Acme Corp!</h2>
                     <p className="text-muted-foreground">
                         Here's what's happening with your retail data.
                     </p>
@@ -182,9 +180,7 @@ export default function IndustryDashboardPage() {
                     <Card>
                         <CardHeader>
                             <CardTitle>Top Selling Products</CardTitle>
-                            <CardDescription>
-                                Products with highest sell-out volume
-                            </CardDescription>
+                            <CardDescription>Products with highest sell-out volume</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="rounded-md border">
@@ -197,13 +193,8 @@ export default function IndustryDashboardPage() {
                                 </div>
 
                                 {[1, 2, 3, 4, 5].map((i) => (
-                                    <div
-                                        key={i}
-                                        className="grid grid-cols-12 gap-2 border-b p-3"
-                                    >
-                                        <div className="col-span-5 font-medium">
-                                            Product {i}
-                                        </div>
+                                    <div key={i} className="grid grid-cols-12 gap-2 border-b p-3">
+                                        <div className="col-span-5 font-medium">Product {i}</div>
                                         <div className="col-span-2">Category {(i % 3) + 1}</div>
                                         <div className="col-span-2">{1000 - i * 150}</div>
                                         <div className="col-span-2">
@@ -227,9 +218,7 @@ export default function IndustryDashboardPage() {
                     <Card>
                         <CardHeader>
                             <CardTitle>Regional Performance</CardTitle>
-                            <CardDescription>
-                                Sell-out data by geographic region
-                            </CardDescription>
+                            <CardDescription>Sell-out data by geographic region</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="h-[400px] bg-muted/30 rounded-md flex items-center justify-center">
@@ -260,19 +249,10 @@ export default function IndustryDashboardPage() {
                                 </div>
 
                                 {[1, 2, 3, 4, 5].map((i) => (
-                                    <div
-                                        key={i}
-                                        className="grid grid-cols-12 gap-2 border-b p-3"
-                                    >
-                                        <div className="col-span-4 font-medium">
-                                            Retailer {i}
-                                        </div>
+                                    <div key={i} className="grid grid-cols-12 gap-2 border-b p-3">
+                                        <div className="col-span-4 font-medium">Retailer {i}</div>
                                         <div className="col-span-2">
-                                            {
-                                                ['North', 'South', 'East', 'West', 'Central'][
-                                                i - 1
-                                                ]
-                                            }
+                                            {['North', 'South', 'East', 'West', 'Central'][i - 1]}
                                         </div>
                                         <div className="col-span-2">
                                             <Badge variant={i <= 2 ? 'default' : 'outline'}>
@@ -323,9 +303,7 @@ export default function IndustryDashboardPage() {
                                     </p>
                                     <div className="mt-2 flex items-center justify-between text-sm">
                                         <span className="text-muted-foreground">
-                                            {i === 1
-                                                ? '14 days remaining'
-                                                : 'Starts in 18 days'}
+                                            {i === 1 ? '14 days remaining' : 'Starts in 18 days'}
                                         </span>
                                         <Button variant="ghost" size="sm">
                                             View
@@ -367,8 +345,8 @@ export default function IndustryDashboardPage() {
                                     <h4 className="font-semibold">Product A sales declining</h4>
                                 </div>
                                 <p className="text-sm text-muted-foreground mt-1">
-                                    Product A has shown a 15% decline in the North region over
-                                    the past 30 days.
+                                    Product A has shown a 15% decline in the North region over the
+                                    past 30 days.
                                 </p>
                                 <div className="mt-2">
                                     <Button variant="outline" size="sm">
@@ -396,8 +374,8 @@ export default function IndustryDashboardPage() {
                                     <h4 className="font-semibold">Category B growing</h4>
                                 </div>
                                 <p className="text-sm text-muted-foreground mt-1">
-                                    Category B products have shown consistent growth of 22%
-                                    across all regions.
+                                    Category B products have shown consistent growth of 22% across
+                                    all regions.
                                 </p>
                                 <div className="mt-2">
                                     <Button variant="outline" size="sm">

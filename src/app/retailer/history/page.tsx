@@ -105,13 +105,8 @@ export default function HistoryPage() {
                                 </div>
 
                                 {Array.from({ length: 10 }).map((_, i) => (
-                                    <div
-                                        key={i}
-                                        className="grid grid-cols-12 gap-2 border-b p-4"
-                                    >
-                                        <div className="col-span-1 font-medium">
-                                            #{1024 - i}
-                                        </div>
+                                    <div key={i} className="grid grid-cols-12 gap-2 border-b p-4">
+                                        <div className="col-span-1 font-medium">#{1024 - i}</div>
                                         <div className="col-span-2">
                                             {new Date(2025, 4, 12 - i).toLocaleDateString()}
                                         </div>
@@ -171,11 +166,7 @@ export default function HistoryPage() {
                                             )}
                                         </div>
                                         <div className="col-span-1">
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                className="h-8 w-8"
-                                            >
+                                            <Button variant="ghost" size="icon" className="h-8 w-8">
                                                 <Eye className="h-4 w-4" />
                                                 <span className="sr-only">View</span>
                                             </Button>
@@ -186,8 +177,7 @@ export default function HistoryPage() {
 
                             <div className="mt-4 flex items-center justify-between">
                                 <div className="text-sm text-muted-foreground">
-                                    Showing <strong>1-10</strong> of <strong>24</strong>{' '}
-                                    submissions
+                                    Showing <strong>1-10</strong> of <strong>24</strong> submissions
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <Button variant="outline" size="sm" disabled>
@@ -206,9 +196,7 @@ export default function HistoryPage() {
                     <Card>
                         <CardHeader>
                             <CardTitle>Receipt Submissions</CardTitle>
-                            <CardDescription>
-                                Submissions made via receipt upload
-                            </CardDescription>
+                            <CardDescription>Submissions made via receipt upload</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -294,13 +282,8 @@ export default function HistoryPage() {
                                 </div>
 
                                 {Array.from({ length: 5 }).map((_, i) => (
-                                    <div
-                                        key={i}
-                                        className="grid grid-cols-12 gap-2 border-b p-4"
-                                    >
-                                        <div className="col-span-1 font-medium">
-                                            #{1018 - i}
-                                        </div>
+                                    <div key={i} className="grid grid-cols-12 gap-2 border-b p-4">
+                                        <div className="col-span-1 font-medium">#{1018 - i}</div>
                                         <div className="col-span-3">
                                             {new Date(2025, 4, 8 - i).toLocaleDateString()}
                                         </div>
@@ -340,13 +323,8 @@ export default function HistoryPage() {
                                 </div>
 
                                 {Array.from({ length: 5 }).map((_, i) => (
-                                    <div
-                                        key={i}
-                                        className="grid grid-cols-12 gap-2 border-b p-4"
-                                    >
-                                        <div className="col-span-1 font-medium">
-                                            #{1015 - i}
-                                        </div>
+                                    <div key={i} className="grid grid-cols-12 gap-2 border-b p-4">
+                                        <div className="col-span-1 font-medium">#{1015 - i}</div>
                                         <div className="col-span-3">
                                             {new Date(2025, 4, 5 - i).toLocaleDateString()}
                                         </div>

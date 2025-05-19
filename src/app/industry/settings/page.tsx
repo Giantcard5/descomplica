@@ -117,12 +117,8 @@ export default function SettingsPage() {
                                             <SelectItem value="consumer-goods">
                                                 Consumer Goods
                                             </SelectItem>
-                                            <SelectItem value="technology">
-                                                Technology
-                                            </SelectItem>
-                                            <SelectItem value="healthcare">
-                                                Healthcare
-                                            </SelectItem>
+                                            <SelectItem value="technology">Technology</SelectItem>
+                                            <SelectItem value="healthcare">Healthcare</SelectItem>
                                             <SelectItem value="finance">Finance</SelectItem>
                                             <SelectItem value="retail">Retail</SelectItem>
                                             <SelectItem value="other">Other</SelectItem>
@@ -136,12 +132,8 @@ export default function SettingsPage() {
                                             <SelectValue placeholder="Select company size" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="small">
-                                                1-50 employees
-                                            </SelectItem>
-                                            <SelectItem value="medium">
-                                                51-500 employees
-                                            </SelectItem>
+                                            <SelectItem value="small">1-50 employees</SelectItem>
+                                            <SelectItem value="medium">51-500 employees</SelectItem>
                                             <SelectItem value="large">
                                                 501-5000 employees
                                             </SelectItem>
@@ -277,10 +269,7 @@ export default function SettingsPage() {
                                         status: 'inactive',
                                     },
                                 ].map((member, i) => (
-                                    <div
-                                        key={i}
-                                        className="grid grid-cols-12 gap-2 border-b p-4"
-                                    >
+                                    <div key={i} className="grid grid-cols-12 gap-2 border-b p-4">
                                         <div className="col-span-4">
                                             <div className="flex items-center gap-3">
                                                 <Avatar className="h-8 w-8">
@@ -428,9 +417,7 @@ export default function SettingsPage() {
                     <Card>
                         <CardHeader>
                             <CardTitle>Notification Preferences</CardTitle>
-                            <CardDescription>
-                                Manage how you receive notifications
-                            </CardDescription>
+                            <CardDescription>Manage how you receive notifications</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-6">
                             <div className="space-y-4">
@@ -455,8 +442,8 @@ export default function SettingsPage() {
                                                 Campaign Updates
                                             </Label>
                                             <p className="text-sm text-muted-foreground">
-                                                Receive emails about campaign performance and
-                                                status changes
+                                                Receive emails about campaign performance and status
+                                                changes
                                             </p>
                                         </div>
                                         <Switch id="email-campaigns" defaultChecked />
@@ -478,8 +465,7 @@ export default function SettingsPage() {
                                         <div className="space-y-0.5">
                                             <Label htmlFor="email-team">Team Activity</Label>
                                             <p className="text-sm text-muted-foreground">
-                                                Receive emails about team member actions and
-                                                changes
+                                                Receive emails about team member actions and changes
                                             </p>
                                         </div>
                                         <Switch id="email-team" />
@@ -509,8 +495,7 @@ export default function SettingsPage() {
                                                 Retailer Updates
                                             </Label>
                                             <p className="text-sm text-muted-foreground">
-                                                Receive in-app notifications about retailer
-                                                activity
+                                                Receive in-app notifications about retailer activity
                                             </p>
                                         </div>
                                         <Switch id="app-retailer-updates" defaultChecked />
@@ -518,9 +503,7 @@ export default function SettingsPage() {
                                     <Separator />
                                     <div className="flex items-center justify-between">
                                         <div className="space-y-0.5">
-                                            <Label htmlFor="app-campaigns">
-                                                Campaign Updates
-                                            </Label>
+                                            <Label htmlFor="app-campaigns">Campaign Updates</Label>
                                             <p className="text-sm text-muted-foreground">
                                                 Receive in-app notifications about campaign
                                                 performance
@@ -557,9 +540,7 @@ export default function SettingsPage() {
                                         <SelectContent>
                                             <SelectItem value="realtime">Real-time</SelectItem>
                                             <SelectItem value="daily">Daily Digest</SelectItem>
-                                            <SelectItem value="weekly">
-                                                Weekly Digest
-                                            </SelectItem>
+                                            <SelectItem value="weekly">Weekly Digest</SelectItem>
                                             <SelectItem value="never">Never</SelectItem>
                                         </SelectContent>
                                     </Select>
@@ -591,9 +572,7 @@ export default function SettingsPage() {
                                     <Input id="new-password" type="password" />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="confirm-password">
-                                        Confirm New Password
-                                    </Label>
+                                    <Label htmlFor="confirm-password">Confirm New Password</Label>
                                     <Input id="confirm-password" type="password" />
                                 </div>
                                 <Button>Update Password</Button>
@@ -602,9 +581,7 @@ export default function SettingsPage() {
                             <Separator />
 
                             <div className="space-y-4">
-                                <h3 className="text-lg font-medium">
-                                    Two-Factor Authentication
-                                </h3>
+                                <h3 className="text-lg font-medium">Two-Factor Authentication</h3>
                                 <div className="flex items-center justify-between">
                                     <div className="space-y-0.5">
                                         <Label htmlFor="two-factor">
@@ -774,9 +751,7 @@ export default function SettingsPage() {
                                 <h3 className="text-lg font-medium">Dashboard Preferences</h3>
                                 <div className="flex items-center justify-between">
                                     <div className="space-y-0.5">
-                                        <Label htmlFor="auto-refresh">
-                                            Auto-refresh Dashboard
-                                        </Label>
+                                        <Label htmlFor="auto-refresh">Auto-refresh Dashboard</Label>
                                         <p className="text-sm text-muted-foreground">
                                             Automatically refresh dashboard data
                                         </p>

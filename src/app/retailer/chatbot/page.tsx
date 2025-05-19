@@ -31,29 +31,22 @@ export default function ChatbotPage() {
                     <div className="flex-1 overflow-auto space-y-4 p-4 border rounded-md mb-4">
                         <div className="flex gap-3 max-w-[80%]">
                             <Avatar className="h-8 w-8">
-                                <AvatarImage
-                                    src="/placeholder.svg?height=32&width=32"
-                                    alt="Bot"
-                                />
+                                <AvatarImage src="/placeholder.svg?height=32&width=32" alt="Bot" />
                                 <AvatarFallback>
                                     <Bot className="h-4 w-4" />
                                 </AvatarFallback>
                             </Avatar>
                             <div className="bg-muted p-3 rounded-lg">
                                 <p>
-                                    Hello! I'm your Descomplica assistant. I'll help you submit
-                                    your sell-out data. Would you like to start a new
-                                    submission?
+                                    Hello! I'm your Descomplica assistant. I'll help you submit your
+                                    sell-out data. Would you like to start a new submission?
                                 </p>
                             </div>
                         </div>
 
                         <div className="flex gap-3 max-w-[80%] ml-auto flex-row-reverse">
                             <Avatar className="h-8 w-8">
-                                <AvatarImage
-                                    src="/placeholder.svg?height=32&width=32"
-                                    alt="User"
-                                />
+                                <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User" />
                                 <AvatarFallback>
                                     <User className="h-4 w-4" />
                                 </AvatarFallback>
@@ -65,28 +58,22 @@ export default function ChatbotPage() {
 
                         <div className="flex gap-3 max-w-[80%]">
                             <Avatar className="h-8 w-8">
-                                <AvatarImage
-                                    src="/placeholder.svg?height=32&width=32"
-                                    alt="Bot"
-                                />
+                                <AvatarImage src="/placeholder.svg?height=32&width=32" alt="Bot" />
                                 <AvatarFallback>
                                     <Bot className="h-4 w-4" />
                                 </AvatarFallback>
                             </Avatar>
                             <div className="bg-muted p-3 rounded-lg">
                                 <p>
-                                    Great! Let's start with the basics. What date is this
-                                    sell-out data for?
+                                    Great! Let's start with the basics. What date is this sell-out
+                                    data for?
                                 </p>
                             </div>
                         </div>
 
                         <div className="flex gap-3 max-w-[80%] ml-auto flex-row-reverse">
                             <Avatar className="h-8 w-8">
-                                <AvatarImage
-                                    src="/placeholder.svg?height=32&width=32"
-                                    alt="User"
-                                />
+                                <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User" />
                                 <AvatarFallback>
                                     <User className="h-4 w-4" />
                                 </AvatarFallback>
@@ -98,18 +85,15 @@ export default function ChatbotPage() {
 
                         <div className="flex gap-3 max-w-[80%]">
                             <Avatar className="h-8 w-8">
-                                <AvatarImage
-                                    src="/placeholder.svg?height=32&width=32"
-                                    alt="Bot"
-                                />
+                                <AvatarImage src="/placeholder.svg?height=32&width=32" alt="Bot" />
                                 <AvatarFallback>
                                     <Bot className="h-4 w-4" />
                                 </AvatarFallback>
                             </Avatar>
                             <div className="bg-muted p-3 rounded-lg">
                                 <p>
-                                    Perfect! Now, let's add the products you sold today. What
-                                    was the first product?
+                                    Perfect! Now, let's add the products you sold today. What was
+                                    the first product?
                                 </p>
                                 <p className="mt-2 text-sm text-muted-foreground">
                                     Please include the product name, quantity, and price.
@@ -119,10 +103,7 @@ export default function ChatbotPage() {
 
                         <div className="flex gap-3 max-w-[80%] ml-auto flex-row-reverse">
                             <Avatar className="h-8 w-8">
-                                <AvatarImage
-                                    src="/placeholder.svg?height=32&width=32"
-                                    alt="User"
-                                />
+                                <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User" />
                                 <AvatarFallback>
                                     <User className="h-4 w-4" />
                                 </AvatarFallback>
@@ -134,21 +115,15 @@ export default function ChatbotPage() {
 
                         <div className="flex gap-3 max-w-[80%]">
                             <Avatar className="h-8 w-8">
-                                <AvatarImage
-                                    src="/placeholder.svg?height=32&width=32"
-                                    alt="Bot"
-                                />
+                                <AvatarImage src="/placeholder.svg?height=32&width=32" alt="Bot" />
                                 <AvatarFallback>
                                     <Bot className="h-4 w-4" />
                                 </AvatarFallback>
                             </Avatar>
                             <div className="bg-muted p-3 rounded-lg">
-                                <p>
-                                    Added: 5 units of Product A at $10.99 each (total: $54.95).
-                                </p>
+                                <p>Added: 5 units of Product A at $10.99 each (total: $54.95).</p>
                                 <p className="mt-2">
-                                    Would you like to add another product or is that all for
-                                    today?
+                                    Would you like to add another product or is that all for today?
                                 </p>
                             </div>
                         </div>

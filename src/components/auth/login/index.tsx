@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 import Link from 'next/link';
 
@@ -11,22 +11,35 @@ import { Checkbox } from '@/components/ui/checkbox';
 
 import Header from '@/components/auth/header';
 
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const formSchema = z.object({
+    email: z.string().email({ message: 'Invalid email address' }),
+    password: z.string().min(6, { message: 'Password must be at least 6 characters long' })
+});
+
+type FormSchema = z.infer<typeof formSchema>;
+
 export default function Login() {
-    const emailRef = useRef<HTMLInputElement>(null);
-    const passwordRef = useRef<HTMLInputElement>(null);
+    const {
+        register,
+        handleSubmit
+    } = useForm<FormSchema>({
+        resolver: zodResolver(formSchema)
+    });
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-
-        const email = emailRef.current?.value ?? '';
-        const password = passwordRef.current?.value ?? '';
-
-        console.log('Email: ', email, ' Password: ', password);
+    const handleLogin: SubmitHandler<FormSchema> = async (data) => {
+        try {
+            console.log(data);
+        } catch (err) {
+            console.error(err);
+        };
     };
 
     return (
-        <form className="flex min-h-screen flex-col" onSubmit={handleSubmit}>
-            <Header/>
+        <form className="flex min-h-screen flex-col" onSubmit={handleSubmit(handleLogin)}>
+            <Header />
             <div className="flex flex-1 items-center justify-center p-4">
                 <div className="mx-auto w-full max-w-md space-y-6">
                     <div className="space-y-2 text-center">
@@ -39,22 +52,16 @@ export default function Login() {
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
                             <Input
-                                ref={emailRef}
-                                id="email"
+                                {...register('email')}
                                 placeholder="Email"
-                                type="email"
-                                required
                             />
                         </div>
                         <div className="space-y-4">
                             <div className="space-y-2">
                                 <Label htmlFor="password">Password</Label>
                                 <Input
-                                    ref={passwordRef}
-                                    id="password"
+                                    {...register('password')}
                                     placeholder="Password"
-                                    type="password"
-                                    required
                                 />
                             </div>
                         </div>
@@ -135,4 +142,4 @@ export default function Login() {
             </div>
         </form>
     );
-};
+}

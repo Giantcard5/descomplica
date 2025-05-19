@@ -155,12 +155,13 @@ export default function NotificationsPage() {
                                         className={`flex items-start gap-4 p-4 ${notification.unread ? 'bg-muted/30' : ''}`}
                                     >
                                         <div
-                                            className={`mt-1 rounded-full p-2 ${notification.type === 'campaign'
+                                            className={`mt-1 rounded-full p-2 ${
+                                                notification.type === 'campaign'
                                                     ? 'bg-blue-500/10 text-blue-500'
                                                     : notification.type === 'system'
-                                                        ? 'bg-yellow-500/10 text-yellow-500'
-                                                        : 'bg-green-500/10 text-green-500'
-                                                }`}
+                                                      ? 'bg-yellow-500/10 text-yellow-500'
+                                                      : 'bg-green-500/10 text-green-500'
+                                            }`}
                                         >
                                             {notification.type === 'campaign' ? (
                                                 <Megaphone className="h-4 w-4" />
@@ -234,9 +235,7 @@ export default function NotificationsPage() {
                     <Card>
                         <CardHeader>
                             <CardTitle>Unread Notifications</CardTitle>
-                            <CardDescription>
-                                Notifications you haven't read yet
-                            </CardDescription>
+                            <CardDescription>Notifications you haven't read yet</CardDescription>
                         </CardHeader>
                         <CardContent className="p-0">
                             <div className="divide-y">
@@ -271,12 +270,13 @@ export default function NotificationsPage() {
                                         className="flex items-start gap-4 p-4 bg-muted/30"
                                     >
                                         <div
-                                            className={`mt-1 rounded-full p-2 ${notification.type === 'campaign'
+                                            className={`mt-1 rounded-full p-2 ${
+                                                notification.type === 'campaign'
                                                     ? 'bg-blue-500/10 text-blue-500'
                                                     : notification.type === 'system'
-                                                        ? 'bg-yellow-500/10 text-yellow-500'
-                                                        : 'bg-green-500/10 text-green-500'
-                                                }`}
+                                                      ? 'bg-yellow-500/10 text-yellow-500'
+                                                      : 'bg-green-500/10 text-green-500'
+                                            }`}
                                         >
                                             {notification.type === 'campaign' ? (
                                                 <Megaphone className="h-4 w-4" />

@@ -91,8 +91,7 @@ export default function SettingsPage() {
                                 <div className="space-y-2">
                                     <h3 className="text-lg font-medium">Profile Picture</h3>
                                     <p className="text-sm text-muted-foreground">
-                                        Upload a new profile picture. Recommended size:
-                                        300x300px.
+                                        Upload a new profile picture. Recommended size: 300x300px.
                                     </p>
                                     <div className="flex gap-2">
                                         <Button variant="outline" size="sm" className="gap-1">
@@ -255,9 +254,7 @@ export default function SettingsPage() {
                     <Card>
                         <CardHeader>
                             <CardTitle>Notification Preferences</CardTitle>
-                            <CardDescription>
-                                Manage how you receive notifications
-                            </CardDescription>
+                            <CardDescription>Manage how you receive notifications</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-6">
                             <div className="space-y-4">
@@ -281,8 +278,7 @@ export default function SettingsPage() {
                                                 Campaign Notifications
                                             </Label>
                                             <p className="text-sm text-muted-foreground">
-                                                Receive emails about new campaigns and
-                                                promotions
+                                                Receive emails about new campaigns and promotions
                                             </p>
                                         </div>
                                         <Switch id="email-campaigns" defaultChecked />
@@ -290,9 +286,7 @@ export default function SettingsPage() {
                                     <Separator />
                                     <div className="flex items-center justify-between">
                                         <div className="space-y-0.5">
-                                            <Label htmlFor="email-rewards">
-                                                Rewards & Points
-                                            </Label>
+                                            <Label htmlFor="email-rewards">Rewards & Points</Label>
                                             <p className="text-sm text-muted-foreground">
                                                 Receive emails about your rewards and points
                                             </p>
@@ -304,8 +298,7 @@ export default function SettingsPage() {
                                         <div className="space-y-0.5">
                                             <Label htmlFor="email-newsletter">Newsletter</Label>
                                             <p className="text-sm text-muted-foreground">
-                                                Receive our monthly newsletter with tips and
-                                                updates
+                                                Receive our monthly newsletter with tips and updates
                                             </p>
                                         </div>
                                         <Switch id="email-newsletter" />
@@ -335,8 +328,8 @@ export default function SettingsPage() {
                                                 Campaign Notifications
                                             </Label>
                                             <p className="text-sm text-muted-foreground">
-                                                Receive push notifications about new campaigns
-                                                and promotions
+                                                Receive push notifications about new campaigns and
+                                                promotions
                                             </p>
                                         </div>
                                         <Switch id="push-campaigns" />
@@ -344,12 +337,10 @@ export default function SettingsPage() {
                                     <Separator />
                                     <div className="flex items-center justify-between">
                                         <div className="space-y-0.5">
-                                            <Label htmlFor="push-rewards">
-                                                Rewards & Points
-                                            </Label>
+                                            <Label htmlFor="push-rewards">Rewards & Points</Label>
                                             <p className="text-sm text-muted-foreground">
-                                                Receive push notifications about your rewards
-                                                and points
+                                                Receive push notifications about your rewards and
+                                                points
                                             </p>
                                         </div>
                                         <Switch id="push-rewards" defaultChecked />
@@ -370,9 +361,7 @@ export default function SettingsPage() {
                                         <SelectContent>
                                             <SelectItem value="realtime">Real-time</SelectItem>
                                             <SelectItem value="daily">Daily Digest</SelectItem>
-                                            <SelectItem value="weekly">
-                                                Weekly Digest
-                                            </SelectItem>
+                                            <SelectItem value="weekly">Weekly Digest</SelectItem>
                                             <SelectItem value="never">Never</SelectItem>
                                         </SelectContent>
                                     </Select>
@@ -404,9 +393,7 @@ export default function SettingsPage() {
                                     <Input id="new-password" type="password" />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="confirm-password">
-                                        Confirm New Password
-                                    </Label>
+                                    <Label htmlFor="confirm-password">Confirm New Password</Label>
                                     <Input id="confirm-password" type="password" />
                                 </div>
                                 <Button>Update Password</Button>
@@ -415,9 +402,7 @@ export default function SettingsPage() {
                             <Separator />
 
                             <div className="space-y-4">
-                                <h3 className="text-lg font-medium">
-                                    Two-Factor Authentication
-                                </h3>
+                                <h3 className="text-lg font-medium">Two-Factor Authentication</h3>
                                 <div className="flex items-center justify-between">
                                     <div className="space-y-0.5">
                                         <Label htmlFor="two-factor">
@@ -578,9 +563,7 @@ export default function SettingsPage() {
                                                 <CreditCard className="h-4 w-4" />
                                             </div>
                                             <div>
-                                                <p className="font-medium">
-                                                    Visa ending in 4242
-                                                </p>
+                                                <p className="font-medium">Visa ending in 4242</p>
                                                 <p className="text-sm text-muted-foreground">
                                                     Expires 12/2025
                                                 </p>

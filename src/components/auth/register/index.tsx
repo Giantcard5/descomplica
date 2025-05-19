@@ -1,7 +1,9 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { useSearchParams  } from 'next/navigation'
+import { useEffect } from 'react';
+
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { useSearchParams } from 'next/navigation';
 
 import Link from 'next/link';
 
@@ -12,29 +14,53 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 import Header from '@/components/auth/header';
 
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const formSchema = z.object({
+    fullName: z.string().min(1, { message: 'Full name is required' }),
+    email: z.string().email({ message: 'Invalid email address' }),
+    password: z.string().min(6, { message: 'Password must be at least 6 characters long' }),
+    type: z.enum(['retailer', 'industry'], { message: 'Account type is required' })
+});
+
+type FormSchema = z.infer<typeof formSchema>;
+
 export default function Register() {
-    const fullNameRef = useRef<HTMLInputElement>(null);
-    const emailRef = useRef<HTMLInputElement>(null);
-    const passwordRef = useRef<HTMLInputElement>(null);
+    const {
+        register,
+        handleSubmit,
+        setValue,
+        watch,
+    } = useForm<FormSchema>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            type: '' as 'retailer' | 'industry'
+        }
+    });
 
     const pathName = useSearchParams();
     const pathRole = pathName.get('role');
 
-    const [type, setType] = useState<string | null>(pathRole);
+    useEffect(() => {
+        if (!pathRole) return;
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
+        if (pathRole === 'retailer' || pathRole === 'industry') {
+            setValue('type', pathRole);
+        }
+    }, [pathRole, setValue]);
 
-        const fullName = fullNameRef.current?.value ?? '';
-        const email = emailRef.current?.value ?? '';
-        const password = passwordRef.current?.value ?? '';
-
-        console.log('Full Name: ', fullName, ' Email: ', email, ' Password: ', password, ' Type: ', type);
+    const handleRegister: SubmitHandler<FormSchema> = async (data) => {
+        try {
+            console.log(data);
+        } catch (err) {
+            console.error(err);
+        };
     };
 
     return (
-        <form className="flex min-h-screen flex-col" onSubmit={handleSubmit}>
-            <Header/>
+        <form className="flex min-h-screen flex-col" onSubmit={handleSubmit(handleRegister)}>
+            <Header />
             <div className="flex flex-1 items-center justify-center p-4">
                 <div className="mx-auto w-full max-w-md space-y-6">
                     <div className="space-y-2 text-center">
@@ -46,27 +72,38 @@ export default function Register() {
                     <div className="space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="name">Full Name</Label>
-                            <Input ref={fullNameRef} id="name" placeholder="John Doe" required />
+                            <Input
+                                {...register('fullName')}
+                                placeholder="John Doe"
+                            />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
-                            <Input ref={emailRef} id="email" placeholder="m@example.com" type="email" required />
+                            <Input
+                                {...register('email')}
+                                placeholder="email@example.com"
+                            />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="password">Password</Label>
                             <Input
-                                ref={passwordRef}
-                                id="password"
+                                {...register('password')}
                                 placeholder="examplePassword"
-                                type="password"
-                                required
                             />
                         </div>
                         <div className="space-y-2">
                             <Label>Account Type</Label>
-                            <RadioGroup defaultValue={type!} className="grid grid-cols-2 gap-4">
+                            <RadioGroup
+                                className="grid grid-cols-2 gap-4"
+                                value={watch('type')}
+                            >
                                 <div className="flex items-center space-x-2 rounded-md border p-3">
-                                    <RadioGroupItem value="retailer" id="retailer" onClick={() => setType('retailer')} />
+                                    <RadioGroupItem
+                                        value="retailer"
+                                        id="retailer"
+                                        {...register('type')}
+                                        onClick={() => setValue('type', 'retailer')}
+                                    />
                                     <Label htmlFor="retailer" className="flex flex-col">
                                         <span>Retailer</span>
                                         <span className="text-xs text-muted-foreground">
@@ -75,7 +112,12 @@ export default function Register() {
                                     </Label>
                                 </div>
                                 <div className="flex items-center space-x-2 rounded-md border p-3">
-                                    <RadioGroupItem value="industry" id="industry" onClick={() => setType('industry')} />
+                                    <RadioGroupItem
+                                        value="industry"
+                                        id="industry"
+                                        {...register('type')}
+                                        onClick={() => setValue('type', 'industry')}
+                                    />
                                     <Label htmlFor="industry" className="flex flex-col">
                                         <span>Industry</span>
                                         <span className="text-xs text-muted-foreground">
@@ -146,4 +188,4 @@ export default function Register() {
             </div>
         </form>
     );
-};
+}

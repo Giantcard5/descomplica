@@ -1,54 +1,64 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useForm, SubmitHandler } from 'react-hook-form';
 
-import { ArrowLeft, Check, Loader2 } from 'lucide-react'
+import { ArrowLeft, Check, Loader2 } from 'lucide-react';
 
-import { Button } from "@/components/ui/button"
-import { 
-    Card, 
-    CardContent, 
-    CardDescription, 
-    CardFooter, 
-    CardHeader, 
-    CardTitle 
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const formSchema = z.object({
+    email: z.string().email({ message: 'Invalid email address' }),
+});
+
+type FormSchema = z.infer<typeof formSchema>;
 
 export default function ForgotPassword() {
+    const {
+        register,
+        handleSubmit,
+        setError,
+        getValues
+    } = useForm<FormSchema>({
+        resolver: zodResolver(formSchema),
+    });
+    
     const router = useRouter();
 
-    const [email, setEmail] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
-    const [error, setError] = useState("");
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError("");
-
-        if (!email) {
-            setError("Please enter your email address");
+    const handleForgotPassword: SubmitHandler<FormSchema> = async (data) => {
+        if (!data.email) {
+            setError('email', { message: 'Email is required' });
             return;
         };
-
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            setError("Please enter a valid email address");
-            return;
-        };
-
-        setIsLoading(true);
 
         try {
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            setIsLoading(true);
+
+            await new Promise((resolve) => setTimeout(resolve, 1500));
 
             setIsSubmitted(true);
+
+            setIsLoading(false);
         } catch (err) {
-            setError("An error occurred. Please try again.");
+            console.error(err);
         } finally {
             setIsLoading(false);
         };
@@ -58,9 +68,10 @@ export default function ForgotPassword() {
         <div className="flex min-h-screen items-center justify-center p-4">
             <Card className="w-full max-w-md">
                 <CardHeader>
-                    <CardTitle className="text-2xl">Reset Password</CardTitle>
+                    <CardTitle className="text-2xl">Forgot Password</CardTitle>
                     <CardDescription>
-                        Enter your email address and we'll send you instructions to reset your password.
+                        Enter your email address and we'll send you instructions to reset your
+                        password.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -69,11 +80,12 @@ export default function ForgotPassword() {
                             <Check className="h-4 w-4 text-green-600" />
                             <AlertTitle className="text-green-800">Email sent</AlertTitle>
                             <AlertDescription className="text-green-700">
-                                If an account exists with the email {email}, you will receive password reset instructions.
+                                If an account exists with the email {getValues('email')}, you will receive
+                                password reset instructions.
                             </AlertDescription>
                         </Alert>
                     ) : (
-                        <form onSubmit={handleSubmit}>
+                        <form onSubmit={handleSubmit(handleForgotPassword)}>
                             <div className="grid gap-4">
                                 <div className="grid gap-2">
                                     <Label htmlFor="email">Email</Label>
@@ -81,18 +93,16 @@ export default function ForgotPassword() {
                                         id="email"
                                         type="email"
                                         placeholder="name@example.com"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
+                                        {...register('email')}
                                         disabled={isLoading}
-                                        required
                                     />
                                 </div>
 
-                                {error && (
+                                {/* {error && (
                                     <Alert variant="destructive">
                                         <AlertDescription>{error}</AlertDescription>
                                     </Alert>
-                                )}
+                                )} */}
 
                                 <Button type="submit" className="w-full" disabled={isLoading}>
                                     {isLoading ? (
@@ -101,7 +111,7 @@ export default function ForgotPassword() {
                                             Sending...
                                         </>
                                     ) : (
-                                        "Send Reset Instructions"
+                                        'Send Reset Instructions'
                                     )}
                                 </Button>
                             </div>
@@ -114,7 +124,7 @@ export default function ForgotPassword() {
                             <Button
                                 variant="ghost"
                                 className="underline"
-                                onClick={() => router.push("/auth/login")}
+                                onClick={() => router.push('/auth/login')}
                             >
                                 Return to login
                             </Button>
@@ -123,7 +133,7 @@ export default function ForgotPassword() {
                                 <Button
                                     variant="outline"
                                     className="w-full"
-                                    onClick={() => router.push("/auth/login")}
+                                    onClick={() => router.push('/auth/login')}
                                 >
                                     <ArrowLeft className="mr-2 h-4 w-4" />
                                     Back to login
@@ -135,4 +145,4 @@ export default function ForgotPassword() {
             </Card>
         </div>
     );
-};
+}
