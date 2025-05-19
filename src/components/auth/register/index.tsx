@@ -18,7 +18,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const formSchema = z.object({
-    fullName: z.string().min(1, { message: 'Full name is required' }),
+    name: z.string().min(1, { message: 'Name is required' }),
     email: z.string().email({ message: 'Invalid email address' }),
     password: z.string().min(6, { message: 'Password must be at least 6 characters long' }),
     type: z.enum(['retailer', 'industry'], { message: 'Account type is required' }),
@@ -69,8 +69,8 @@ export default function Register() {
                     </div>
                     <div className="space-y-4">
                         <div className="space-y-2">
-                            <Label htmlFor="name">Full Name</Label>
-                            <Input {...register('fullName')} placeholder="John Doe" />
+                            <Label htmlFor="name">Name</Label>
+                            <Input {...register('name')} placeholder="John Doe" />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
