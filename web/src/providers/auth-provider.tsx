@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import { tokenService, type User } from '@/lib/auth/token-service';
 
@@ -22,7 +22,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const router = useRouter();
 
     useEffect(() => {
-        // Check if user is logged in on mount
         checkAuth();
     }, []);
 
@@ -41,7 +40,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const login = async (email: string, password: string, rememberMe: boolean) => {
         try {
             await tokenService.login(email, password, rememberMe);
-            // After successful login, get the user data
             const userData = await tokenService.checkAuth();
             setUser(userData);
             if (userData?.type === 'retailer') {
@@ -58,7 +56,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const register = async (name: string, email: string, password: string, type: 'retailer' | 'industry') => {
         try {
             await tokenService.register(name, email, password, type);
-            // After registration, log the user in
             await login(email, password, false);
         } catch (error) {
             console.error('Registration failed:', error);

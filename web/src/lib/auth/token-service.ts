@@ -1,5 +1,3 @@
-import { cookies } from 'next/headers';
-
 export interface LoginResponse {
     accessToken: string;
     accessTokenExpiresAt: string;
@@ -46,7 +44,6 @@ class TokenService {
 
     private async fetchWithError(url: string, options: RequestInit = {}) {
         try {
-            console.log('Fetching:', url); // Debug log
             const response = await fetch(url, {
                 ...options,
                 credentials: 'include',
@@ -65,7 +62,6 @@ class TokenService {
         } catch (error) {
             if (error instanceof Error) {
                 if (error.message === 'Failed to fetch') {
-                    console.error('Fetch failed for URL:', url); // Debug log
                     throw new Error('Unable to connect to the server. Please check your internet connection and try again.');
                 }
                 throw error;
