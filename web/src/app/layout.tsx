@@ -6,6 +6,7 @@ import { Inter } from 'next/font/google';
 
 import { ThemeProvider } from '@/providers/theme-provider';
 import { SidebarProvider } from '@/components/ui/sidebar';
+import { AuthProvider } from '@/providers/auth-provider';
 import { Toaster } from '@/components/ui/toaster';
 
 import '../styles/globals.css';
@@ -27,10 +28,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     enableSystem
                     disableTransitionOnChange
                 >
-                    <SidebarProvider>
-                        <div className="w-full min-h-screen">{children}</div>
-                        <Toaster />
-                    </SidebarProvider>
+                    <AuthProvider>
+                        <SidebarProvider>
+                            <div className="w-full min-h-screen">{children}</div>
+                            <Toaster />
+                        </SidebarProvider>
+                    </AuthProvider>
                 </ThemeProvider>
             </body>
         </html>

@@ -1,24 +1,23 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useAuth } from '@/hooks/use-auth';
+import { useForm, SubmitHandler } from 'react-hook-form';
 
 import Link from 'next/link';
+import Image from 'next/image';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-
-import Header from '@/components/auth/header';
+import { ModeToggle } from '@/components/ui/mode-toggle';
 
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { apiService } from '@/lib/api-service';
-
 import { Loader2 } from 'lucide-react';
+
 
 const formSchema = z.object({
     email: z.string().email({ message: 'Invalid email address' }),
@@ -29,7 +28,7 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 export default function Login() {
-    const router = useRouter();
+    const { login } = useAuth();
 
     const {
         register,
@@ -44,23 +43,31 @@ export default function Login() {
         try {
             setIsLoading(true);
 
-            await apiService.login(data.email, data.password, data.rememberMe).then((res: any) => {
-                if (res.data.token.type === 'retailer') {
-                    router.push('/retailer');
-                } else {
-                    router.push('/industry');
-                };
-            });
-        } catch (err) {
+            const rememberMe = !!data.rememberMe;
+
+            await login(data.email, data.password, rememberMe);
+        } catch (err: any) {
             console.error(err);
         } finally {
             setIsLoading(false);
-        };
+        }
     };
 
     return (
         <form className="flex min-h-screen flex-col" onSubmit={handleSubmit(handleLogin)}>
-            <Header />
+            <div className="flex h-16 items-center justify-between px-6 border-b">
+                <Link href="/" className="flex items-center gap-2">
+                    <Image
+                        src="/placeholder.svg?height=32&width=32"
+                        alt="Descomplica Logo"
+                        width={32}
+                        height={32}
+                        className="rounded"
+                    />
+                    <span className="text-xl font-bold">Descomplica</span>
+                </Link>
+                <ModeToggle />
+            </div>
             <div className="flex flex-1 items-center justify-center p-4">
                 <div className="mx-auto w-full max-w-md space-y-6">
                     <div className="space-y-2 text-center">

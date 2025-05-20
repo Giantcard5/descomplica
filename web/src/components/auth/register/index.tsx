@@ -3,23 +3,22 @@
 import { useEffect, useState } from 'react';
 
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { useAuth } from '@/hooks/use-auth';
 
 import Link from 'next/link';
+import Image from 'next/image';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { ModeToggle } from '@/components/ui/mode-toggle';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
-import Header from '@/components/auth/header';
+import { Loader2 } from 'lucide-react';
 
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-
-import { apiService } from '@/lib/api-service';
-
-import { Loader2 } from 'lucide-react';
 
 const formSchema = z.object({
     name: z.string().min(1, { message: 'Name is required' }),
@@ -31,8 +30,8 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 export default function Register() {
-    const router = useRouter();
-    
+    const { register: registerAuth } = useAuth();
+
     const { register, handleSubmit, setValue, watch } = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -57,9 +56,7 @@ export default function Register() {
         try {
             setIsLoading(true);
 
-            await apiService.register(data.name, data.email, data.password, data.type).then((res: any) => {
-                router.push('/auth/onboarding?type=' + res.data.user.type);
-            });
+            await registerAuth(data.name, data.email, data.password, data.type);
         } catch (err) {
             console.error(err);
         } finally {
@@ -69,7 +66,19 @@ export default function Register() {
 
     return (
         <div className="flex min-h-screen flex-col">
-            <Header />
+            <div className="flex h-16 items-center justify-between px-6 border-b">
+                <Link href="/" className="flex items-center gap-2">
+                    <Image
+                        src="/placeholder.svg?height=32&width=32"
+                        alt="Descomplica Logo"
+                        width={32}
+                        height={32}
+                        className="rounded"
+                    />
+                    <span className="text-xl font-bold">Descomplica</span>
+                </Link>
+                <ModeToggle />
+            </div>
             <form className="flex flex-1 items-center justify-center p-4" onSubmit={handleSubmit(handleRegister)}>
                 <div className="mx-auto w-full max-w-md space-y-6">
                     <div className="space-y-2 text-center">
