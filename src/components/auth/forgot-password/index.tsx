@@ -22,6 +22,8 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+import { apiService } from '@/lib/api-service';
+
 const formSchema = z.object({
     email: z.string().email({ message: 'Invalid email address' }),
 });
@@ -29,7 +31,7 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 export default function ForgotPassword() {
-    const { register, handleSubmit, setError, getValues } = useForm<FormSchema>({
+    const { register, handleSubmit, getValues } = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
     });
 
@@ -39,24 +41,17 @@ export default function ForgotPassword() {
     const [isSubmitted, setIsSubmitted] = useState(false);
 
     const handleForgotPassword: SubmitHandler<FormSchema> = async (data) => {
-        if (!data.email) {
-            setError('email', { message: 'Email is required' });
-            return;
-        }
-
         try {
             setIsLoading(true);
 
-            await new Promise((resolve) => setTimeout(resolve, 1500));
+            await apiService.forgotPassword(data.email);
 
             setIsSubmitted(true);
-
-            setIsLoading(false);
         } catch (err) {
             console.error(err);
         } finally {
             setIsLoading(false);
-        }
+        };
     };
 
     return (

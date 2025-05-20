@@ -24,6 +24,8 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+import { apiService } from '@/lib/api-service';
+
 const formSchema = z.object({
     password: z.string().min(6, { message: 'Password must be at least 6 characters long' }),
     confirmPassword: z.string().min(6, { message: 'Password must be at least 6 characters long' }),
@@ -53,9 +55,9 @@ export default function ResetPassword() {
         try {
             setIsLoading(true);
 
-            await new Promise((resolve) => setTimeout(resolve, 1500));
-
-            setIsSubmitted(true);
+            await apiService.resetPassword(data.password, token!).then(() => {
+                setIsSubmitted(true);
+            });
 
             setIsLoading(false);
         } catch (err) {

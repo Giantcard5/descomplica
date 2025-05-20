@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -16,6 +16,10 @@ import Header from '@/components/auth/header';
 
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+
+import { apiService } from '@/lib/api-service';
+
+import { Loader2 } from 'lucide-react';
 
 const formSchema = z.object({
     name: z.string().min(1, { message: 'Name is required' }),
@@ -39,6 +43,8 @@ export default function Register() {
     const pathName = useSearchParams();
     const pathRole = pathName.get('role');
 
+    const [isLoading, setIsLoading] = useState(false);
+
     useEffect(() => {
         if (!pathRole) return;
 
@@ -49,11 +55,16 @@ export default function Register() {
 
     const handleRegister: SubmitHandler<FormSchema> = async (data) => {
         try {
-            console.log(data);
-            router.push('/auth/onboarding?type=' + data.type);
+            setIsLoading(true);
+
+            await apiService.register(data.name, data.email, data.password, data.type).then((res: any) => {
+                router.push('/auth/onboarding?type=' + res.data.user.type);
+            });
         } catch (err) {
             console.error(err);
-        }
+        } finally {
+            setIsLoading(false);
+        };
     };
 
     return (
@@ -70,15 +81,15 @@ export default function Register() {
                     <div className="space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="name">Name</Label>
-                            <Input {...register('name')} placeholder="John Doe" />
+                            <Input {...register('name')} placeholder="John Doe" disabled={isLoading} />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
-                            <Input {...register('email')} placeholder="email@example.com" />
+                            <Input {...register('email')} placeholder="email@example.com" disabled={isLoading} />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="password">Password</Label>
-                            <Input {...register('password')} placeholder="examplePassword" />
+                            <Input {...register('password')} placeholder="examplePassword" disabled={isLoading} />
                         </div>
                         <div className="space-y-2">
                             <Label>Account Type</Label>
@@ -113,8 +124,15 @@ export default function Register() {
                                 </div>
                             </RadioGroup>
                         </div>
-                        <Button type="submit" className="w-full">
-                            Create Account
+                        <Button type="submit" className="w-full" disabled={isLoading}>
+                            {isLoading ? (
+                                <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Creating...
+                                </>
+                            ) : (
+                                'Create Account'
+                            )}
                         </Button>
                         <div className="relative">
                             <div className="absolute inset-0 flex items-center">

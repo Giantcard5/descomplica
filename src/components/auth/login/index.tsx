@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import Link from 'next/link';
@@ -14,24 +16,46 @@ import Header from '@/components/auth/header';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+import { apiService } from '@/lib/api-service';
+
+import { Loader2 } from 'lucide-react';
+
 const formSchema = z.object({
     email: z.string().email({ message: 'Invalid email address' }),
     password: z.string().min(6, { message: 'Password must be at least 6 characters long' }),
+    rememberMe: z.boolean().optional(),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
 
 export default function Login() {
-    const { register, handleSubmit } = useForm<FormSchema>({
+    const router = useRouter();
+
+    const {
+        register,
+        handleSubmit
+    } = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
     });
 
+    const [isLoading, setIsLoading] = useState(false);
+
     const handleLogin: SubmitHandler<FormSchema> = async (data) => {
         try {
-            console.log(data);
+            setIsLoading(true);
+
+            await apiService.login(data.email, data.password, data.rememberMe).then((res: any) => {
+                if (res.data.token.type === 'retailer') {
+                    router.push('/retailer');
+                } else {
+                    router.push('/industry');
+                };
+            });
         } catch (err) {
             console.error(err);
-        }
+        } finally {
+            setIsLoading(false);
+        };
     };
 
     return (
@@ -48,7 +72,7 @@ export default function Login() {
                     <div className="space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
-                            <Input {...register('email')} placeholder="Email" />
+                            <Input {...register('email')} placeholder="Email" disabled={isLoading} />
                         </div>
                         <div className="space-y-4">
                             <div className="space-y-2">
@@ -66,12 +90,19 @@ export default function Login() {
                         </div>
                         <div className="flex items-center space-x-2">
                             <Checkbox id="remember" />
-                            <Label htmlFor="remember" className="text-sm font-normal">
+                            <Label htmlFor="remember" className="text-sm font-normal" {...register('rememberMe')}>
                                 Remember me
                             </Label>
                         </div>
-                        <Button type="submit" className="w-full">
-                            Login
+                        <Button type="submit" className="w-full" disabled={isLoading}>
+                            {isLoading ? (
+                                <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Sending...
+                                </>
+                            ) : (
+                                'Login'
+                            )}
                         </Button>
                         <div className="relative">
                             <div className="absolute inset-0 flex items-center">
