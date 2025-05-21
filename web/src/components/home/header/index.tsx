@@ -125,8 +125,8 @@ export default function Header() {
                                     Login
                                 </Button>
                             </Link>
-                            <Link href="/auth/signup">
-                                <Button size="sm">Sign Up</Button>
+                            <Link href="/auth/register">
+                                <Button size="sm">Register</Button>
                             </Link>
                         </>
                     )}
