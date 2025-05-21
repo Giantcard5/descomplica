@@ -13,7 +13,7 @@ import {
     loginUser,
     registerUser,
     resetPassword
-} from '../services/user.service';
+} from '../services/auth.service';
 
 import { verify } from 'jsonwebtoken';
 
@@ -186,4 +186,4 @@ router.get('/check', async (request: Request, response: Response) => {
 //     return response.json({ tokens });
 // });
 
-export const userRouter = router;
+export const authRouter = router;

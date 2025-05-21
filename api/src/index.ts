@@ -5,8 +5,8 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 
 import {
-    userRouter
-} from './routes/user.routes';
+    authRouter
+} from './routes/auth.routes';
 import {
     tokenRouter
 } from './routes/token.routes';
@@ -47,7 +47,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
 
-app.use('/api/auth', userRouter);
+app.use('/api/auth', authRouter);
 app.use('/api/token', tokenRouter);
 
 app.listen(process.env.PORT, () => {

@@ -17,10 +17,10 @@ import {
 } from './token.service';
 
 import {
-    IUser
-} from '../types/user';
+    IAuthUser
+} from '../types/authUser';
 
-export const registerUser = async (user: IUser) => {
+export const registerUser = async (user: IAuthUser) => {
     const userExists = await prisma.user.findUnique({
         where: {
             email: user.email
