@@ -29,7 +29,7 @@ export default function RetailerDashboardLayout({ children }: { children: React.
     const pathname = usePathname();
 
     const isActive = (path: string) => {
-        return pathname === path;
+        return pathname.includes(path); // FIX THAT
     };
 
     return (
@@ -132,7 +132,7 @@ export default function RetailerDashboardLayout({ children }: { children: React.
                     <SidebarMenu>
                         <SidebarMenuItem>
                             <SidebarMenuButton asChild isActive={isActive('/retailer/settings')}>
-                                <Link href="/retailer/settings">
+                                <Link href="/retailer/settings/profile">
                                     <Settings className="h-5 w-5" />
                                     <span>Settings</span>
                                 </Link>

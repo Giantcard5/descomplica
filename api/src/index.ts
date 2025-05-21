@@ -10,6 +10,9 @@ import {
 import {
     tokenRouter
 } from './routes/token.routes';
+import { 
+    settingsRouter 
+} from './routes/settings.routes';
 
 dotenv.config();
 
@@ -49,6 +52,7 @@ app.use(helmet());
 
 app.use('/api/auth', authRouter);
 app.use('/api/token', tokenRouter);
+app.use('/api/settings', settingsRouter);
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);
