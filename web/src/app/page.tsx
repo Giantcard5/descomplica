@@ -43,12 +43,12 @@ export default function Home() {
                             <div className="mx-auto lg:mx-0 relative">
                                 <div className="absolute -top-4 -left-4 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-2xl opacity-50 dark:bg-purple-900"></div>
                                 <div className="absolute -bottom-4 -right-4 w-72 h-72 bg-violet-300 rounded-full mix-blend-multiply filter blur-2xl opacity-50 dark:bg-violet-900"></div>
-                                <div className="relative rounded-lg border bg-card p-2 shadow-lg">
+                                <div className="relative p-2 shadow-lg">
                                     <Image
-                                        src="/placeholder.svg?height=400&width=600"
+                                        src="/dashboard-preview.svg?height=200&width=600"
                                         alt="Dashboard Preview"
-                                        width={600}
-                                        height={400}
+                                        width={550}
+                                        height={350}
                                         className="rounded-md"
                                     />
                                 </div>
