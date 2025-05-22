@@ -51,7 +51,7 @@ export default function ForgotPassword() {
             console.error(err);
         } finally {
             setIsLoading(false);
-        };
+        }
     };
 
     return (

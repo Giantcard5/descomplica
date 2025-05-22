@@ -46,9 +46,7 @@ export default function StoreSettingsPage() {
                         <SelectContent>
                             <SelectItem value="grocery">Grocery Store</SelectItem>
                             <SelectItem value="pharmacy">Pharmacy</SelectItem>
-                            <SelectItem value="convenience">
-                                Convenience Store
-                            </SelectItem>
+                            <SelectItem value="convenience">Convenience Store</SelectItem>
                             <SelectItem value="hardware">Hardware Store</SelectItem>
                             <SelectItem value="clothing">Clothing Store</SelectItem>
                             <SelectItem value="other">Other</SelectItem>
@@ -120,4 +118,4 @@ export default function StoreSettingsPage() {
             </CardFooter>
         </Card>
     );
-};
+}

@@ -50,7 +50,7 @@ export default function ResetPassword() {
         if (data.password !== data.confirmPassword) {
             setError('confirmPassword', { message: 'Passwords do not match' });
             return;
-        };
+        }
 
         try {
             setIsLoading(true);
@@ -64,7 +64,7 @@ export default function ResetPassword() {
             console.error(err);
         } finally {
             setIsLoading(false);
-        };
+        }
     };
 
     if (!token) {

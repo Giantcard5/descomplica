@@ -13,7 +13,7 @@ interface TokenPayload {
     type: 'access' | 'refresh';
 }
 
-export const generateToken = async (userId: string, rememberMe: boolean) => {
+export const generateToken = async (userId: string) => {
     if (!userId) {
         throw new Error('User ID is required to generate token');
     };
@@ -28,7 +28,7 @@ export const generateToken = async (userId: string, rememberMe: boolean) => {
         };
 
         const now = Math.floor(Date.now() / 1000);
-        const expiresIn = rememberMe ? 60 * 60 * 24 * 7 : 60 * 15; // 7 days or 15 minutes
+        const expiresIn = 60 * 15; // 15 minutes in seconds
         
         const payload: TokenPayload = {
             sub: userId,
@@ -57,7 +57,7 @@ export const generateToken = async (userId: string, rememberMe: boolean) => {
 
 export const generateRefreshToken = async (userId: string) => {
     const now = Math.floor(Date.now() / 1000);
-    const expiresIn = 60 * 60 * 24 * 30; // 30 days
+    const expiresIn = 60 * 60 * 24 * 30; // 30 days in seconds
 
     const refreshToken = await prisma.refreshToken.create({
         data: {
@@ -109,7 +109,7 @@ export const refreshToken = async (refreshToken: string) => {
     };
 
     try {
-        const { token, expiresIn, expiresAt } = await generateToken(refreshTokenExists.userId, false);
+        const { token, expiresIn, expiresAt } = await generateToken(refreshTokenExists.userId);
 
         return {
             token,

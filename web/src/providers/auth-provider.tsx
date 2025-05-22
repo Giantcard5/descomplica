@@ -1,14 +1,19 @@
 'use client';
 
 import { createContext, useState, useEffect, ReactNode } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { tokenService, type User } from '@/lib/auth/token-service';
 
 interface AuthContextType {
     user: User | null;
     isLoading: boolean;
     login: (email: string, password: string, rememberMe: boolean) => Promise<void>;
-    register: (name: string, email: string, password: string, type: 'retailer' | 'industry') => Promise<void>;
+    register: (
+        name: string,
+        email: string,
+        password: string,
+        type: 'retailer' | 'industry'
+    ) => Promise<void>;
     logout: () => Promise<void>;
     forgotPassword: (email: string) => Promise<void>;
     resetPassword: (password: string, token: string) => Promise<void>;
@@ -17,9 +22,11 @@ interface AuthContextType {
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+    const router = useRouter();
+    const pathname = usePathname();
+
     const [user, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const router = useRouter();
 
     useEffect(() => {
         checkAuth();
@@ -27,11 +34,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const checkAuth = async () => {
         try {
-            const userData = await tokenService.checkAuth();
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/check`, {
+                credentials: 'include',
+            });
+
+            if (!response.ok) {
+                setUser(null);
+
+                if (pathname !== '/' && !pathname.startsWith('/auth')) {
+                    router.push('/auth/login');
+                }
+
+                return;
+            }
+
+            const userData = await response.json();
             setUser(userData);
         } catch (error) {
-            console.error('Auth check failed:', error);
             setUser(null);
+
+            if (pathname !== '/' && !pathname.startsWith('/auth')) {
+                router.push('/auth/login');
+            }
         } finally {
             setIsLoading(false);
         }
@@ -41,10 +65,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         try {
             await tokenService.login(email, password, rememberMe);
             const userData = await tokenService.checkAuth();
+
             setUser(userData);
+
             if (userData?.type === 'retailer') {
                 router.push('/retailer');
-            } else {
+            } else if (userData?.type === 'industry') {
                 router.push('/industry');
             }
         } catch (error) {
@@ -53,7 +79,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
     };
 
-    const register = async (name: string, email: string, password: string, type: 'retailer' | 'industry') => {
+    const register = async (
+        name: string,
+        email: string,
+        password: string,
+        type: 'retailer' | 'industry'
+    ) => {
         try {
             await tokenService.register(name, email, password, type);
             await login(email, password, false);
@@ -67,7 +98,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         try {
             await tokenService.logout();
             setUser(null);
-            router.push('/login');
+            router.push('/auth/login');
         } catch (error) {
             console.error('Logout failed:', error);
             throw error;

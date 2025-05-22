@@ -18,7 +18,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Loader2 } from 'lucide-react';
 
-
 const formSchema = z.object({
     email: z.string().email({ message: 'Invalid email address' }),
     password: z.string().min(6, { message: 'Password must be at least 6 characters long' }),
@@ -30,10 +29,7 @@ type FormSchema = z.infer<typeof formSchema>;
 export default function Login() {
     const { login } = useAuth();
 
-    const {
-        register,
-        handleSubmit
-    } = useForm<FormSchema>({
+    const { register, handleSubmit } = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
     });
 
@@ -79,7 +75,11 @@ export default function Login() {
                     <div className="space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
-                            <Input {...register('email')} placeholder="Email" disabled={isLoading} />
+                            <Input
+                                {...register('email')}
+                                placeholder="Email"
+                                disabled={isLoading}
+                            />
                         </div>
                         <div className="space-y-4">
                             <div className="space-y-2">
@@ -97,7 +97,11 @@ export default function Login() {
                         </div>
                         <div className="flex items-center space-x-2">
                             <Checkbox id="remember" />
-                            <Label htmlFor="remember" className="text-sm font-normal" {...register('rememberMe')}>
+                            <Label
+                                htmlFor="remember"
+                                className="text-sm font-normal"
+                                {...register('rememberMe')}
+                            >
                                 Remember me
                             </Label>
                         </div>

@@ -38,9 +38,7 @@ export default function NotificationSettingsPage() {
                     <div className="space-y-3">
                         <div className="flex items-center justify-between">
                             <div className="space-y-0.5">
-                                <Label htmlFor="email-submissions">
-                                    Submission Updates
-                                </Label>
+                                <Label htmlFor="email-submissions">Submission Updates</Label>
                                 <p className="text-sm text-muted-foreground">
                                     Receive emails about your data submission status
                                 </p>
@@ -50,9 +48,7 @@ export default function NotificationSettingsPage() {
                         <Separator />
                         <div className="flex items-center justify-between">
                             <div className="space-y-0.5">
-                                <Label htmlFor="email-campaigns">
-                                    Campaign Notifications
-                                </Label>
+                                <Label htmlFor="email-campaigns">Campaign Notifications</Label>
                                 <p className="text-sm text-muted-foreground">
                                     Receive emails about new campaigns and promotions
                                 </p>
@@ -87,12 +83,9 @@ export default function NotificationSettingsPage() {
                     <div className="space-y-3">
                         <div className="flex items-center justify-between">
                             <div className="space-y-0.5">
-                                <Label htmlFor="push-submissions">
-                                    Submission Updates
-                                </Label>
+                                <Label htmlFor="push-submissions">Submission Updates</Label>
                                 <p className="text-sm text-muted-foreground">
-                                    Receive push notifications about your data
-                                    submission status
+                                    Receive push notifications about your data submission status
                                 </p>
                             </div>
                             <Switch id="push-submissions" defaultChecked />
@@ -100,12 +93,9 @@ export default function NotificationSettingsPage() {
                         <Separator />
                         <div className="flex items-center justify-between">
                             <div className="space-y-0.5">
-                                <Label htmlFor="push-campaigns">
-                                    Campaign Notifications
-                                </Label>
+                                <Label htmlFor="push-campaigns">Campaign Notifications</Label>
                                 <p className="text-sm text-muted-foreground">
-                                    Receive push notifications about new campaigns and
-                                    promotions
+                                    Receive push notifications about new campaigns and promotions
                                 </p>
                             </div>
                             <Switch id="push-campaigns" />
@@ -115,8 +105,7 @@ export default function NotificationSettingsPage() {
                             <div className="space-y-0.5">
                                 <Label htmlFor="push-rewards">Rewards & Points</Label>
                                 <p className="text-sm text-muted-foreground">
-                                    Receive push notifications about your rewards and
-                                    points
+                                    Receive push notifications about your rewards and points
                                 </p>
                             </div>
                             <Switch id="push-rewards" defaultChecked />
@@ -127,9 +116,7 @@ export default function NotificationSettingsPage() {
                 <div className="space-y-4">
                     <h3 className="text-lg font-medium">Notification Frequency</h3>
                     <div className="space-y-2">
-                        <Label htmlFor="notification-frequency">
-                            Email Digest Frequency
-                        </Label>
+                        <Label htmlFor="notification-frequency">Email Digest Frequency</Label>
                         <Select defaultValue="daily">
                             <SelectTrigger id="notification-frequency">
                                 <SelectValue placeholder="Select frequency" />
@@ -150,4 +137,4 @@ export default function NotificationSettingsPage() {
             </CardFooter>
         </Card>
     );
-};
+}

@@ -1,31 +1,14 @@
-'use client'
+'use client';
 
 import React from 'react';
 
 import Link from 'next/link';
-import {
-    usePathname
-} from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle
-} from '@/components/ui/card';
-import {
-    Button
-} from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
-import {
-    User,
-    Store,
-    Bell,
-    Lock,
-    Globe,
-    HelpCircle
-} from 'lucide-react';
+import { User, Store, Bell, Lock, Globe, HelpCircle } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
@@ -81,10 +64,10 @@ export default function RetailerSettingsLayout({ children }: { children: React.R
                             key={route.href}
                             href={route.href}
                             className={cn(
-                                "flex items-center justify-center gap-2 rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+                                'flex items-center justify-center gap-2 rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
                                 route.active
-                                    ? "bg-background text-foreground shadow-sm"
-                                    : "hover:bg-muted/50 hover:text-foreground"
+                                    ? 'bg-background text-foreground shadow-sm'
+                                    : 'hover:bg-muted/50 hover:text-foreground'
                             )}
                         >
                             <route.icon className="h-4 w-4" />
@@ -156,4 +139,4 @@ export default function RetailerSettingsLayout({ children }: { children: React.R
             </div>
         </div>
     );
-};
+}

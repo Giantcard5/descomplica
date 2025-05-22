@@ -25,34 +25,33 @@ router.post('/login', async (request: Request, response: Response) => {
     try {
         const { token, refreshToken, type } = await loginUser(email, password, rememberMe);
 
-        // Calculate expiration dates
-        const accessTokenExpires = new Date(Date.now() + (60 * 60 * 24 * 1000)); // 1 day
-        const refreshTokenExpires = new Date(Date.now() + (60 * 60 * 24 * 7 * 1000)); // 7 days
-        const userTypeExpires = new Date(Date.now() + (60 * 60 * 24 * 1000)); // 1 day
+        const accessTokenExpires = new Date(Date.now() + (15 * 60 * 1000)); // 15 min
+        const refreshTokenExpires = new Date(Date.now() + (30 * 24 * 60 * 60 * 1000)); // 30 days
+        const userTypeExpires = new Date(Date.now() + (15 * 60 * 1000)); // 15 min
 
         response.cookie('access_token', token.token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "lax",
-            maxAge: 60 * 60 * 24 * 1000, // 1 dia em ms
+            maxAge: 15 * 60 * 1000, // 15 min in ms
             expires: accessTokenExpires,
             path: "/",
         });
 
         response.cookie('refresh_token', refreshToken.token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-            maxAge: 60 * 60 * 24 * 7 * 1000, // 7 dias em ms
+            secure: true,
+            sameSite: "strict",
+            maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in ms
             expires: refreshTokenExpires,
             path: "/",
         });
 
         response.cookie('user_type', type, {
-            httpOnly: false,
+            httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "lax",
-            maxAge: 60 * 60 * 24 * 1000, // 1 dia em ms
+            maxAge: 15 * 60 * 1000, // 15 min
             expires: userTypeExpires,
             path: "/",
         });
@@ -129,6 +128,20 @@ router.post('/logout', async (request: Request, response: Response) => {
         path: '/',
     });
 
+    response.clearCookie('access_token', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+    });
+
+    response.clearCookie('user_type', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+    });
+    
     return response.status(200).json({ message: 'Logged out successfully' });
 });
 
@@ -148,8 +161,6 @@ router.get('/check', async (request: Request, response: Response) => {
             where: { id: decoded.sub },
             select: {
                 id: true,
-                name: true,
-                email: true,
                 type: true,
             },
         });
@@ -160,9 +171,7 @@ router.get('/check', async (request: Request, response: Response) => {
 
         return response.json({
             id: user.id,
-            name: user.name,
-            email: user.email,
-            type: user.type,
+            type: user.type
         });
     } catch (error) {
         console.error('Auth check error:', error);
@@ -179,11 +188,5 @@ router.get('/check', async (request: Request, response: Response) => {
         return response.status(500).json({ message: 'Internal server error' });
     };
 });
-
-// router.get('/password-reset-tokens', async (request: Request, response: Response) => {
-//     const tokens = await getAllPasswordResetTokens();
-
-//     return response.json({ tokens });
-// });
 
 export const authRouter = router;

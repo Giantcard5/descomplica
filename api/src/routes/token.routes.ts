@@ -29,15 +29,14 @@ router.post('/refresh-token', async (request: Request, response: Response) => {
         };
 
         const { token, expiresIn, expiresAt } = result;
+        const accessTokenExpires = new Date(Date.now() + (15 * 60 * 1000)); // 15 min
 
-        const refreshTokenExpires = new Date(Date.now() + (30 * 24 * 60 * 60 * 1000)); // 30 days
-
-        response.cookie('refresh_token', refreshTokenCookie, {
+        response.cookie('access_token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax',
-            maxAge: 30 * 24 * 60 * 60 * 1000, // 30 dias em ms
-            expires: refreshTokenExpires,
+            maxAge: 15 * 60 * 1000, // 15 min in ms
+            expires: accessTokenExpires,
             path: '/',
         });
 
@@ -47,26 +46,14 @@ router.post('/refresh-token', async (request: Request, response: Response) => {
             accessTokenExpiresAt: expiresAt
         });
     } catch (error: any) {
-        console.error('Refresh token error:', error.message);
-        
         response.clearCookie('refresh_token', {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
+            secure: true,
+            sameSite: 'strict',
             path: '/',
         });
-
-        if (error.message === 'Refresh token not found' || error.message === 'Refresh token expired') {
-            return response.status(401).json({ 
-                message: error.message 
-            });
-        };
-
-        return response.status(400).json({ 
-            message: 'Error refreshing token',
-            error: error.message 
-        });
-    };
+        return response.status(401).json({ message: error.message });
+    }
 });
 
 export const tokenRouter = router;

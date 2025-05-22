@@ -1,12 +1,6 @@
 import type { Metadata } from 'next';
 
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -14,9 +8,7 @@ import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 
-import {
-    Shield
-} from 'lucide-react';
+import { Shield } from 'lucide-react';
 
 export const metadata: Metadata = {
     title: 'Security Settings - Descomplica',
@@ -54,9 +46,7 @@ export default function SecuritySettingsPage() {
                     <h3 className="text-lg font-medium">Two-Factor Authentication</h3>
                     <div className="flex items-center justify-between">
                         <div className="space-y-0.5">
-                            <Label htmlFor="two-factor">
-                                Enable Two-Factor Authentication
-                            </Label>
+                            <Label htmlFor="two-factor">Enable Two-Factor Authentication</Label>
                             <p className="text-sm text-muted-foreground">
                                 Add an extra layer of security to your account
                             </p>
@@ -93,11 +83,7 @@ export default function SecuritySettingsPage() {
                                         iPhone • Last active 2 days ago
                                     </p>
                                 </div>
-                                <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    className="text-destructive"
-                                >
+                                <Button variant="ghost" size="sm" className="text-destructive">
                                     Sign Out
                                 </Button>
                             </div>
@@ -110,4 +96,4 @@ export default function SecuritySettingsPage() {
             </CardContent>
         </Card>
     );
-};
+}

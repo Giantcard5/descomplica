@@ -14,43 +14,50 @@ const PRIVATE_ROUTES = [
 ] as const;
 
 function isPublicRoute(path: string) {
-    return PUBLIC_ROUTES.find(route => path === route.prefix || path.startsWith(route.prefix + '/'));
-};
+    if (path === '/') {
+        return PUBLIC_ROUTES.find((route) => route.prefix === '/');
+    }
+
+    return PUBLIC_ROUTES.find(
+        (route) =>
+            route.prefix !== '/' && (path === route.prefix || path.startsWith(route.prefix + '/'))
+    );
+}
 
 function getPrivateRouteType(path: string): 'retailer' | 'industry' | null {
     for (const route of PRIVATE_ROUTES) {
         if (path.startsWith(route.prefix)) {
             return route.type;
-        };
-    };
+        }
+    }
     return null;
-};
+}
 
 const REDIRECT_WHEN_NOT_AUTHENTICATED = '/auth/login';
 
-export default function middleware(request: NextRequest) {
+export default async function middleware(request: NextRequest) {
     const path = request.nextUrl.pathname;
 
-    const token = request.cookies.get('access_token')?.value;
+    const accessToken = request.cookies.get('access_token')?.value;
     const type = request.cookies.get('user_type')?.value;
 
     const publicRoute = isPublicRoute(path);
     const requiredType = getPrivateRouteType(path);
 
     // ✅ 1. Não autenticado acessando rota pública → OK
-    if (!token && publicRoute) {
+    if (!accessToken && publicRoute) {
         return NextResponse.next();
     }
 
     // ✅ 2. Não autenticado tentando acessar rota privada → redireciona
-    if (!token && !publicRoute) {
+    if (!accessToken && !publicRoute) {
         const redirectUrl = request.nextUrl.clone();
         redirectUrl.pathname = REDIRECT_WHEN_NOT_AUTHENTICATED;
         return NextResponse.redirect(redirectUrl);
     }
 
     // ✅ 3. Autenticado acessando rota pública com `whenAuthenticated: 'redirect'`
-    if (token && publicRoute?.whenAuthenticated === 'redirect') {
+    if (accessToken && publicRoute?.whenAuthenticated === 'redirect') {
         const redirectUrl = request.nextUrl.clone();
         redirectUrl.pathname = type === 'retailer' ? '/retailer' : '/industry';
         return NextResponse.redirect(redirectUrl);
@@ -69,6 +76,6 @@ export default function middleware(request: NextRequest) {
 
 export const config = {
     matcher: [
-        "/((?!api/|_next/|favicon.ico|placeholder.svg|.*\\.png$|.*\\.jpg$|.*\\.svg$|.well-known/).*)",
+        '/((?!api/|_next/|favicon.ico|placeholder.svg|.*\\.png$|.*\\.jpg$|.*\\.svg$|.well-known/).*)',
     ],
 };

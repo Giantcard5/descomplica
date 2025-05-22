@@ -61,7 +61,7 @@ export default function Register() {
             console.error(err);
         } finally {
             setIsLoading(false);
-        };
+        }
     };
 
     return (
@@ -79,7 +79,10 @@ export default function Register() {
                 </Link>
                 <ModeToggle />
             </div>
-            <form className="flex flex-1 items-center justify-center p-4" onSubmit={handleSubmit(handleRegister)}>
+            <form
+                className="flex flex-1 items-center justify-center p-4"
+                onSubmit={handleSubmit(handleRegister)}
+            >
                 <div className="mx-auto w-full max-w-md space-y-6">
                     <div className="space-y-2 text-center">
                         <h1 className="text-3xl font-bold">Create an account</h1>
@@ -90,15 +93,27 @@ export default function Register() {
                     <div className="space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="name">Name</Label>
-                            <Input {...register('name')} placeholder="John Doe" disabled={isLoading} />
+                            <Input
+                                {...register('name')}
+                                placeholder="John Doe"
+                                disabled={isLoading}
+                            />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
-                            <Input {...register('email')} placeholder="email@example.com" disabled={isLoading} />
+                            <Input
+                                {...register('email')}
+                                placeholder="email@example.com"
+                                disabled={isLoading}
+                            />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="password">Password</Label>
-                            <Input {...register('password')} placeholder="examplePassword" disabled={isLoading} />
+                            <Input
+                                {...register('password')}
+                                placeholder="examplePassword"
+                                disabled={isLoading}
+                            />
                         </div>
                         <div className="space-y-2">
                             <Label>Account Type</Label>

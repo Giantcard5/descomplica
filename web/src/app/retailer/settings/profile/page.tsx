@@ -12,11 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import {
-    Avatar,
-    AvatarFallback,
-    AvatarImage
-} from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 import { Upload } from 'lucide-react';
 
@@ -35,10 +31,7 @@ export default function ProfileSettingsPage() {
             <CardContent className="space-y-4">
                 <div className="flex flex-col items-center space-y-4 sm:flex-row sm:items-start sm:space-x-4 sm:space-y-0">
                     <Avatar className="h-24 w-24">
-                        <AvatarImage
-                            src="/placeholder.svg?height=96&width=96"
-                            alt="User"
-                        />
+                        <AvatarImage src="/placeholder.svg?height=96&width=96" alt="User" />
                         <AvatarFallback>JD</AvatarFallback>
                     </Avatar>
                     <div className="space-y-2">
@@ -51,11 +44,7 @@ export default function ProfileSettingsPage() {
                                 <Upload className="h-4 w-4" />
                                 Upload
                             </Button>
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                className="text-destructive"
-                            >
+                            <Button variant="outline" size="sm" className="text-destructive">
                                 Remove
                             </Button>
                         </div>
@@ -77,11 +66,7 @@ export default function ProfileSettingsPage() {
 
                 <div className="space-y-2">
                     <Label htmlFor="email">Email</Label>
-                    <Input
-                        id="email"
-                        type="email"
-                        defaultValue="john.doe@example.com"
-                    />
+                    <Input id="email" type="email" defaultValue="john.doe@example.com" />
                 </div>
 
                 <div className="space-y-2">
@@ -106,4 +91,4 @@ export default function ProfileSettingsPage() {
             </CardFooter>
         </Card>
     );
-};
+}

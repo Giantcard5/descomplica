@@ -1,8 +1,6 @@
 export interface LoginResponse {
     accessToken: string;
     accessTokenExpiresAt: string;
-    refreshToken: string;
-    refreshTokenExpiresAt: string;
     type: 'retailer' | 'industry';
 }
 
@@ -23,12 +21,9 @@ class TokenService {
     private static instance: TokenService;
     private readonly API_URL: string;
     private readonly ACCESS_TOKEN_KEY = 'access_token';
-    private readonly REFRESH_TOKEN_KEY = 'refresh_token';
-    private readonly USER_TYPE_KEY = 'user_type';
 
     private constructor() {
-        // Ensure API_URL is properly set
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
         if (!apiUrl) {
             console.warn('NEXT_PUBLIC_API_URL is not set, defaulting to http://localhost:3001');
         }
@@ -54,7 +49,14 @@ class TokenService {
             });
 
             if (!response.ok) {
-                const error = await response.json().catch(() => ({ message: 'Unknown error occurred' }));
+                if (response.status === 401) {
+                    await this.logout();
+                    window.location.href = '/auth/login';
+                    throw new Error('401');
+                }
+                const error = await response
+                    .json()
+                    .catch(() => ({ message: 'Unknown error occurred' }));
                 throw new Error(error.message || `HTTP error! status: ${response.status}`);
             }
 
@@ -62,11 +64,40 @@ class TokenService {
         } catch (error) {
             if (error instanceof Error) {
                 if (error.message === 'Failed to fetch') {
-                    throw new Error('Unable to connect to the server. Please check your internet connection and try again.');
+                    throw new Error(
+                        'Unable to connect to the server. Please check your internet connection and try again.'
+                    );
+                }
+
+                if (error.message === '401') {
+                    await this.logout();
+                    window.location.href = '/auth/login';
+                    throw new Error('401');
                 }
                 throw error;
             }
             throw new Error('An unexpected error occurred');
+        }
+    }
+
+    private async fetchWithAutoRefresh(url: string, options: RequestInit = {}, retry = true) {
+        try {
+            return await this.fetchWithError(url, { ...options, credentials: 'include' });
+        } catch (error) {
+            if (
+                retry &&
+                error instanceof Error &&
+                error.message.toLowerCase().includes('token expired')
+            ) {
+                try {
+                    await this.refreshToken();
+                    return await this.fetchWithError(url, { ...options, credentials: 'include' });
+                } catch (refreshError) {
+                    await this.logout();
+                    throw new Error('Session expired. Please log in again.');
+                }
+            }
+            throw error;
         }
     }
 
@@ -85,7 +116,12 @@ class TokenService {
         }
     }
 
-    async register(name: string, email: string, password: string, type: 'retailer' | 'industry'): Promise<User> {
+    async register(
+        name: string,
+        email: string,
+        password: string,
+        type: 'retailer' | 'industry'
+    ): Promise<User> {
         try {
             const response = await this.fetchWithError(`${this.API_URL}/api/auth/register`, {
                 method: 'POST',
@@ -143,11 +179,15 @@ class TokenService {
 
     async checkAuth(): Promise<User | null> {
         try {
-            const response = await this.fetchWithError(`${this.API_URL}/api/auth/check`);
+            const response = await this.fetchWithAutoRefresh(`${this.API_URL}/api/auth/check`);
             const data = await response.json();
             return data;
         } catch (error) {
-            if (error instanceof Error && error.message.includes('401')) {
+            if (
+                error instanceof Error &&
+                (error.message.includes('401') ||
+                    error.message.toLowerCase().includes('not authenticated'))
+            ) {
                 return null;
             }
             console.error('Auth check error:', error);
@@ -156,28 +196,44 @@ class TokenService {
     }
 
     async getUserType(): Promise<'retailer' | 'industry' | null> {
-        // Client-side only
-        if (typeof window === 'undefined') {
-            return null;
-        }
-
-        const userType = document.cookie
-            .split('; ')
-            .find(row => row.startsWith(`${this.USER_TYPE_KEY}=`))
-            ?.split('=')[1];
-        return (userType as 'retailer' | 'industry') || null;
+        const user = await this.checkAuth();
+        return user ? user.type : null;
     }
 
     async isAuthenticated(): Promise<boolean> {
-        // Client-side only
         if (typeof window === 'undefined') {
             return false;
         }
 
         return document.cookie
             .split('; ')
-            .some(row => row.startsWith(`${this.ACCESS_TOKEN_KEY}=`));
+            .some((row) => row.startsWith(`${this.ACCESS_TOKEN_KEY}=`));
+    }
+
+    async refreshToken(): Promise<{
+        accessToken: string;
+        accessTokenExpiresIn: number;
+        accessTokenExpiresAt: string;
+    }> {
+        if (typeof window === 'undefined') {
+            throw new Error('refreshToken can only be called on the client');
+        }
+        try {
+            const response = await this.fetchWithError(`${this.API_URL}/api/token/refresh-token`, {
+                method: 'POST',
+                credentials: 'include',
+            });
+            const data = await response.json();
+            return {
+                accessToken: data.accessToken,
+                accessTokenExpiresIn: data.accessTokenExpiresIn,
+                accessTokenExpiresAt: data.accessTokenExpiresAt,
+            };
+        } catch (error) {
+            console.error('Refresh token error:', error);
+            throw error;
+        }
     }
 }
 
-export const tokenService = TokenService.getInstance(); 
+export const tokenService = TokenService.getInstance();

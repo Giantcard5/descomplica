@@ -1,8 +1,6 @@
 import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
 
-import { sign } from 'jsonwebtoken';
-
 import { 
     verify 
 } from 'jsonwebtoken';
@@ -60,7 +58,7 @@ export const loginUser = async (email: string, password: string, rememberMe: boo
         throw new Error('Invalid password');
     };
 
-    const token = await generateToken(userExists.id, rememberMe);
+    const token = await generateToken(userExists.id);
 
     await prisma.refreshToken.deleteMany({
         where: {
@@ -134,24 +132,3 @@ export const resetPassword = async (password: string, token: string) => {
         throw new Error('Invalid token');
     };
 };
-
-// DEVELOPMENT ONLY: Get password reset tokens for all users
-// export const getAllPasswordResetTokens = async () => {
-//     const users = await prisma.user.findMany();
-//     const tokens = users.map(user => {
-//         const token = sign(
-//             {
-//                 id: user.id,
-//                 type: 'password_reset',
-//             },
-//             process.env.JWT_SECRET as string,
-//             { expiresIn: '1h' }
-//         );
-//         return {
-//             email: user.email,
-//             id: user.id,
-//             token
-//         };
-//     });
-//     return tokens;
-// };
