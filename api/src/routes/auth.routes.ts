@@ -34,7 +34,7 @@ router.post('/login', async (request: Request, response: Response) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "lax",
-            maxAge: 60 * 60 * 24, // 1 day in seconds
+            maxAge: 60 * 60 * 24 * 1000, // 1 dia em ms
             expires: accessTokenExpires,
             path: "/",
         });
@@ -43,7 +43,7 @@ router.post('/login', async (request: Request, response: Response) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "lax",
-            maxAge: 60 * 60 * 24 * 7, // 7 days in seconds
+            maxAge: 60 * 60 * 24 * 7 * 1000, // 7 dias em ms
             expires: refreshTokenExpires,
             path: "/",
         });
@@ -52,7 +52,7 @@ router.post('/login', async (request: Request, response: Response) => {
             httpOnly: false,
             secure: process.env.NODE_ENV === "production",
             sameSite: "lax",
-            maxAge: 60 * 60 * 24, // 1 day in seconds
+            maxAge: 60 * 60 * 24 * 1000, // 1 dia em ms
             expires: userTypeExpires,
             path: "/",
         });
@@ -110,7 +110,7 @@ router.post('/reset-password', async (request: Request, response: Response) => {
 });
 
 router.post('/logout', async (request: Request, response: Response) => {
-    const refreshToken = request.cookies.refreshToken;
+    const refreshToken = request.cookies.refresh_token;
 
     if (refreshToken) {
         try {
@@ -122,11 +122,11 @@ router.post('/logout', async (request: Request, response: Response) => {
         };
     };
 
-    response.clearCookie('refreshToken', {
+    response.clearCookie('refresh_token', {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
-        path: '/api/token/refresh-token'
+        path: '/',
     });
 
     return response.status(200).json({ message: 'Logged out successfully' });
