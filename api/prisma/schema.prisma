@@ -13,22 +13,155 @@ enum Type {
 }
 
 model User {
-  id            String        @id @default(uuid())
-  name          String
-  email         String        @unique
-  password      String
-  type          Type
+  id String @id @default(uuid())
+
+  name     String
+  email    String @unique
+  password String
+  type     Type
+
   refresh_token RefreshToken?
+
+  profile_settings       Profile?
+  store_settings         Store?
+  notification_settings  Notification?
+  security_settings      Security?
+  preferences_settings   Preferences?
 
   @@map("users")
 }
 
 model RefreshToken {
-  id        String   @id @default(uuid())
+  id String @id @default(uuid())
+
   expiresIn Int
   expiresAt DateTime
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String   @unique
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
 
   @@map("refresh_token")
+}
+
+model Profile {
+  id String @id @default(uuid())
+
+  name        String
+  email       String
+  phoneNumber String
+  photoUrl    String
+  bio         String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+
+  @@map("profile_settings")
+}
+
+model Store {
+  id String @id @default(uuid())
+
+  name        String
+  type        String
+  size        Int
+  employees   Int
+  address     String
+  city        String
+  state       String
+  zipCode     String
+  country     String
+  description String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+
+  @@map("store_settings")
+}
+
+model Notification {
+  id String @id @default(uuid())
+
+  email_submision          Boolean
+  email_compaing           Boolean
+  email_rewards_and_points Boolean
+  email_newsletter         Boolean
+
+  submission         Boolean
+  compaing           Boolean
+  rewards_and_points Boolean
+
+  notification_frequency NotificationFrequency
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+
+  @@map("notification_settings")
+}
+
+enum NotificationFrequency {
+  real_time
+  daily
+  weekly
+  never
+}
+
+model Security {
+  id String @id @default(uuid())
+
+  current_password          String
+  new_password              String
+  confirm_password          String
+  two_factor_authentication Boolean
+
+  login_sessions LoginSession[]
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+
+  @@map("security_settings")
+}
+
+model LoginSession {
+  id         String @id @default(uuid())
+  name       String
+  type       String
+  address    String
+  last_login String
+
+  security   Security @relation(fields: [securityId], references: [id])
+  securityId String
+
+  @@map("security_login_session_settings")
+}
+
+model Preferences {
+  id String @id @default(uuid())
+
+  theme        Theme
+  language     Language
+  dateFormat   DateFormat
+  reduceMotion Boolean
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+
+  @@map("security_preferences")
+}
+
+enum Theme {
+  light
+  dark
+  system
+}
+
+enum Language {
+  en
+  pt_BR
+  es
+}
+
+enum DateFormat {
+  dd_mm_yyyy
+  mm_dd_yyyy
+  yyyy_mm_dd
 }

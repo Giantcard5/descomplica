@@ -4,8 +4,8 @@ import {
     Response
 } from 'express';
 
-import { 
-    getProfile, 
+import {
+    getProfile,
     getStore,
     getNotifications,
     getSecurity,
@@ -15,21 +15,15 @@ import {
 const router = Router();
 
 router.get('/profile', async (request: Request, response: Response) => {
-    const { 
-        name, 
-        email, 
-        phoneNumber, 
-        photoUrl, 
-        bio 
-    } = request.body;
+    const token = request.headers.authorization?.split(' ')[1];
 
-    const profile = await getProfile({ 
-        name, 
-        email, 
-        phoneNumber, 
-        photoUrl, 
-        bio 
-    });
+    if (!token) {
+        return response.status(401).json({
+            message: 'Unauthorized'
+        });
+    };
+
+    const profile = await getProfile(token);
 
     return response.json({
         profile
@@ -37,31 +31,15 @@ router.get('/profile', async (request: Request, response: Response) => {
 });
 
 router.get('/store', async (request: Request, response: Response) => {
-    const { 
-        name, 
-        type, 
-        size, 
-        employees, 
-        address, 
-        city, 
-        state, 
-        zipCode, 
-        country, 
-        description 
-    } = request.body;
+    const token = request.headers.authorization?.split(' ')[1];
 
-    const store = await getStore({ 
-        name, 
-        type, 
-        size, 
-        employees, 
-        address, 
-        city, 
-        state, 
-        zipCode, 
-        country, 
-        description
-    });
+    if (!token) {
+        return response.status(401).json({
+            message: 'Unauthorized'
+        });
+    };
+
+    const store = await getStore(token);
 
     return response.json({
         store
@@ -69,27 +47,15 @@ router.get('/store', async (request: Request, response: Response) => {
 });
 
 router.get('/notifications', async (request: Request, response: Response) => {
-    const { 
-        email_submision, 
-        email_compaing, 
-        email_rewards_and_points, 
-        email_newsletter, 
-        submission, 
-        compaing, 
-        rewards_and_points, 
-        notification_frequency 
-    } = request.body;
+    const token = request.headers.authorization?.split(' ')[1];
 
-    const notifications = await getNotifications({ 
-        email_submision, 
-        email_compaing, 
-        email_rewards_and_points, 
-        email_newsletter, 
-        submission, 
-        compaing, 
-        rewards_and_points, 
-        notification_frequency 
-    });
+    if (!token) {
+        return response.status(401).json({
+            message: 'Unauthorized'
+        });
+    };
+
+    const notifications = await getNotifications(token);
 
     return response.json({
         notifications
@@ -97,21 +63,15 @@ router.get('/notifications', async (request: Request, response: Response) => {
 });
 
 router.get('/security', async (request: Request, response: Response) => {
-    const { 
-        current_password, 
-        new_password, 
-        confirm_password, 
-        two_factor_authentication, 
-        login_sessions 
-    } = request.body;
+    const token = request.headers.authorization?.split(' ')[1];
 
-    const security = await getSecurity({ 
-        current_password, 
-        new_password, 
-        confirm_password, 
-        two_factor_authentication, 
-        login_sessions 
-    });
+    if (!token) {
+        return response.status(401).json({
+            message: 'Unauthorized'
+        });
+    };
+
+    const security = await getSecurity(token);
 
     return response.json({
         security
@@ -119,14 +79,15 @@ router.get('/security', async (request: Request, response: Response) => {
 });
 
 router.get('/preferences', async (request: Request, response: Response) => {
-    const { 
-        theme, 
-        language, 
-        dateFormat, 
-        reduceMotion 
-    } = request.body;
+    const token = request.headers.authorization?.split(' ')[1];
 
-    const preferences = await getPreferences({ theme, language, dateFormat, reduceMotion });
+    if (!token) {
+        return response.status(401).json({
+            message: 'Unauthorized'
+        });
+    };
+
+    const preferences = await getPreferences(token);
 
     return response.json({
         preferences

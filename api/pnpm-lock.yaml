@@ -64,7 +64,7 @@ importers:
         specifier: ^6.4.17
         version: 6.4.17
       prisma:
-        specifier: 6.8.2
+        specifier: ^6.8.2
         version: 6.8.2(typescript@5.8.3)
       ts-node-dev:
         specifier: ^2.0.0

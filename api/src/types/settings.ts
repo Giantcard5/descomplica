@@ -1,12 +1,3 @@
-export interface ISettings {
-    id: string;
-    profile: IProfile;
-    store: IStore;
-    notifications: INotification;
-    security: ISecurity;
-    preferences: IPreferences;
-};
-
 export interface IProfile {
     name: string;
     email: string;

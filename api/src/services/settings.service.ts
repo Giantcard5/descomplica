@@ -1,5 +1,8 @@
+import { verify } from 'jsonwebtoken';
+
+import { prisma } from '../utils/prismaClient';
+
 import {
-    ISettings,
     IProfile,
     IStore,
     INotification,
@@ -7,72 +10,122 @@ import {
     IPreferences
 } from '../types/settings';
 
-export const getProfile = async (profile: IProfile) => {
+export const getProfile = async (token: string) => {
+    const decoded = verify(token, process.env.JWT_SECRET as string);
+
+    const profile = await prisma.profile.findUnique({
+        where: {
+            userId: decoded.sub as string
+        }
+    });
+
+    if (!profile) {
+        throw new Error('Profile not found');
+    };
+
     return {
-        name: 'Renato Soares',
-        email: 'renato.cel.renato@gmail.com',
-        phoneNumber: '+55 11 98811-7936',
-        photoUrl: 'https://avatars.githubusercontent.com/u/69985363?v=4',
-        bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+        name: profile.name,
+        email: profile.email,
+        phoneNumber: profile.phoneNumber,
+        photoUrl: profile.photoUrl,
+        bio: profile.bio
     };
 };
 
-export const getStore = async (store: IStore) => {
+export const getStore = async (token: string) => {
+    const decoded = verify(token, process.env.JWT_SECRET as string);
+
+    const store = await prisma.store.findUnique({
+        where: {
+            userId: decoded.sub as string
+        }
+    });
+
+    if (!store) {
+        throw new Error('Store not found');
+    };
+
     return {
-        name: 'Renato Soares',
-        type: 'Marketplace',
-        size: 100,
-        employees: 10,
-        address: 'Rua 123, 123',
-        city: 'São Paulo',
-        state: 'SP',
-        zipCode: '12345-678',
-        country: 'Brasil',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        name: store.name,
+        type: store.type,
+        size: store.size,
+        employees: store.employees,
+        address: store.address,
+        city: store.city,
+        state: store.state,
+        zipCode: store.zipCode,
+        country: store.country,
+        description: store.description
     };
 };
 
-export const getNotifications = async (notifications: INotification) => {
+export const getNotifications = async (token: string) => {
+    const decoded = verify(token, process.env.JWT_SECRET as string);
+
+    const notifications = await prisma.notification.findUnique({
+        where: {
+            userId: decoded.sub as string
+        }
+    });
+
+    if (!notifications) {
+        throw new Error('Notifications not found');
+    };
+
     return {
-        email_submision: true,
-        email_compaing: true,
-        email_rewards_and_points: true,
-        email_newsletter: true,
-        submission: true,
-        compaing: true,
-        rewards_and_points: true,
-        notification_frequency: 'real-time'
+        email_submision: notifications.email_submision,
+        email_compaing: notifications.email_compaing,
+        email_rewards_and_points: notifications.email_rewards_and_points,
+        email_newsletter: notifications.email_newsletter,
+        submission: notifications.submission,
+        compaing: notifications.compaing,
+        rewards_and_points: notifications.rewards_and_points,
+        notification_frequency: notifications.notification_frequency
     };
 };
 
-export const getSecurity = async (security: ISecurity) => {
+export const getSecurity = async (token: string) => {
+    const decoded = verify(token, process.env.JWT_SECRET as string);
+
+    const security = await prisma.security.findUnique({
+        where: {
+            userId: decoded.sub as string
+        },
+        include: {
+            login_sessions: true
+        }
+    });
+
+    if (!security) {
+        throw new Error('Security not found');
+    };
+
     return {
-        current_password: '123456',
-        new_password: '123456',
-        confirm_password: '123456',
-        two_factor_authentication: true,
-        login_sessions: [
-            {
-                name: 'Renato Soares',
-                type: 'Desktop',
-                address: '192.168.1.1',
-                last_login: '2021-01-01 12:00:00'
-            },
-            {
-                name: 'Renato Soares',
-                type: 'Mobile',
-                address: '192.168.1.1',
-                last_login: '2021-01-01 12:00:00'
-            }
-        ]
+        current_password: security.current_password,
+        new_password: security.new_password,
+        confirm_password: security.confirm_password,
+        two_factor_authentication: security.two_factor_authentication,
+        login_sessions: security.login_sessions
     };
 };
 
-export const getPreferences = async (preferences: IPreferences) => {
+export const getPreferences = async (token: string) => {
+    const decoded = verify(token, process.env.JWT_SECRET as string);
+
+    const preferences = await prisma.preferences.findUnique({
+        where: {
+            userId: decoded.sub as string
+        }
+    });
+
+    if (!preferences) {
+        throw new Error('Preferences not found');
+    };
+
     return {
-        theme: 'light',
-        language: 'en',
-        dateFormat: 'dd/mm/yyyy',
-        reduceMotion: true
+        theme: preferences.theme,
+        language: preferences.language,
+        dateFormat: preferences.dateFormat,
+        reduceMotion: preferences.reduceMotion
     };
 };
