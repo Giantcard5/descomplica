@@ -29,13 +29,13 @@ router.post('/refresh-token', async (request: Request, response: Response) => {
         };
 
         const { token, expiresIn, expiresAt } = result;
-        const accessTokenExpires = new Date(Date.now() + (15 * 60 * 1000)); // 15 min
+        const accessTokenExpires = new Date(Date.now() + (30 * 60 * 1000)); // 30 min
 
         response.cookie('access_token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax',
-            maxAge: 15 * 60 * 1000, // 15 min in ms
+            maxAge: 30 * 60 * 1000, // 30 min in ms
             expires: accessTokenExpires,
             path: '/',
         });

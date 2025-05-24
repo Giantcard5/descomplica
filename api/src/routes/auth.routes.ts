@@ -25,15 +25,15 @@ router.post('/login', async (request: Request, response: Response) => {
     try {
         const { token, refreshToken, type } = await loginUser(email, password, rememberMe);
 
-        const accessTokenExpires = new Date(Date.now() + (15 * 60 * 1000)); // 15 min
+        const accessTokenExpires = new Date(Date.now() + (30 * 60 * 1000)); // 30 min
         const refreshTokenExpires = new Date(Date.now() + (30 * 24 * 60 * 60 * 1000)); // 30 days
-        const userTypeExpires = new Date(Date.now() + (15 * 60 * 1000)); // 15 min
+        const userTypeExpires = new Date(Date.now() + (30 * 60 * 1000)); // 30 min
 
         response.cookie('access_token', token.token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "lax",
-            maxAge: 15 * 60 * 1000, // 15 min in ms
+            maxAge: 30 * 60 * 1000, // 30 min in ms
             expires: accessTokenExpires,
             path: "/",
         });
@@ -51,7 +51,7 @@ router.post('/login', async (request: Request, response: Response) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "lax",
-            maxAge: 15 * 60 * 1000, // 15 min
+            maxAge: 30 * 60 * 1000, // 30 min
             expires: userTypeExpires,
             path: "/",
         });

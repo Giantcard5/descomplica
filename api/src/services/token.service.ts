@@ -28,7 +28,7 @@ export const generateToken = async (userId: string) => {
         };
 
         const now = Math.floor(Date.now() / 1000);
-        const expiresIn = 60 * 15; // 15 minutes in seconds
+        const expiresIn = 60 * 30; // 30 minutes in seconds
         
         const payload: TokenPayload = {
             sub: userId,
