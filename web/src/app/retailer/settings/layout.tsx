@@ -139,4 +139,4 @@ export default function RetailerSettingsLayout({ children }: { children: React.R
             </div>
         </div>
     );
-}
+};

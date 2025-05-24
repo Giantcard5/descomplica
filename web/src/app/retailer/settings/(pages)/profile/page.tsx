@@ -31,7 +31,6 @@ import {
 } from './utils/schema';
 
 export default function ProfileSettingsPage() {
-    // Create a cache system to save the profile data
     const {
         register,
         handleSubmit,

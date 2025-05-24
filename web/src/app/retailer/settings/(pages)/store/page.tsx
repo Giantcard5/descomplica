@@ -32,8 +32,9 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 
+import { StoreType } from './types';
+
 export default function StoreSettingsPage() {
-    // Create a cache system to save the store data
     const {
         register,
         handleSubmit,
@@ -80,7 +81,9 @@ export default function StoreSettingsPage() {
 
                     <div className="space-y-2">
                         <Label htmlFor="store-type">Store Type</Label>
-                        <Select defaultValue="grocery">
+                        <Select value={watch('type')} onValueChange={(value) => {
+                            setValue('type', value as StoreType);
+                        }}>
                             <SelectTrigger id="store-type">
                                 <SelectValue placeholder="Select store type" />
                             </SelectTrigger>
@@ -90,6 +93,20 @@ export default function StoreSettingsPage() {
                                 <SelectItem value="convenience">Convenience Store</SelectItem>
                                 <SelectItem value="hardware">Hardware Store</SelectItem>
                                 <SelectItem value="clothing">Clothing Store</SelectItem>
+                                <SelectItem value="electronics">Electronics Store</SelectItem>
+                                <SelectItem value="bakery">Bakery</SelectItem>
+                                <SelectItem value="butcher">Butcher Shop</SelectItem>
+                                <SelectItem value="pet">Pet Store</SelectItem>
+                                <SelectItem value="stationery">Stationery Store</SelectItem>
+                                <SelectItem value="beauty">Beauty & Cosmetics</SelectItem>
+                                <SelectItem value="florist">Florist</SelectItem>
+                                <SelectItem value="bookstore">Bookstore</SelectItem>
+                                <SelectItem value="toy">Toy Store</SelectItem>
+                                <SelectItem value="automotive">Auto Parts Store</SelectItem>
+                                <SelectItem value="sports">Sporting Goods</SelectItem>
+                                <SelectItem value="furniture">Furniture Store</SelectItem>
+                                <SelectItem value="jewelry">Jewelry Store</SelectItem>
+                                <SelectItem value="service">Service Business</SelectItem>
                                 <SelectItem value="other">Other</SelectItem>
                             </SelectContent>
                         </Select>
