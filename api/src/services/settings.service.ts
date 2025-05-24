@@ -1,6 +1,8 @@
 import { verify } from 'jsonwebtoken';
 
-import { prisma } from '../utils/prismaClient';
+import { 
+    prisma 
+} from '../utils/prismaClient';
 
 import {
     IProfile,
@@ -9,6 +11,7 @@ import {
     ISecurity,
     IPreferences
 } from '../types/settings';
+import { resetPassword } from './auth.service';
 
 export const getProfile = async (token: string) => {
     const decoded = verify(token, process.env.JWT_SECRET as string);
@@ -91,19 +94,6 @@ export const updateStore = async (token: string, store: IStore) => {
     if (!updatedStore) {
         throw new Error('Store not found');
     };
-
-    return {
-        name: updatedStore.name,
-        type: updatedStore.type,
-        size: updatedStore.size,
-        employees: updatedStore.employees,
-        address: updatedStore.address,
-        city: updatedStore.city,
-        state: updatedStore.state,
-        zipCode: updatedStore.zipCode,
-        country: updatedStore.country,
-        description: updatedStore.description
-    };
 };
 
 export const getNotifications = async (token: string) => {
@@ -147,18 +137,7 @@ export const updateNotifications = async (token: string, notifications: INotific
     if (!updatedNotifications) {
         throw new Error('Notifications not found');
     };
-
-    return {
-        email_submision: updatedNotifications.email_submision,
-        email_compaing: updatedNotifications.email_compaing,
-        email_rewards_and_points: updatedNotifications.email_rewards_and_points,
-        email_newsletter: updatedNotifications.email_newsletter,
-        submission: updatedNotifications.submission,
-        compaing: updatedNotifications.compaing,
-        rewards_and_points: updatedNotifications.rewards_and_points,
-        notification_frequency: updatedNotifications.notification_frequency
-    };
-}
+};
 
 export const getSecurity = async (token: string) => {
     const decoded = verify(token, process.env.JWT_SECRET as string);
@@ -183,23 +162,18 @@ export const getSecurity = async (token: string) => {
 };
 
 export const updateSecurity = async (token: string, security: ISecurity) => {
-    const decoded = verify(token, process.env.JWT_SECRET as string);
+    if (security.new_password !== security.confirm_password) {
+        throw new Error('New password and confirm password do not match');
+    };
 
-    const updatedSecurity = await prisma.security.update({
-        where: {
-            userId: decoded.sub as string
-        },
-        data: {
-            ...security
-        }
-    });
+    const updatedSecurity = await resetPassword(security.new_password, security.current_password, token);
 
     if (!updatedSecurity) {
-        throw new Error('Security not found');
+        throw new Error('Could not update security');
     };
 
     return { message: 'Password updated successfully' };
-}
+};
 
 export const getPreferences = async (token: string) => {
     const decoded = verify(token, process.env.JWT_SECRET as string);
@@ -238,12 +212,5 @@ export const updatePreferences = async (token: string, preferences: IPreferences
 
     if (!updatedPreferences) {
         throw new Error('Preferences not found');
-    };
-
-    return {
-        theme: updatedPreferences.theme,
-        language: updatedPreferences.language,
-        dateFormat: updatedPreferences.dateFormat,
-        reduceMotion: updatedPreferences.reduceMotion
     };
 };

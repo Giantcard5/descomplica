@@ -106,7 +106,7 @@ export const forgotPassword = async (email: string) => {
     };
 };
 
-export const resetPassword = async (password: string, token: string) => {
+export const resetPassword = async (password: string, currentPassword: string, token: string) => {
     try {
         const decoded = verify(token, process.env.JWT_SECRET as string) as {
             sub: string;
@@ -118,6 +118,13 @@ export const resetPassword = async (password: string, token: string) => {
 
         if (!userExists) {
             throw new Error('User not found');
+        };
+
+        if (currentPassword) {
+            const isMatch = await bcrypt.compare(currentPassword, userExists.password);
+            if (!isMatch) {
+                throw new Error('Current password is incorrect');
+            };
         };
 
         const passwordHash = await bcrypt.hash(password, 10);
