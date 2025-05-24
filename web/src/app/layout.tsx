@@ -5,8 +5,10 @@ import type { Metadata } from 'next/types';
 import { Inter } from 'next/font/google';
 
 import { ThemeProvider } from '@/providers/theme-provider';
-import { SidebarProvider } from '@/components/ui/sidebar';
 import { AuthProvider } from '@/providers/auth-provider';
+
+import { SidebarProvider } from '@/components/ui/sidebar';
+
 import { Toaster } from '@/components/ui/toaster';
 
 import '../styles/globals.css';

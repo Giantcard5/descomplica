@@ -15,7 +15,7 @@ export interface IStore {
     city: string;
     state: string;
     zipCode: string;
-    country: string;
+    country: 'br' | 'us' | 'other';
     description: string;
 };
 

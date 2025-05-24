@@ -32,6 +32,23 @@ export const getProfile = async (token: string) => {
     };
 };
 
+export const updateProfile = async (token: string, profile: IProfile) => {
+    const decoded = verify(token, process.env.JWT_SECRET as string);
+
+    const updatedProfile = await prisma.profile.update({
+        where: {
+            userId: decoded.sub as string
+        },
+        data: {
+            ...profile
+        }
+    });
+
+    if (!updatedProfile) {
+        throw new Error('Profile not found');
+    };
+}
+
 export const getStore = async (token: string) => {
     const decoded = verify(token, process.env.JWT_SECRET as string);
 
@@ -56,6 +73,36 @@ export const getStore = async (token: string) => {
         zipCode: store.zipCode,
         country: store.country,
         description: store.description
+    };
+};
+
+export const updateStore = async (token: string, store: IStore) => {
+    const decoded = verify(token, process.env.JWT_SECRET as string);
+
+    const updatedStore = await prisma.store.update({
+        where: {
+            userId: decoded.sub as string
+        },
+        data: {
+            ...store
+        }
+    });
+
+    if (!updatedStore) {
+        throw new Error('Store not found');
+    };
+
+    return {
+        name: updatedStore.name,
+        type: updatedStore.type,
+        size: updatedStore.size,
+        employees: updatedStore.employees,
+        address: updatedStore.address,
+        city: updatedStore.city,
+        state: updatedStore.state,
+        zipCode: updatedStore.zipCode,
+        country: updatedStore.country,
+        description: updatedStore.description
     };
 };
 
