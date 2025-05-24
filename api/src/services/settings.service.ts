@@ -131,6 +131,35 @@ export const getNotifications = async (token: string) => {
     };
 };
 
+export const updateNotifications = async (token: string, notifications: INotification) => {
+    const decoded = verify(token, process.env.JWT_SECRET as string);
+
+    const updatedNotifications = await prisma.notification.update({
+        where: {
+            userId: decoded.sub as string
+        },
+        data: {
+            ...notifications,
+            notification_frequency: notifications.notification_frequency as 'real_time' | 'daily' | 'weekly' | 'never'
+        }
+    });
+
+    if (!updatedNotifications) {
+        throw new Error('Notifications not found');
+    };
+
+    return {
+        email_submision: updatedNotifications.email_submision,
+        email_compaing: updatedNotifications.email_compaing,
+        email_rewards_and_points: updatedNotifications.email_rewards_and_points,
+        email_newsletter: updatedNotifications.email_newsletter,
+        submission: updatedNotifications.submission,
+        compaing: updatedNotifications.compaing,
+        rewards_and_points: updatedNotifications.rewards_and_points,
+        notification_frequency: updatedNotifications.notification_frequency
+    };
+}
+
 export const getSecurity = async (token: string) => {
     const decoded = verify(token, process.env.JWT_SECRET as string);
 
@@ -148,13 +177,29 @@ export const getSecurity = async (token: string) => {
     };
 
     return {
-        current_password: security.current_password,
-        new_password: security.new_password,
-        confirm_password: security.confirm_password,
         two_factor_authentication: security.two_factor_authentication,
         login_sessions: security.login_sessions
     };
 };
+
+export const updateSecurity = async (token: string, security: ISecurity) => {
+    const decoded = verify(token, process.env.JWT_SECRET as string);
+
+    const updatedSecurity = await prisma.security.update({
+        where: {
+            userId: decoded.sub as string
+        },
+        data: {
+            ...security
+        }
+    });
+
+    if (!updatedSecurity) {
+        throw new Error('Security not found');
+    };
+
+    return { message: 'Password updated successfully' };
+}
 
 export const getPreferences = async (token: string) => {
     const decoded = verify(token, process.env.JWT_SECRET as string);
@@ -174,5 +219,31 @@ export const getPreferences = async (token: string) => {
         language: preferences.language,
         dateFormat: preferences.dateFormat,
         reduceMotion: preferences.reduceMotion
+    };
+};
+
+export const updatePreferences = async (token: string, preferences: IPreferences) => {
+    const decoded = verify(token, process.env.JWT_SECRET as string);
+
+    const updatedPreferences = await prisma.preferences.update({
+        where: {
+            userId: decoded.sub as string
+        },
+        data: {
+            ...preferences,
+            language: preferences.language as 'en' | 'pt_BR' | 'es',
+            dateFormat: preferences.dateFormat as 'dd_mm_yyyy' | 'mm_dd_yyyy' | 'yyyy_mm_dd'
+        }
+    });
+
+    if (!updatedPreferences) {
+        throw new Error('Preferences not found');
+    };
+
+    return {
+        theme: updatedPreferences.theme,
+        language: updatedPreferences.language,
+        dateFormat: updatedPreferences.dateFormat,
+        reduceMotion: updatedPreferences.reduceMotion
     };
 };

@@ -11,7 +11,10 @@ import {
     getSecurity,
     getPreferences,
     updateProfile,
-    updateStore
+    updateStore,
+    updateNotifications,
+    updateSecurity,
+    updatePreferences
 } from '../services/settings.service';
 
 const router = Router();
@@ -92,6 +95,20 @@ router.get('/notifications', async (request: Request, response: Response) => {
     );
 });
 
+router.post('/notifications', async (request: Request, response: Response) => {
+    const token = request.cookies.access_token;
+
+    if (!token) {
+        return response.status(401).json({
+            message: 'Unauthorized'
+        });
+    };
+
+    const notifications = await updateNotifications(token, request.body);
+
+    return notifications;
+});
+
 router.get('/security', async (request: Request, response: Response) => {
     const token = request.cookies.access_token;
 
@@ -108,6 +125,20 @@ router.get('/security', async (request: Request, response: Response) => {
     );
 });
 
+router.post('/security', async (request: Request, response: Response) => {
+    const token = request.cookies.access_token;
+
+    if (!token) {
+        return response.status(401).json({
+            message: 'Unauthorized'
+        });
+    };
+
+    const security = await updateSecurity(token, request.body);
+
+    return security;
+});
+
 router.get('/preferences', async (request: Request, response: Response) => {
     const token = request.cookies.access_token;
 
@@ -122,6 +153,20 @@ router.get('/preferences', async (request: Request, response: Response) => {
     return response.json(
         preferences
     );
+});
+
+router.post('/preferences', async (request: Request, response: Response) => {
+    const token = request.cookies.access_token;
+
+    if (!token) {
+        return response.status(401).json({
+            message: 'Unauthorized'
+        });
+    };
+
+    const preferences = await updatePreferences(token, request.body);
+
+    return preferences;
 });
 
 export const settingsRouter = router;

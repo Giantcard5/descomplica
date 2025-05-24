@@ -108,9 +108,6 @@ enum NotificationFrequency {
 model Security {
   id String @id @default(uuid())
 
-  current_password          String
-  new_password              String
-  confirm_password          String
   two_factor_authentication Boolean
 
   login_sessions LoginSession[]
@@ -156,7 +153,7 @@ enum Theme {
 
 enum Language {
   en
-  pt_BR
+  pt-BR
   es
 }
 

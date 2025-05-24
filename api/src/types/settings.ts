@@ -8,7 +8,7 @@ export interface IProfile {
 
 export interface IStore {
     name: string;
-    type: string;
+    type: StoreType;
     size: number;
     employees: number;
     address: string;
@@ -18,6 +18,28 @@ export interface IStore {
     country: 'br' | 'us' | 'other';
     description: string;
 };
+
+export type StoreType =
+    | 'grocery'
+    | 'pharmacy'
+    | 'convenience'
+    | 'hardware'
+    | 'clothing'
+    | 'electronics'
+    | 'bakery'
+    | 'butcher'
+    | 'pet'
+    | 'stationery'
+    | 'beauty'
+    | 'florist'
+    | 'bookstore'
+    | 'toy'
+    | 'automotive'
+    | 'sports'
+    | 'furniture'
+    | 'jewelry'
+    | 'service'
+    | 'other';
 
 export interface INotification {
     email_submision: boolean;
@@ -36,15 +58,6 @@ export interface ISecurity {
     current_password: string;
     new_password: string;
     confirm_password: string;
-
-    two_factor_authentication: boolean;
-
-    login_sessions: {
-        name: string;
-        type: string;
-        address: string;
-        last_login: string;
-    }[];
 };
 
 export interface IPreferences {
