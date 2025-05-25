@@ -31,10 +31,17 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ModeToggle } from '@/components/ui/mode-toggle';
 
+import { useAuth } from '@/hooks/use-auth';
+
 export default function IndustryDashboardLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
+    const { logout } = useAuth();
 
     const isActive = (path: string) => {
+        if (pathname.includes('/industry/settings/')) {
+            return path.includes('/industry/settings');
+        };
+
         return pathname === path;
     };
 
@@ -143,7 +150,7 @@ export default function IndustryDashboardLayout({ children }: { children: React.
                         </SidebarMenuItem>
                         <SidebarMenuItem>
                             <SidebarMenuButton asChild>
-                                <Link href="/auth/logout">
+                                <Link href="/" onClick={() => logout()}>
                                     <LogOut className="h-5 w-5" />
                                     <span>Logout</span>
                                 </Link>

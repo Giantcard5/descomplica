@@ -25,11 +25,18 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ModeToggle } from '@/components/ui/mode-toggle';
 import { Badge } from '@/components/ui/badge';
 
+import { useAuth } from '@/hooks/use-auth';
+
 export default function RetailerDashboardLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
+    const { logout } = useAuth();
 
     const isActive = (path: string) => {
-        return pathname.includes(path); // FIX THAT
+        if (pathname.includes('/retailer/settings/')) {
+            return path.includes('/retailer/settings');
+        };
+
+        return pathname === path;
     };
 
     return (
@@ -140,7 +147,7 @@ export default function RetailerDashboardLayout({ children }: { children: React.
                         </SidebarMenuItem>
                         <SidebarMenuItem>
                             <SidebarMenuButton asChild>
-                                <Link href="/auth/logout">
+                                <Link href="/auth/logout" onClick={() => logout()}>
                                     <LogOut className="h-5 w-5" />
                                     <span>Logout</span>
                                 </Link>
