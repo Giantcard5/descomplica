@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/use-auth';
 
 import Link from 'next/link';
@@ -39,6 +40,7 @@ export default function Register() {
         },
     });
 
+    const router = useRouter();
     const pathName = useSearchParams();
     const pathRole = pathName.get('role');
 
@@ -57,11 +59,13 @@ export default function Register() {
             setIsLoading(true);
 
             await registerAuth(data.name, data.email, data.password, data.type);
+
+            router.push('/auth/onboarding?type=' + data.type);
         } catch (err) {
             console.error(err);
         } finally {
             setIsLoading(false);
-        }
+        };
     };
 
     return (

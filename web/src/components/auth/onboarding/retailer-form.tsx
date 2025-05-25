@@ -21,7 +21,7 @@ import { Upload, Store } from 'lucide-react';
 interface RetailerOnboardingFormProps {
     step: number;
     onComplete: () => void;
-}
+};
 
 export function RetailerOnboardingForm({ step, onComplete }: RetailerOnboardingFormProps) {
     const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -40,7 +40,7 @@ export function RetailerOnboardingForm({ step, onComplete }: RetailerOnboardingF
         if (file) {
             const url = URL.createObjectURL(file);
             setImage(url);
-        }
+        };
     };
 
     return (
@@ -101,12 +101,12 @@ export function RetailerOnboardingForm({ step, onComplete }: RetailerOnboardingF
 
                     <div className="grid gap-4 sm:grid-cols-2">
                         <div className="space-y-2">
-                            <Label htmlFor="first-name">First Name</Label>
-                            <Input id="first-name" placeholder="John" required />
+                            <Label htmlFor="full-name">Full Name</Label>
+                            <Input id="full-name" placeholder="John" required />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="last-name">Last Name</Label>
-                            <Input id="last-name" placeholder="Doe" required />
+                            <Label htmlFor="date-of-birth">Date of Birth</Label>
+                            <Input id="date-of-birth" type="date" required />
                         </div>
                     </div>
 
@@ -230,6 +230,30 @@ export function RetailerOnboardingForm({ step, onComplete }: RetailerOnboardingF
                             <Input id="zip" placeholder="62701" />
                         </div>
                     </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="country">Country</Label>
+                        <Select defaultValue="grocery">
+                            <SelectTrigger id="country">
+                                <SelectValue placeholder="Select country" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="us">United States</SelectItem>
+                                <SelectItem value="br">Brazil</SelectItem>
+                                <SelectItem value="other">Other</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="store-description">Store Description</Label>
+                        <textarea
+                            id="store-description"
+                            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                            rows={3}
+                            placeholder="Describe your store"
+                        ></textarea>
+                    </div>
                 </div>
             )}
 
@@ -252,59 +276,38 @@ export function RetailerOnboardingForm({ step, onComplete }: RetailerOnboardingF
                                 <SelectContent>
                                     <SelectItem value="en">English</SelectItem>
                                     <SelectItem value="es">Español</SelectItem>
-                                    <SelectItem value="pt">Português</SelectItem>
-                                    <SelectItem value="fr">Français</SelectItem>
+                                    <SelectItem value="pt-BR">Português</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="currency">Preferred Currency</Label>
-                            <Select defaultValue="usd">
-                                <SelectTrigger id="currency">
-                                    <SelectValue placeholder="Select currency" />
+                            <Label htmlFor="date-format">Date Format</Label>
+                            <Select defaultValue="dd/mm/yyyy">
+                                <SelectTrigger id="date-format">
+                                    <SelectValue placeholder="Select date format" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="usd">USD ($)</SelectItem>
-                                    <SelectItem value="eur">EUR (€)</SelectItem>
-                                    <SelectItem value="gbp">GBP (£)</SelectItem>
-                                    <SelectItem value="brl">BRL (R$)</SelectItem>
+                                    <SelectItem value="dd/mm/yyyy">dd/mm/yyyy</SelectItem>
+                                    <SelectItem value="mm/dd/yyyy">mm/dd/yyyy</SelectItem>
+                                    <SelectItem value="yyyy/mm/dd">yyyy/mm/dd</SelectItem>
                                 </SelectContent>
                             </Select>
-                        </div>
-
-                        <div className="space-y-2">
-                            <Label htmlFor="categories">Product Categories of Interest</Label>
-                            <Select defaultValue="all">
-                                <SelectTrigger id="categories">
-                                    <SelectValue placeholder="Select categories" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="all">All Categories</SelectItem>
-                                    <SelectItem value="food">Food & Beverages</SelectItem>
-                                    <SelectItem value="household">Household Items</SelectItem>
-                                    <SelectItem value="personal">Personal Care</SelectItem>
-                                    <SelectItem value="electronics">Electronics</SelectItem>
-                                </SelectContent>
-                            </Select>
-                            <p className="text-xs text-muted-foreground">
-                                This helps us show you relevant products and campaigns.
-                            </p>
                         </div>
 
                         <div className="space-y-2">
                             <Label htmlFor="notification-preferences">
                                 Notification Preferences
                             </Label>
-                            <Select defaultValue="all">
+                            <Select defaultValue="real-time">
                                 <SelectTrigger id="notification-preferences">
                                     <SelectValue placeholder="Select notification preferences" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="all">All Notifications</SelectItem>
-                                    <SelectItem value="important">Important Only</SelectItem>
-                                    <SelectItem value="minimal">Minimal</SelectItem>
-                                    <SelectItem value="none">None</SelectItem>
+                                    <SelectItem value="real-time">Real-Time</SelectItem>
+                                    <SelectItem value="daily">Daily</SelectItem>
+                                    <SelectItem value="weekly">Weekly</SelectItem>
+                                    <SelectItem value="never">Never</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
@@ -317,4 +320,4 @@ export function RetailerOnboardingForm({ step, onComplete }: RetailerOnboardingF
             </Button>
         </form>
     );
-}
+};

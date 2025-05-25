@@ -117,13 +117,13 @@ export const resetPassword = async (password: string, currentPassword: string, t
         });
 
         if (!userExists) {
-            throw new Error('User not found');
+            return { message: 'User not found' };
         };
 
         if (currentPassword) {
             const isMatch = await bcrypt.compare(currentPassword, userExists.password);
             if (!isMatch) {
-                throw new Error('Current password is incorrect');
+                return { message: 'Current password is incorrect' };
             };
         };
 
@@ -136,6 +136,6 @@ export const resetPassword = async (password: string, currentPassword: string, t
 
         return { message: 'Password reset successfully' };
     } catch (error: any) {
-        throw new Error('Invalid token');
+        throw new Error(error.message);
     };
 };

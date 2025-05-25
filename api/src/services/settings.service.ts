@@ -163,16 +163,14 @@ export const getSecurity = async (token: string) => {
 
 export const updateSecurity = async (token: string, security: ISecurity) => {
     if (security.new_password !== security.confirm_password) {
-        throw new Error('New password and confirm password do not match');
+        return { message: 'New password and confirm password do not match' };
     };
 
     const updatedSecurity = await resetPassword(security.new_password, security.current_password, token);
-
-    if (!updatedSecurity) {
-        throw new Error('Could not update security');
+    
+    if (updatedSecurity) {
+        return { message: updatedSecurity.message };
     };
-
-    return { message: 'Password updated successfully' };
 };
 
 export const getPreferences = async (token: string) => {

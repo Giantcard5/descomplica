@@ -4,8 +4,8 @@ import {
     Response
 } from 'express';
 
-import { 
-    validateAccessToken 
+import {
+    validateAccessToken
 } from '../middleware/authenticated';
 
 import {
@@ -35,7 +35,7 @@ router.get('/profile', async (request: Request, response: Response) => {
         };
         return response.status(401).json({ message: 'Invalid token' });
     };
-    
+
     const token = request.cookies.access_token;
     const profile = await getProfile(token);
 
@@ -54,7 +54,7 @@ router.post('/profile', async (request: Request, response: Response) => {
         };
         return response.status(401).json({ message: 'Invalid token' });
     };
-    
+
     const token = request.cookies.access_token;
     await updateProfile(token, request.body);
 
@@ -73,7 +73,7 @@ router.get('/store', async (request: Request, response: Response) => {
         };
         return response.status(401).json({ message: 'Invalid token' });
     };
-    
+
     const token = request.cookies.access_token;
     const store = await getStore(token);
 
@@ -111,7 +111,7 @@ router.get('/notifications', async (request: Request, response: Response) => {
         };
         return response.status(401).json({ message: 'Invalid token' });
     };
-    
+
     const token = request.cookies.access_token;
     const notifications = await getNotifications(token);
 
@@ -130,7 +130,7 @@ router.post('/notifications', async (request: Request, response: Response) => {
         };
         return response.status(401).json({ message: 'Invalid token' });
     };
-    
+
     const token = request.cookies.access_token;
     await updateNotifications(token, request.body);
 
@@ -149,7 +149,7 @@ router.get('/security', async (request: Request, response: Response) => {
         };
         return response.status(401).json({ message: 'Invalid token' });
     };
-    
+
     const token = request.cookies.access_token;
     const security = await getSecurity(token);
 
@@ -187,7 +187,7 @@ router.get('/preferences', async (request: Request, response: Response) => {
         };
         return response.status(401).json({ message: 'Invalid token' });
     };
-    
+
     const token = request.cookies.access_token;
     const preferences = await getPreferences(token);
 
@@ -206,7 +206,7 @@ router.post('/preferences', async (request: Request, response: Response) => {
         };
         return response.status(401).json({ message: 'Invalid token' });
     };
-    
+
     const token = request.cookies.access_token;
     await updatePreferences(token, request.body);
 

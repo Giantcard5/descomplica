@@ -29,9 +29,9 @@ export default function Onboarding() {
     useEffect(() => {
         const type = searchParams.get('type');
         if (!type || (type !== 'retailer' && type !== 'industry')) {
-            router.push('/auth/signup');
+            router.push('/auth/register');
             return;
-        }
+        };
 
         setAccountType(type);
     }, [searchParams, router]);
@@ -50,8 +50,8 @@ export default function Onboarding() {
                 router.push('/retailer');
             } else {
                 router.push('/industry');
-            }
-        }
+            };
+        };
     };
 
     return (

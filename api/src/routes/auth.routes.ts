@@ -64,7 +64,7 @@ router.post('/login', async (request: Request, response: Response) => {
             type
         });
     } catch (error) {
-        return response.status(400).json({ message: 'Error logging in' });
+        return response.status(400).json({ message: 'Email or password is incorrect' });
     };
 });
 
@@ -80,7 +80,7 @@ router.post('/register', async (request: Request, response: Response) => {
             type: user.type
         });
     } catch (error) {
-        return response.status(400).json({ message: 'Error registering user' });
+        return response.status(400).json({ message: 'Email already in use' });
     };
 });
 
@@ -97,10 +97,10 @@ router.post('/forgot-password', async (request: Request, response: Response) => 
 });
 
 router.post('/reset-password', async (request: Request, response: Response) => {
-    const { password, token } = request.body;
+    const { password, token, currentPassword } = request.body;
 
     try {
-        const message = await resetPassword(password, token);
+        const message = await resetPassword(password, token, currentPassword);
 
         return response.json({ message });
     } catch (error) {
