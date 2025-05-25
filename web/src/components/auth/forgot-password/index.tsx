@@ -22,7 +22,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { apiService } from '@/lib/api-service';
+import { tokenService } from '@/lib/auth/token-service';
 
 const formSchema = z.object({
     email: z.string().email({ message: 'Invalid email address' }),
@@ -44,7 +44,7 @@ export default function ForgotPassword() {
         try {
             setIsLoading(true);
 
-            await apiService.forgotPassword(data.email);
+            await tokenService.forgotPassword(data.email);
 
             setIsSubmitted(true);
         } catch (err) {
