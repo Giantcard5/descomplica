@@ -32,7 +32,7 @@ type FormSchema = z.infer<typeof formSchema>;
 export default function Register() {
     const { register: registerAuth } = useAuth();
 
-    const { register, handleSubmit, setValue, watch } = useForm<FormSchema>({
+    const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             type: '' as 'retailer' | 'industry',
@@ -98,6 +98,9 @@ export default function Register() {
                                 placeholder="John Doe"
                                 disabled={isLoading}
                             />
+                            {errors.name && (
+                                <p className="text-red-500 text-sm">{errors.name.message}</p>
+                            )}
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
@@ -106,6 +109,9 @@ export default function Register() {
                                 placeholder="email@example.com"
                                 disabled={isLoading}
                             />
+                            {errors.email && (
+                                <p className="text-red-500 text-sm">{errors.email.message}</p>
+                            )}
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="password">Password</Label>
@@ -114,6 +120,9 @@ export default function Register() {
                                 placeholder="examplePassword"
                                 disabled={isLoading}
                             />
+                            {errors.password && (
+                                <p className="text-red-500 text-sm">{errors.password.message}</p>
+                            )}
                         </div>
                         <div className="space-y-2">
                             <Label>Account Type</Label>
@@ -147,6 +156,9 @@ export default function Register() {
                                     </Label>
                                 </div>
                             </RadioGroup>
+                            {errors.type && (
+                                <p className="text-red-500 text-sm">{errors.type.message}</p>
+                            )}
                         </div>
                         <Button type="submit" className="w-full" disabled={isLoading}>
                             {isLoading ? (

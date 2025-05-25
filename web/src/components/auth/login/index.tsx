@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useAuth } from '@/hooks/use-auth';
+import { useToast } from '@/hooks/use-toast';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 import Link from 'next/link';
@@ -28,8 +29,9 @@ type FormSchema = z.infer<typeof formSchema>;
 
 export default function Login() {
     const { login } = useAuth();
+    const { toast } = useToast();
 
-    const { register, handleSubmit } = useForm<FormSchema>({
+    const { register, handleSubmit, formState: { errors } } = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
     });
 
@@ -43,10 +45,14 @@ export default function Login() {
 
             await login(data.email, data.password, rememberMe);
         } catch (err: any) {
-            console.error(err);
+            toast({
+                title: 'Login failed',
+                description: err.message,
+                variant: 'destructive',
+            });
         } finally {
             setIsLoading(false);
-        }
+        };
     };
 
     return (
@@ -80,11 +86,17 @@ export default function Login() {
                                 placeholder="Email"
                                 disabled={isLoading}
                             />
+                            {errors.email && (
+                                <p className="text-red-500 text-sm">{errors.email.message}</p>
+                            )}
                         </div>
                         <div className="space-y-4">
                             <div className="space-y-2">
                                 <Label htmlFor="password">Password</Label>
                                 <Input {...register('password')} placeholder="Password" />
+                                {errors.password && (
+                                    <p className="text-red-500 text-sm">{errors.password.message}</p>
+                                )}
                             </div>
                         </div>
                         <div className="space-y-4">

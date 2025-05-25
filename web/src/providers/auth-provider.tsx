@@ -74,9 +74,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 router.push('/industry');
             }
         } catch (error) {
-            console.error('Login failed:', error);
             throw error;
-        }
+        };
     };
 
     const register = async (
@@ -89,9 +88,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             await tokenService.register(name, email, password, type);
             await login(email, password, false);
         } catch (error) {
-            console.error('Registration failed:', error);
             throw error;
-        }
+        };
     };
 
     const logout = async () => {
@@ -100,27 +98,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setUser(null);
             router.push('/auth/login');
         } catch (error) {
-            console.error('Logout failed:', error);
             throw error;
-        }
+        };
     };
 
     const forgotPassword = async (email: string) => {
         try {
             await tokenService.forgotPassword(email);
         } catch (error) {
-            console.error('Forgot password failed:', error);
             throw error;
-        }
+        };
     };
 
     const resetPassword = async (password: string, token: string) => {
         try {
             await tokenService.resetPassword(password, token);
         } catch (error) {
-            console.error('Reset password failed:', error);
             throw error;
-        }
+        };
     };
 
     return (
