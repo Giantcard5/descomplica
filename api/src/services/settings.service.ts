@@ -1,105 +1,20 @@
-import { verify } from 'jsonwebtoken';
+import { 
+    verify 
+} from 'jsonwebtoken';
 
 import { 
     prisma 
 } from '../utils/prismaClient';
 
 import {
-    IProfile,
-    IStore,
     INotification,
-    ISecurity,
     IPreferences
 } from '../types/settings';
-import { resetPassword } from './auth.service';
 
-export const getProfile = async (token: string) => {
+export const getUserNotifications = async (token: string) => {
     const decoded = verify(token, process.env.JWT_SECRET as string);
 
-    const profile = await prisma.profile.findUnique({
-        where: {
-            userId: decoded.sub as string
-        }
-    });
-
-    if (!profile) {
-        throw new Error('Profile not found');
-    };
-
-    return {
-        name: profile.name,
-        email: profile.email,
-        phoneNumber: profile.phoneNumber,
-        photoUrl: profile.photoUrl,
-        bio: profile.bio
-    };
-};
-
-export const updateProfile = async (token: string, profile: IProfile) => {
-    const decoded = verify(token, process.env.JWT_SECRET as string);
-
-    const updatedProfile = await prisma.profile.update({
-        where: {
-            userId: decoded.sub as string
-        },
-        data: {
-            ...profile
-        }
-    });
-
-    if (!updatedProfile) {
-        throw new Error('Profile not found');
-    };
-}
-
-export const getStore = async (token: string) => {
-    const decoded = verify(token, process.env.JWT_SECRET as string);
-
-    const store = await prisma.store.findUnique({
-        where: {
-            userId: decoded.sub as string
-        }
-    });
-
-    if (!store) {
-        throw new Error('Store not found');
-    };
-
-    return {
-        name: store.name,
-        type: store.type,
-        size: store.size,
-        employees: store.employees,
-        address: store.address,
-        city: store.city,
-        state: store.state,
-        zipCode: store.zipCode,
-        country: store.country,
-        description: store.description
-    };
-};
-
-export const updateStore = async (token: string, store: IStore) => {
-    const decoded = verify(token, process.env.JWT_SECRET as string);
-
-    const updatedStore = await prisma.store.update({
-        where: {
-            userId: decoded.sub as string
-        },
-        data: {
-            ...store
-        }
-    });
-
-    if (!updatedStore) {
-        throw new Error('Store not found');
-    };
-};
-
-export const getNotifications = async (token: string) => {
-    const decoded = verify(token, process.env.JWT_SECRET as string);
-
-    const notifications = await prisma.notification.findUnique({
+    const notifications = await prisma.userNotifications.findUnique({
         where: {
             userId: decoded.sub as string
         }
@@ -111,20 +26,20 @@ export const getNotifications = async (token: string) => {
 
     return {
         email_submision: notifications.email_submision,
-        email_compaing: notifications.email_compaing,
+        email_campaign: notifications.email_campaign,
         email_rewards_and_points: notifications.email_rewards_and_points,
         email_newsletter: notifications.email_newsletter,
         submission: notifications.submission,
-        compaing: notifications.compaing,
+        campaign: notifications.campaign,
         rewards_and_points: notifications.rewards_and_points,
         notification_frequency: notifications.notification_frequency
     };
 };
 
-export const updateNotifications = async (token: string, notifications: INotification) => {
+export const updateUserNotifications = async (token: string, notifications: INotification) => {
     const decoded = verify(token, process.env.JWT_SECRET as string);
 
-    const updatedNotifications = await prisma.notification.update({
+    const updatedNotifications = await prisma.userNotifications.update({
         where: {
             userId: decoded.sub as string
         },
@@ -139,44 +54,32 @@ export const updateNotifications = async (token: string, notifications: INotific
     };
 };
 
-export const getSecurity = async (token: string) => {
+export const createUserNotifications = async (token: string) => {
     const decoded = verify(token, process.env.JWT_SECRET as string);
 
-    const security = await prisma.security.findUnique({
-        where: {
-            userId: decoded.sub as string
-        },
-        include: {
-            login_sessions: true
+    const createdNotifications = await prisma.userNotifications.create({
+        data: {
+            userId: decoded.sub as string,
+            email_submision: false,
+            email_campaign: false,
+            email_rewards_and_points: false,
+            email_newsletter: false,
+            submission: false,
+            campaign: false,
+            rewards_and_points: false,
+            notification_frequency: 'never'
         }
     });
 
-    if (!security) {
-        throw new Error('Security not found');
-    };
-
-    return {
-        two_factor_authentication: security.two_factor_authentication,
-        login_sessions: security.login_sessions
+    if (!createdNotifications) {
+        throw new Error('Notifications not found');
     };
 };
 
-export const updateSecurity = async (token: string, security: ISecurity) => {
-    if (security.new_password !== security.confirm_password) {
-        return { message: 'New password and confirm password do not match' };
-    };
-
-    const updatedSecurity = await resetPassword(security.new_password, security.current_password, token);
-    
-    if (updatedSecurity) {
-        return { message: updatedSecurity.message };
-    };
-};
-
-export const getPreferences = async (token: string) => {
+export const getUserPreferences = async (token: string) => {
     const decoded = verify(token, process.env.JWT_SECRET as string);
 
-    const preferences = await prisma.preferences.findUnique({
+    const preferences = await prisma.userPreferences.findUnique({
         where: {
             userId: decoded.sub as string
         }
@@ -194,10 +97,10 @@ export const getPreferences = async (token: string) => {
     };
 };
 
-export const updatePreferences = async (token: string, preferences: IPreferences) => {
+export const updateUserPreferences = async (token: string, preferences: IPreferences) => {
     const decoded = verify(token, process.env.JWT_SECRET as string);
 
-    const updatedPreferences = await prisma.preferences.update({
+    const updatedPreferences = await prisma.userPreferences.update({
         where: {
             userId: decoded.sub as string
         },
@@ -209,6 +112,24 @@ export const updatePreferences = async (token: string, preferences: IPreferences
     });
 
     if (!updatedPreferences) {
+        throw new Error('Preferences not found');
+    };
+};
+
+export const createUserPreferences = async (token: string) => {
+    const decoded = verify(token, process.env.JWT_SECRET as string);
+
+    const createdPreferences = await prisma.userPreferences.create({
+        data: {
+            userId: decoded.sub as string,
+            theme: 'light',
+            language: 'en',
+            dateFormat: 'dd_mm_yyyy',
+            reduceMotion: false
+        }
+    });
+
+    if (!createdPreferences) {
         throw new Error('Preferences not found');
     };
 };

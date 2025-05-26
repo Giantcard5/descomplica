@@ -20,10 +20,11 @@ export const generateToken = async (userId: string) => {
 
     try {
         const userExists = await prisma.user.findUnique({
-            where: { id: userId }
+            where: { id: userId },
+            include: { auth: true }
         });
 
-        if (!userExists) {
+        if (!userExists || !userExists.auth) {
             throw new Error('User not found');
         };
 
@@ -50,7 +51,6 @@ export const generateToken = async (userId: string) => {
             expiresAt: new Date((now + expiresIn) * 1000)
         };
     } catch (error: any) {
-        console.error('Error generating token:', error.message);
         throw new Error(`Error generating token: ${error.message}`);
     };
 };
@@ -84,23 +84,19 @@ export const refreshToken = async (refreshToken: string) => {
             id: refreshToken
         },
         include: {
-            user: true
+            user: {
+                include: { auth: true }
+            }
         }
     });
     
-    if (!refreshTokenExists) {
+    if (!refreshTokenExists || !refreshTokenExists.user || !refreshTokenExists.user.auth) {
         console.log('Refresh token not found:', refreshToken);
         throw new Error('Refresh token not found');
     };
 
     const now = new Date();
-    if (refreshTokenExists.expiresAt < now) {
-        console.log('Refresh token expired:', {
-            tokenId: refreshTokenExists.id,
-            expiresAt: refreshTokenExists.expiresAt,
-            now
-        });
-        
+    if (refreshTokenExists.expiresAt < now) {        
         await prisma.refreshToken.delete({
             where: { id: refreshToken }
         });

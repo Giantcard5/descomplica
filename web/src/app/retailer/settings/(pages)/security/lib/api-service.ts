@@ -30,7 +30,7 @@ class SecurityService extends FetchService {
         }[];
     }> {
         try {
-            const response = await this.fetch('/api/settings/security', {
+            const response = await this.fetch('/api/session', {
                 method: 'GET'
             });
 
@@ -44,7 +44,7 @@ class SecurityService extends FetchService {
 
     async postSecurity(security: ISecurity): Promise<ISecurity> {
         try {
-            const response = await this.fetch('/api/settings/security', {
+            const response = await this.fetch('/api/auth/reset-password', {
                 method: 'POST',
                 body: JSON.stringify(security),
             });

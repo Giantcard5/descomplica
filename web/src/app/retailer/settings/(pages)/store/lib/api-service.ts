@@ -22,7 +22,7 @@ class StoreService extends FetchService {
 
     async getStore(): Promise<IStore> {
         try {
-            const response = await this.fetch('/api/settings/store', {
+            const response = await this.fetch('/api/store', {
                 method: 'GET'
             });
 
@@ -36,7 +36,7 @@ class StoreService extends FetchService {
 
     async postStore(Store: IStore): Promise<IStore> {
         try {
-            const response = await this.fetch('/api/settings/store', {
+            const response = await this.fetch('/api/store', {
                 method: 'POST',
                 body: JSON.stringify(Store),
             });

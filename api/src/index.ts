@@ -13,6 +13,15 @@ import {
 import { 
     settingsRouter 
 } from './routes/settings.routes';
+import { 
+    profileRouter 
+} from './routes/profile.routes';
+import { 
+    sessionRouter 
+} from './routes/session.routes';
+import { 
+    storeRouter 
+} from './routes/store.routes';
 
 dotenv.config();
 
@@ -53,6 +62,9 @@ app.use(helmet());
 app.use('/api/auth', authRouter);
 app.use('/api/token', tokenRouter);
 app.use('/api/settings', settingsRouter);
+app.use('/api/profile', profileRouter);
+app.use('/api/session', sessionRouter);
+app.use('/api/store', storeRouter);
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);

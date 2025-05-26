@@ -20,7 +20,7 @@ class ProfileService extends FetchService {
 
     async getProfile(): Promise<IProfile> {
         try {
-            const response = await this.fetch('/api/settings/profile', {
+            const response = await this.fetch('/api/profile', {
                 method: 'GET'
             });
 
@@ -34,7 +34,7 @@ class ProfileService extends FetchService {
 
     async postProfile(profile: IProfile): Promise<IProfile> {
         try {
-            const response = await this.fetch('/api/settings/profile', {
+            const response = await this.fetch('/api/profile', {
                 method: 'POST',
                 body: JSON.stringify(profile),
             });

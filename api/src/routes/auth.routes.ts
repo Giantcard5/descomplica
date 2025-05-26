@@ -31,29 +31,29 @@ router.post('/login', async (request: Request, response: Response) => {
 
         response.cookie('access_token', token.token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
             maxAge: 30 * 60 * 1000, // 30 min in ms
             expires: accessTokenExpires,
-            path: "/",
+            path: '/',
         });
 
         response.cookie('refresh_token', refreshToken.token, {
             httpOnly: true,
             secure: true,
-            sameSite: "strict",
+            sameSite: 'strict',
             maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in ms
             expires: refreshTokenExpires,
-            path: "/",
+            path: '/',
         });
 
         response.cookie('user_type', type, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
             maxAge: 30 * 60 * 1000, // 30 min
             expires: userTypeExpires,
-            path: "/",
+            path: '/',
         });
 
         return response.json({
@@ -65,46 +65,6 @@ router.post('/login', async (request: Request, response: Response) => {
         });
     } catch (error) {
         return response.status(400).json({ message: 'Email or password is incorrect' });
-    };
-});
-
-router.post('/register', async (request: Request, response: Response) => {
-    const { name, email, password, type } = request.body;
-
-    try {
-        const user = await registerUser({ name, email, password, type });
-
-        return response.json({
-            name: user.name,
-            email: user.email,
-            type: user.type
-        });
-    } catch (error) {
-        return response.status(400).json({ message: 'Email already in use' });
-    };
-});
-
-router.post('/forgot-password', async (request: Request, response: Response) => {
-    const { email } = request.body;
-
-    try {
-        const message = await forgotPassword(email);
-
-        return response.json({ message });
-    } catch (error) {
-        return response.status(400).json({ message: 'Error sending email' });
-    };
-});
-
-router.post('/reset-password', async (request: Request, response: Response) => {
-    const { password, token, currentPassword } = request.body;
-
-    try {
-        const message = await resetPassword(password, token, currentPassword);
-
-        return response.json({ message });
-    } catch (error) {
-        return response.status(400).json({ message: 'Error resetting password' });
     };
 });
 
@@ -145,6 +105,46 @@ router.post('/logout', async (request: Request, response: Response) => {
     return response.status(200).json({ message: 'Logged out successfully' });
 });
 
+router.post('/register', async (request: Request, response: Response) => {
+    const { email, password, type } = request.body;
+
+    try {
+        const user = await registerUser({ email, password, type });
+
+        return response.json({
+            name: user.name,
+            email: user.email,
+            type: user.type
+        });
+    } catch (error) {
+        return response.status(400).json({ message: 'Email already in use' });
+    };
+});
+
+router.post('/forgot-password', async (request: Request, response: Response) => {
+    const { email } = request.body;
+
+    try {
+        const message = await forgotPassword(email);
+
+        return response.json({ message });
+    } catch (error) {
+        return response.status(400).json({ message: 'Error sending email' });
+    };
+});
+
+router.post('/reset-password', async (request: Request, response: Response) => {
+    const { password, token, currentPassword } = request.body;
+
+    try {
+        const message = await resetPassword(password, token, currentPassword);
+
+        return response.json({ message });
+    } catch (error) {
+        return response.status(400).json({ message: 'Error resetting password' });
+    };
+});
+
 router.get('/check', async (request: Request, response: Response) => {
     try {
         const accessToken = request.cookies.access_token;
@@ -159,19 +159,18 @@ router.get('/check', async (request: Request, response: Response) => {
 
         const user = await prisma.user.findUnique({
             where: { id: decoded.sub },
-            select: {
-                id: true,
-                type: true,
+            include: {
+                auth: true
             },
         });
 
-        if (!user) {
+        if (!user || !user.auth) {
             return response.status(404).json({ message: 'User not found' });
         };
 
         return response.json({
             id: user.id,
-            type: user.type
+            type: user.auth.type
         });
     } catch (error) {
         console.error('Auth check error:', error);

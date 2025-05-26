@@ -15,70 +15,104 @@ import {
 } from './token.service';
 
 import {
-    IAuthUser
-} from '../types/authUser';
-
-export const registerUser = async (user: IAuthUser) => {
-    const userExists = await prisma.user.findUnique({
-        where: {
-            email: user.email
-        }
-    });
-
-    if (userExists) {
-        throw new Error('User already exists');
-    };
-
-    const passwordHash = await bcrypt.hash(user.password, 10);
-
-    const newUser = await prisma.user.create({
-        data: {
-            name: user.name,
-            email: user.email,
-            password: passwordHash,
-            type: user.type
-        }
-    });
-
-    return newUser;
-};
+    IAuth
+} from '../types/auth';
 
 export const loginUser = async (email: string, password: string, rememberMe: boolean) => {
-    const userExists = await prisma.user.findUnique({
-        where: { email }
+    const auth = await prisma.auth.findUnique({
+        where: { email },
+        include: { user: true }
     });
 
-    if (!userExists) {
+    if (!auth || !auth.user) {
         throw new Error('User not found');
     };
 
-    const passwordMatch = await bcrypt.compare(password, userExists.password);
-
+    const passwordMatch = await bcrypt.compare(password, auth.password);
     if (!passwordMatch) {
         throw new Error('Invalid password');
     };
 
-    const token = await generateToken(userExists.id);
+    const token = await generateToken(auth.user.id);
 
     await prisma.refreshToken.deleteMany({
         where: {
-            userId: userExists.id
+            userId: auth.user.id
         }
     });
 
-    const refreshToken = await generateRefreshToken(userExists.id);
+    const refreshToken = await generateRefreshToken(auth.user.id);
 
-    return { token, refreshToken, type: userExists.type };
+    await prisma.loginSession.create({
+        data: {
+            name: 'Iphone 15 Pro Max',
+            type: 'mobile',
+            address: '123 Main St, Anytown, USA',
+            last_login: new Date().toISOString(),
+            authId: auth.id
+        }
+    });
+    
+    return { 
+        token, 
+        refreshToken, 
+        type: auth.type 
+    };
+};
+
+export const registerUser = async (user: IAuth) => {
+    const authExists = await prisma.auth.findUnique({
+        where: { email: user.email }
+    });
+    if (authExists) {
+        throw new Error('User already exists');
+    }
+
+    const newUser = await prisma.user.create({
+        data: {}
+    });
+
+    const passwordHash = await bcrypt.hash(user.password, 10);
+    const newAuth = await prisma.auth.create({
+        data: {
+            email: user.email,
+            password: passwordHash,
+            type: user.type,
+            userId: newUser.id
+        }
+    });
+
+    const newProfile = await prisma.profile.create({
+        data: {
+            name: '',
+            email: user.email,
+            phoneNumber: '',
+            photoUrl: '',
+            bio: '',
+            type: user.type,
+            userId: newUser.id
+        }
+    });
+
+    await prisma.user.update({
+        where: { id: newUser.id },
+        data: {
+            authId: newAuth.id,
+            profileId: newProfile.id
+        }
+    });
+
+    return { email: newAuth.email, name: newProfile.name, type: newAuth.type };
 };
 
 export const forgotPassword = async (email: string) => {
-    const userExists = await prisma.user.findUnique({
+    const auth = await prisma.auth.findUnique({
         where: { email }
     });
 
-    if (!userExists) {
+    if (!auth) {
         throw new Error('User not found');
-    };
+    }
 
     const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
@@ -94,16 +128,15 @@ export const forgotPassword = async (email: string) => {
         from: `Descomplica: <${process.env.EMAIL_USER}>`,
         to: email,
         subject: 'Esqueceu sua senha?',
-        text: 'Clique no link abaixo para resetar sua senha: ' + process.env.FRONTEND_URL + 'auth/reset-password?token=' // Create a token to reset the password
+        text: 'Clique no link abaixo para resetar sua senha: ' + process.env.FRONTEND_URL + 'auth/reset-password?token='
     };
 
     try {
         await transporter.sendMail(mailOptions);
-
         return { message: 'Email sent successfully' };
     } catch (error: any) {
         throw new Error('Error sending email: ' + error.message);
-    };
+    }
 };
 
 export const resetPassword = async (password: string, currentPassword: string, token: string) => {
@@ -112,16 +145,17 @@ export const resetPassword = async (password: string, currentPassword: string, t
             sub: string;
         };
 
-        const userExists = await prisma.user.findUnique({
-            where: { id: decoded.sub }
+        const user = await prisma.user.findUnique({
+            where: { id: decoded.sub },
+            include: { auth: true }
         });
 
-        if (!userExists) {
+        if (!user || !user.auth) {
             return { message: 'User not found' };
         };
 
         if (currentPassword) {
-            const isMatch = await bcrypt.compare(currentPassword, userExists.password);
+            const isMatch = await bcrypt.compare(currentPassword, user.auth.password);
             if (!isMatch) {
                 return { message: 'Current password is incorrect' };
             };
@@ -129,8 +163,8 @@ export const resetPassword = async (password: string, currentPassword: string, t
 
         const passwordHash = await bcrypt.hash(password, 10);
 
-        await prisma.user.update({
-            where: { id: userExists.id },
+        await prisma.auth.update({
+            where: { id: user.auth.id },
             data: { password: passwordHash }
         });
 
