@@ -49,3 +49,23 @@ export const updateProfile = async (token: string, profile: IProfile) => {
         throw new Error('Profile not found');
     };
 };
+
+export const createProfile = async (profile: IProfile, token: string) => {
+    const decoded = verify(token, process.env.JWT_SECRET as string);
+
+    const createdProfile = await prisma.profile.create({
+        data: {
+            userId: decoded.sub as string,
+            name: profile.name,
+            email: profile.email,
+            phoneNumber: profile.phoneNumber,
+            photoUrl: profile.photoUrl,
+            bio: profile.bio,
+            type: profile.type
+        }
+    });
+
+    if (!createdProfile) {
+        throw new Error('Profile not found');
+    };
+};

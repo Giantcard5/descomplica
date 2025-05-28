@@ -18,6 +18,16 @@ import {
     IAuth
 } from '../types/auth';
 
+import { 
+    createUserPreferences 
+} from './settings.service';
+import { 
+    createProfile 
+} from './profile.service';
+import { 
+    createStore 
+} from './store.service';
+
 export const loginUser = async (email: string, password: string, rememberMe: boolean) => {
     const auth = await prisma.auth.findUnique({
         where: { email },
@@ -169,6 +179,22 @@ export const resetPassword = async (password: string, currentPassword: string, t
         });
 
         return { message: 'Password reset successfully' };
+    } catch (error: any) {
+        throw new Error(error.message);
+    };
+};
+
+export const registerOnboarding = async (type: string, data: any, token: string) => {
+    try {
+        if (type === 'retailer') {
+            createUserPreferences(data.preferencesInfo, token);
+            createProfile(data.personalInfo, token);
+            createStore(data.storeInfo, token);
+        } else if (type === 'industry') {
+            console.log(data);
+        };
+        
+        return { message: 'Onboarding registered successfully' };
     } catch (error: any) {
         throw new Error(error.message);
     };

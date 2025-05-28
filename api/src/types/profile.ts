@@ -4,4 +4,5 @@ export interface IProfile {
     phoneNumber: string;
     photoUrl: string;
     bio: string;
+    type: 'retailer' | 'industry';
 };

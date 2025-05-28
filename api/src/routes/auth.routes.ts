@@ -11,6 +11,7 @@ import {
 import {
     forgotPassword,
     loginUser,
+    registerOnboarding,
     registerUser,
     resetPassword
 } from '../services/auth.service';
@@ -185,6 +186,19 @@ router.get('/check', async (request: Request, response: Response) => {
         };
 
         return response.status(500).json({ message: 'Internal server error' });
+    };
+});
+
+router.post('/onboarding', async (request: Request, response: Response) => {
+    const { type, ...data } = request.body;
+    const token = request.cookies.access_token;
+
+    try {
+        await registerOnboarding(type, data, token);
+
+        return response.status(200).json({ message: 'Onboarding successful' });
+    } catch (error) {
+        return response.status(400).json({ message: 'Error onboarding' });
     };
 });
 

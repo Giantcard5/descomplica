@@ -54,22 +54,22 @@ export const updateStore = async (token: string, store: IStore) => {
     };
 };
 
-export const createStore = async (token: string) => {
+export const createStore = async (store: IStore, token: string) => {
     const decoded = verify(token, process.env.JWT_SECRET as string);
 
     const createdStore = await prisma.store.create({
         data: {
             userId: decoded.sub as string,
-            name: '',
-            type: '',
-            size: 0,
-            employees: 0,
-            address: '',
-            city: '',
-            state: '',
-            zipCode: '',
-            country: '',
-            description: ''
+            name: store.name,
+            type: store.type,
+            size: store.size,
+            employees: store.employees,
+            address: store.address,
+            city: store.city,
+            state: store.state,
+            zipCode: store.zipCode,
+            country: store.country,
+            description: store.description
         }
     });
 

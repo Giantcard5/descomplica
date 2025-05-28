@@ -116,20 +116,20 @@ export const updateUserPreferences = async (token: string, preferences: IPrefere
     };
 };
 
-export const createUserPreferences = async (token: string) => {
+export const createUserPreferences = async (preferences: IPreferences, token: string) => {
     const decoded = verify(token, process.env.JWT_SECRET as string);
 
     const createdPreferences = await prisma.userPreferences.create({
         data: {
             userId: decoded.sub as string,
-            theme: 'light',
-            language: 'en',
-            dateFormat: 'dd_mm_yyyy',
-            reduceMotion: false
+            theme: preferences.theme,
+            language: preferences.language,
+            dateFormat: preferences.dateFormat,
+            reduceMotion: preferences.reduceMotion
         }
     });
 
     if (!createdPreferences) {
-        throw new Error('Preferences not found');
+        throw new Error('Couldt create preferences');
     };
 };

@@ -1,0 +1,141 @@
+'use client';
+
+import React, { useState } from 'react';
+
+import { useForm } from 'react-hook-form';
+
+import { useRouter } from 'next/navigation';
+
+import { Button } from '@/components/ui/button';
+
+import { StoreInfo } from '@/components/auth/onboarding/retailer/store-info';
+import { PersonalInfo } from '@/components/auth/onboarding/retailer/personal-info';
+import { PreferencesInfo } from '@/components/auth/onboarding/retailer/preferences-info';
+
+import {
+    RetailerFormSchema,
+    personalInfoSchema,
+    storeInfoSchema,
+    preferencesInfoSchema,
+    PersonalInfoSchema,
+    PreferencesInfoSchema,
+    StoreInfoSchema
+} from '../../(utils)/schema';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import { useToast } from '@/hooks/use-toast';
+
+import {
+    apiService
+} from '../../(lib)/api-service';
+
+interface RetailerOnboardingFormProps {
+    step: number;
+    onComplete: () => void;
+};
+
+export function RetailerOnboardingForm({ step, onComplete }: RetailerOnboardingFormProps) {
+    const router = useRouter();
+
+    const { toast } = useToast();
+
+    const getStepSchema = () => {
+        switch (step) {
+            case 1: return personalInfoSchema;
+            case 2: return storeInfoSchema;
+            case 3: return preferencesInfoSchema;
+            default: return personalInfoSchema;
+        };
+    };
+
+    const {
+        register,
+        handleSubmit,
+        watch,
+        setValue,
+        getValues,
+        formState: { errors }
+    } = useForm<RetailerFormSchema>({
+        resolver: zodResolver(getStepSchema()),
+    });
+
+    const [profileImage, setProfileImage] = useState<string | null>(null);
+    const [storeImage, setStoreImage] = useState<string | null>(null);
+
+    const handleOnboardingSubmit = async (data: {
+        personalInfo: PersonalInfoSchema;
+        storeInfo: StoreInfoSchema;
+        preferencesInfo: PreferencesInfoSchema; 
+    }) => {
+        const response = await apiService.registerRetailer({
+            personalInfo: data.personalInfo,
+            storeInfo: data.storeInfo,
+            preferencesInfo: data.preferencesInfo
+        });
+
+        if (response) {
+            toast({
+                title: 'Retailer registered successfully',
+                description: 'You can now start using the app',
+            });
+
+            router.push('/retailer');
+        } else {
+            toast({
+                title: 'Error registering retailer',
+                description: 'Please try again',
+            });
+        };
+    };
+
+    const onStepSubmit = (data: any) => {
+        if (step < 3) {
+            onComplete();
+        } else {
+            handleOnboardingSubmit({
+                ...getValues(),
+                ...data,
+            });
+        };
+    };
+
+    const renderStep = () => {
+        switch (step) {
+            case 1:
+                return <PersonalInfo
+                    register={register}
+                    errors={errors}
+                    profileImage={profileImage}
+                    setProfileImage={setProfileImage}
+                />
+            case 2:
+                return <StoreInfo
+                    register={register}
+                    watch={watch}
+                    setValue={setValue}
+                    errors={errors}
+                    storeImage={storeImage}
+                    setStoreImage={setStoreImage}
+                />
+            case 3:
+                return <PreferencesInfo
+                    watch={watch}
+                    setValue={setValue}
+                    errors={errors}
+                />
+            default:
+                return null;
+        };
+    };
+
+    return (
+        <form onSubmit={handleSubmit(onStepSubmit)} className='space-y-6'>
+            {renderStep()}
+
+            <Button type='submit' className='w-full'>
+                Complete Setup
+            </Button>
+        </form>
+    );
+};
