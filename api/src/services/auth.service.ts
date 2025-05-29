@@ -19,14 +19,12 @@ import {
 } from '../types/auth';
 
 import { 
-    createUserPreferences 
-} from './settings.service';
-import { 
-    createProfile 
+    createDefaultProfile,
+    updateProfile,
 } from './profile.service';
-import { 
-    createStore 
-} from './store.service';
+import { createDefaultStore, updateStore } from './store.service';
+import { createDefaultUserNotifications, updateUserNotifications, updateUserPreferences } from './settings.service';
+import { createDefaultUserPreferences } from './settings.service';
 
 export const loginUser = async (email: string, password: string, rememberMe: boolean) => {
     const auth = await prisma.auth.findUnique({
@@ -92,17 +90,7 @@ export const registerUser = async (user: IAuth) => {
         }
     });
 
-    const newProfile = await prisma.profile.create({
-        data: {
-            name: '',
-            email: user.email,
-            phoneNumber: '',
-            photoUrl: '',
-            bio: '',
-            type: user.type,
-            userId: newUser.id
-        }
-    });
+    const newProfile = await createDefaultProfile(user.type, user.email, newUser.id);
 
     await prisma.user.update({
         where: { id: newUser.id },
@@ -111,6 +99,10 @@ export const registerUser = async (user: IAuth) => {
             profileId: newProfile.id
         }
     });
+
+    await createDefaultStore(newUser.id);
+    await createDefaultUserNotifications(newUser.id);
+    await createDefaultUserPreferences(newUser.id);
 
     return { email: newAuth.email, name: newProfile.name, type: newAuth.type };
 };
@@ -187,9 +179,23 @@ export const resetPassword = async (password: string, currentPassword: string, t
 export const registerOnboarding = async (type: string, data: any, token: string) => {
     try {
         if (type === 'retailer') {
-            createUserPreferences(data.preferencesInfo, token);
-            createProfile(data.personalInfo, token);
-            createStore(data.storeInfo, token);
+            // Update Profile
+            // await updateProfile(token, {
+            //     name: data.personalInfo.name,
+            //     email: data.personalInfo.email,
+            //     phoneNumber: data.personalInfo.phoneNumber,
+            //     photoUrl: data.personalInfo.photoUrl,
+            //     bio: data.personalInfo.bio,
+            //     type: 'retailer',
+
+            //     // Faz a chamada de update do prisma aqui, depois criamos uma funcao para isso
+            // });
+            // // Update Store
+            // await updateStore(token, data.storeInfo);
+            // // Update User Notifications
+            // await updateUserNotifications(token, data.notifications);
+            // // Update User Preferences
+            // await updateUserPreferences(token, data.preferences);
         } else if (type === 'industry') {
             console.log(data);
         };

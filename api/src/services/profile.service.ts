@@ -1,9 +1,9 @@
-import { 
-    verify 
+import {
+    verify
 } from 'jsonwebtoken';
 
-import { 
-    prisma 
+import {
+    prisma
 } from '../utils/prismaClient';
 
 import {
@@ -50,22 +50,22 @@ export const updateProfile = async (token: string, profile: IProfile) => {
     };
 };
 
-export const createProfile = async (profile: IProfile, token: string) => {
-    const decoded = verify(token, process.env.JWT_SECRET as string);
-
+export const createDefaultProfile = async (type: string, email: string, userId: string) => {
     const createdProfile = await prisma.profile.create({
         data: {
-            userId: decoded.sub as string,
-            name: profile.name,
-            email: profile.email,
-            phoneNumber: profile.phoneNumber,
-            photoUrl: profile.photoUrl,
-            bio: profile.bio,
-            type: profile.type
+            name: '',
+            type: type as 'retailer' | 'industry',
+            email: email,
+            phoneNumber: '',
+            photoUrl: '',
+            bio: '',
+            userId: userId
         }
     });
 
     if (!createdProfile) {
         throw new Error('Profile not found');
     };
+
+    return createdProfile;
 };

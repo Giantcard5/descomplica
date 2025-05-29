@@ -1,14 +1,15 @@
 import { z } from 'zod';
 
 export const retailerFormSchema = z.object({
-    personalFullName: z.string().min(1, { message: 'Full name is required' }),
-    personalDateOfBirth: z.string().min(1, { message: 'Date of birth is required' }),
-    personalPhone: z.string().min(1, { message: 'Phone number is required' }),
-    personalBio: z.string().min(1, { message: 'Bio is required' }),
+    // Personal info
+    dateOfBirth: z.string().min(1, { message: 'Date of birth is required' }),
+    phoneNumber: z.string().min(1, { message: 'Phone number is required' }),
+    bio: z.string().min(1, { message: 'Bio is required' }),
     
-    storeName: z.string().min(1, { message: 'Store name is required' }),
-    storeSize: z.string().min(1, { message: 'Store size is required' }),
-    storeType: z.enum([
+    // Store info
+    name: z.string().min(1, { message: 'Store name is required' }),
+    size: z.string().min(1, { message: 'Store size is required' }),
+    type: z.enum([
         'grocery',
         'pharmacy',
         'convenience',
@@ -30,45 +31,45 @@ export const retailerFormSchema = z.object({
         'service',
         'other',
     ], { message: 'Store type is required' }),
-    storeCountry: z.enum(['us', 'br', 'other'], { message: 'Country is required' }),
-    storeEmployees: z.string().min(1, { message: 'Number of employees is required' }),
-    storeAddress: z.string().min(1, { message: 'Store address is required' }),
-    storeCity: z.string().min(1, { message: 'City is required' }),
-    storeState: z.string().min(1, { message: 'State is required' }),
-    storeZip: z.string().min(1, { message: 'Zip code is required' }),
-    storeDescription: z.string().min(1, { message: 'Store description is required' }),
-    
-    preferencesLanguage: z.string().min(1, { message: 'Language is required' }),
-    preferencesTheme: z.enum(['light', 'dark', 'system'], { message: 'Theme is required' }),
-    preferencesDateFormat: z.enum(['dd_mm_yyyy', 'mm_dd_yyyy', 'yyyy_mm_dd'], { message: 'Date format is required' }),
-    preferencesNotification: z.enum(['real-time', 'daily', 'weekly', 'never'], { message: 'Notification preferences are required' }),
+    country: z.enum(['us', 'br', 'other'], { message: 'Country is required' }),
+    employees: z.string().min(1, { message: 'Number of employees is required' }),
+    address: z.string().min(1, { message: 'Store address is required' }),
+    city: z.string().min(1, { message: 'City is required' }),
+    state: z.string().min(1, { message: 'State is required' }),
+    zipCode: z.string().min(1, { message: 'Zip code is required' }),
+    description: z.string().min(1, { message: 'Store description is required' }),
+
+    // Preferences info
+    language: z.string().min(1, { message: 'Language is required' }),
+    theme: z.enum(['light', 'dark', 'system'], { message: 'Theme is required' }),
+    dateFormat: z.enum(['dd_mm_yyyy', 'mm_dd_yyyy', 'yyyy_mm_dd'], { message: 'Date format is required' }),
+    notification: z.enum(['real-time', 'daily', 'weekly', 'never'], { message: 'Notification preferences are required' }),
 });
 
 export const personalInfoSchema = retailerFormSchema.pick({
-    personalFullName: true,
-    personalDateOfBirth: true,
-    personalPhone: true,
-    personalBio: true,
+    dateOfBirth: true,
+    phoneNumber: true,
+    bio: true,
 });
 
 export const storeInfoSchema = retailerFormSchema.pick({
-    storeName: true,
-    storeSize: true,
-    storeType: true,
-    storeCountry: true,
-    storeEmployees: true,
-    storeAddress: true,
-    storeCity: true,
-    storeState: true,
-    storeZip: true,
-    storeDescription: true,
+    name: true,
+    size: true,
+    type: true,
+    country: true,
+    employees: true,
+    address: true,
+    city: true,
+    state: true,
+    zipCode: true,
+    description: true,
 });
 
 export const preferencesInfoSchema = retailerFormSchema.pick({
-    preferencesLanguage: true,
-    preferencesTheme: true,
-    preferencesDateFormat: true,
-    preferencesNotification: true,
+    language: true,
+    theme: true,
+    dateFormat: true,
+    notification: true,
 }); 
 
 export type RetailerFormSchema = z.infer<typeof retailerFormSchema>;

@@ -54,12 +54,10 @@ export const updateUserNotifications = async (token: string, notifications: INot
     };
 };
 
-export const createUserNotifications = async (token: string) => {
-    const decoded = verify(token, process.env.JWT_SECRET as string);
-
+export const createDefaultUserNotifications = async (userId: string) => {
     const createdNotifications = await prisma.userNotifications.create({
         data: {
-            userId: decoded.sub as string,
+            userId: userId,
             email_submision: false,
             email_campaign: false,
             email_rewards_and_points: false,
@@ -116,16 +114,14 @@ export const updateUserPreferences = async (token: string, preferences: IPrefere
     };
 };
 
-export const createUserPreferences = async (preferences: IPreferences, token: string) => {
-    const decoded = verify(token, process.env.JWT_SECRET as string);
-
+export const createDefaultUserPreferences = async (userId: string) => {
     const createdPreferences = await prisma.userPreferences.create({
         data: {
-            userId: decoded.sub as string,
-            theme: preferences.theme,
-            language: preferences.language,
-            dateFormat: preferences.dateFormat,
-            reduceMotion: preferences.reduceMotion
+            userId: userId,
+            theme: 'light',
+            language: 'en',
+            dateFormat: 'dd_mm_yyyy',
+            reduceMotion: false
         }
     });
 

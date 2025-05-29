@@ -37,34 +37,26 @@ export function PersonalInfo({ register, errors, profileImage, setProfileImage }
 
             <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
-                    <Label htmlFor="full-name">Full Name</Label>
-                    <Input id="full-name" placeholder="John" {...register('personalFullName')} />
-                    {errors.personalFullName && (
-                        <p className="text-red-500 text-sm">{errors.personalFullName.message}</p>
+                    <Label htmlFor="date-of-birth">Date of Birth</Label>
+                    <Input id="date-of-birth" type="date" {...register('dateOfBirth')} />
+                    {errors.dateOfBirth && (
+                        <p className="text-red-500 text-sm">{errors.dateOfBirth.message}</p>
                     )}
                 </div>
                 <div className="space-y-2">
-                    <Label htmlFor="date-of-birth">Date of Birth</Label>
-                    <Input id="date-of-birth" type="date" {...register('personalDateOfBirth')} />
-                    {errors.personalDateOfBirth && (
-                        <p className="text-red-500 text-sm">{errors.personalDateOfBirth.message}</p>
+                    <Label htmlFor="phone">Phone Number</Label>
+                    <Input id="phone" type="tel" placeholder="+1 (555) 123-4567" {...register('phoneNumber')} />
+                    {errors.phoneNumber && (
+                        <p className="text-red-500 text-sm">{errors.phoneNumber.message}</p>
                     )}
                 </div>
-            </div>
-
-            <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number</Label>
-                <Input id="phone" type="tel" placeholder="+1 (555) 123-4567" {...register('personalPhone')} />
-                {errors.personalPhone && (
-                    <p className="text-red-500 text-sm">{errors.personalPhone.message}</p>
-                )}
             </div>
 
             <div className="space-y-2">
                 <Label htmlFor="bio">Bio</Label>
-                <Textarea id="bio" placeholder="Tell us about yourself" rows={3} {...register('personalBio')} />
-                {errors.personalBio && (
-                    <p className="text-red-500 text-sm">{errors.personalBio.message}</p>
+                <Textarea id="bio" placeholder="Tell us about yourself" rows={3} {...register('bio')} />
+                {errors.bio && (
+                    <p className="text-red-500 text-sm">{errors.bio.message}</p>
                 )}
             </div>
         </div>

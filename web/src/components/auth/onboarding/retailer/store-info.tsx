@@ -49,16 +49,16 @@ export function StoreInfo({ register, watch, setValue, errors, storeImage, setSt
 
             <div className="space-y-2">
                 <Label htmlFor="store-name">Store Name</Label>
-                <Input id="store-name" placeholder="John's Market" {...register('storeName')} />
-                {errors.storeName && (
-                    <p className="text-red-500 text-sm">{errors.storeName.message}</p>
+                <Input id="store-name" placeholder="John's Market" {...register('name')} />
+                {errors.name && (
+                    <p className="text-red-500 text-sm">{errors.name.message}</p>
                 )}
             </div>
 
             <div className="space-y-2">
                 <Label htmlFor="store-type">Store Type</Label>
-                <Select value={watch('storeType')} onValueChange={(value) => {
-                    setValue('storeType', value as StoreType);
+                <Select value={watch('type')} onValueChange={(value) => {
+                    setValue('type', value as StoreType);
                 }}>
                     <SelectTrigger id="store-type">
                         <SelectValue placeholder="Select store type" />
@@ -86,64 +86,64 @@ export function StoreInfo({ register, watch, setValue, errors, storeImage, setSt
                         <SelectItem value="other">Other</SelectItem>
                     </SelectContent>
                 </Select>
-                {errors.storeType && (
-                    <p className="text-red-500 text-sm">{errors.storeType.message}</p>
+                {errors.type && (
+                    <p className="text-red-500 text-sm">{errors.type.message}</p>
                 )}
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
                     <Label htmlFor="store-size">Store Size (sq ft)</Label>
-                    <Input id="store-size" type="number" {...register('storeSize')} />
-                    {errors.storeSize && (
-                        <p className="text-red-500 text-sm">{errors.storeSize.message}</p>
+                    <Input id="store-size" type="number" {...register('size')} />
+                    {errors.size && (
+                        <p className="text-red-500 text-sm">{errors.size.message}</p>
                     )}
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="employees">Number of Employees</Label>
-                    <Input id="employees" type="number" {...register('storeEmployees')} />
-                    {errors.storeEmployees && (
-                        <p className="text-red-500 text-sm">{errors.storeEmployees.message}</p>
+                    <Input id="employees" type="number" {...register('employees')} />
+                    {errors.employees && (
+                        <p className="text-red-500 text-sm">{errors.employees.message}</p>
                     )}
                 </div>
             </div>
 
             <div className="space-y-2">
                 <Label htmlFor="store-address">Store Address</Label>
-                <Input id="store-address" {...register('storeAddress')} />
-                {errors.storeAddress && (
-                    <p className="text-red-500 text-sm">{errors.storeAddress.message}</p>
+                <Input id="store-address" {...register('address')} />
+                {errors.address && (
+                    <p className="text-red-500 text-sm">{errors.address.message}</p>
                 )}
             </div>
 
             <div className="grid gap-4 sm:grid-cols-3">
                 <div className="space-y-2">
                     <Label htmlFor="city">City</Label>
-                    <Input id="city" {...register('storeCity')} />
-                    {errors.storeCity && (
-                        <p className="text-red-500 text-sm">{errors.storeCity.message}</p>
+                    <Input id="city" {...register('city')} />
+                    {errors.city && (
+                        <p className="text-red-500 text-sm">{errors.city.message}</p>
                     )}
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="state">State/Province</Label>
-                    <Input id="state" {...register('storeState')} />
-                    {errors.storeState && (
-                        <p className="text-red-500 text-sm">{errors.storeState.message}</p>
+                    <Input id="state" {...register('state')} />
+                    {errors.state && (
+                        <p className="text-red-500 text-sm">{errors.state.message}</p>
                     )}
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="zip">Zip/Postal Code</Label>
-                    <Input id="zip" {...register('storeZip')} />
-                    {errors.storeZip && (
-                        <p className="text-red-500 text-sm">{errors.storeZip.message}</p>
+                    <Input id="zip" {...register('zipCode')} />
+                    {errors.zipCode && (
+                        <p className="text-red-500 text-sm">{errors.zipCode.message}</p>
                     )}
                 </div>
             </div>
 
             <div className="space-y-2">
                 <Label htmlFor="country">Country</Label>
-                <Select value={watch('storeCountry')} onValueChange={(value) => {
-                    setValue('storeCountry', value as 'us' | 'br' | 'other');
+                <Select value={watch('country')} onValueChange={(value) => {
+                    setValue('country', value as 'us' | 'br' | 'other');
                 }}>
                     <SelectTrigger id="country">
                         <SelectValue placeholder="Select country" />
@@ -154,8 +154,8 @@ export function StoreInfo({ register, watch, setValue, errors, storeImage, setSt
                         <SelectItem value="other">Other</SelectItem>
                     </SelectContent>
                 </Select>
-                {errors.storeCountry && (
-                    <p className="text-red-500 text-sm">{errors.storeCountry.message}</p>
+                {errors.country && (
+                    <p className="text-red-500 text-sm">{errors.country.message}</p>
                 )}
             </div>
 
@@ -163,12 +163,12 @@ export function StoreInfo({ register, watch, setValue, errors, storeImage, setSt
                 <Label htmlFor="store-description">Store Description</Label>
                 <textarea
                     id="store-description"
-                    {...register('storeDescription')}
+                    {...register('description')}
                     className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                     rows={3}
                 ></textarea>
-                {errors.storeDescription && (
-                    <p className="text-red-500 text-sm">{errors.storeDescription.message}</p>
+                {errors.description && (
+                    <p className="text-red-500 text-sm">{errors.description.message}</p>
                 )}
             </div>
         </div>

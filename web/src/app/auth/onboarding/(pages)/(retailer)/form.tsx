@@ -63,15 +63,31 @@ export function RetailerOnboardingForm({ step, onComplete }: RetailerOnboardingF
     const [profileImage, setProfileImage] = useState<string | null>(null);
     const [storeImage, setStoreImage] = useState<string | null>(null);
 
-    const handleOnboardingSubmit = async (data: {
-        personalInfo: PersonalInfoSchema;
-        storeInfo: StoreInfoSchema;
-        preferencesInfo: PreferencesInfoSchema; 
-    }) => {
+    const handleOnboardingSubmit = async (data: RetailerFormSchema) => {
         const response = await apiService.registerRetailer({
-            personalInfo: data.personalInfo,
-            storeInfo: data.storeInfo,
-            preferencesInfo: data.preferencesInfo
+            personalInfo: {
+                phoneNumber: data.phoneNumber,
+                bio: data.bio,
+                dateOfBirth: data.dateOfBirth,
+            },
+            storeInfo: {
+                name: data.name,
+                type: data.type,
+                size: data.size,
+                address: data.address,
+                city: data.city,
+                state: data.state,
+                zipCode: data.zipCode,
+                country: data.country,
+                description: data.description,
+                employees: data.employees,
+            },
+            preferencesInfo: {
+                language: data.language,
+                theme: data.theme,
+                dateFormat: data.dateFormat,
+                notification: data.notification,
+            }
         });
 
         if (response) {
@@ -134,7 +150,7 @@ export function RetailerOnboardingForm({ step, onComplete }: RetailerOnboardingF
             {renderStep()}
 
             <Button type='submit' className='w-full'>
-                Complete Setup
+                {step === 3 ? 'Complete Setup' : 'Next'}
             </Button>
         </form>
     );
