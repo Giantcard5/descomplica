@@ -32,3 +32,16 @@ export type StoreType =
     | 'jewelry'
     | 'service'
     | 'other';
+
+export interface IOnboardingStore {
+    name: string;
+    type: StoreType;
+    size: number;
+    employees: number;
+    address: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    country: 'br' | 'us' | 'other';
+    description: string;  
+}

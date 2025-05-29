@@ -94,13 +94,13 @@ export function PreferencesInfo({ watch, setValue, errors }: IPreferencesInfo) {
                         Notification Preferences
                     </Label>
                     <Select value={watch('notification')} onValueChange={(value) => {
-                        setValue('notification', value as 'real-time' | 'daily' | 'weekly' | 'never');
+                        setValue('notification', value as 'real_time' | 'daily' | 'weekly' | 'never');
                     }}>
                         <SelectTrigger id="notification-preferences">
                             <SelectValue placeholder="Select notification preferences" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="real-time">Real-Time</SelectItem>
+                            <SelectItem value="real_time">Real-Time</SelectItem>
                             <SelectItem value="daily">Daily</SelectItem>
                             <SelectItem value="weekly">Weekly</SelectItem>
                             <SelectItem value="never">Never</SelectItem>

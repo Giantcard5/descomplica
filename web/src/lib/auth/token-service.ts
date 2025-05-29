@@ -1,19 +1,13 @@
-export interface LoginResponse {
+export interface ILoginResponse {
     accessToken: string;
     accessTokenExpiresAt: string;
     type: 'retailer' | 'industry';
 }
 
-export interface User {
+export interface IUser {
     id: string;
     name: string;
     email: string;
-    type: 'retailer' | 'industry';
-}
-
-export interface AuthTokens {
-    accessToken: string;
-    refreshToken: string;
     type: 'retailer' | 'industry';
 }
 
@@ -101,7 +95,7 @@ class TokenService {
         }
     }
 
-    async login(email: string, password: string, rememberMe: boolean): Promise<LoginResponse> {
+    async login(email: string, password: string, rememberMe: boolean): Promise<ILoginResponse> {
         try {
             const response = await this.fetchWithError(`${this.API_URL}/api/auth/login`, {
                 method: 'POST',
@@ -120,7 +114,7 @@ class TokenService {
         email: string,
         password: string,
         type: 'retailer' | 'industry'
-    ): Promise<User> {
+    ): Promise<IUser> {
         try {
             const response = await this.fetchWithError(`${this.API_URL}/api/auth/register`, {
                 method: 'POST',
@@ -146,37 +140,7 @@ class TokenService {
         }
     }
 
-    async forgotPassword(email: string): Promise<{ message: string }> {
-        try {
-            const response = await this.fetchWithError(`${this.API_URL}/api/auth/forgot-password`, {
-                method: 'POST',
-                body: JSON.stringify({ email }),
-            });
-
-            const data = await response.json();
-            return data;
-        } catch (error) {
-            console.error('Forgot password error:', error);
-            throw error;
-        }
-    }
-
-    async resetPassword(password: string, token: string): Promise<{ message: string }> {
-        try {
-            const response = await this.fetchWithError(`${this.API_URL}/api/auth/reset-password`, {
-                method: 'POST',
-                body: JSON.stringify({ password, token }),
-            });
-
-            const data = await response.json();
-            return data;
-        } catch (error) {
-            console.error('Reset password error:', error);
-            throw error;
-        }
-    }
-
-    async checkAuth(): Promise<User | null> {
+    async checkAuth(): Promise<IUser | null> {
         try {
             const response = await this.fetchWithAutoRefresh(`${this.API_URL}/api/auth/check`);
             const data = await response.json();

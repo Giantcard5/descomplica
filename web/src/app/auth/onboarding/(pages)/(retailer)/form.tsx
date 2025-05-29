@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useForm } from 'react-hook-form';
 
@@ -30,6 +30,10 @@ import {
     apiService
 } from '../../(lib)/api-service';
 
+import { 
+    useAuth 
+} from '@/hooks/use-auth';
+
 interface RetailerOnboardingFormProps {
     step: number;
     onComplete: () => void;
@@ -37,8 +41,15 @@ interface RetailerOnboardingFormProps {
 
 export function RetailerOnboardingForm({ step, onComplete }: RetailerOnboardingFormProps) {
     const router = useRouter();
-
+    
+    const { user, isOnboarding, setIsOnboarding } = useAuth();
     const { toast } = useToast();
+
+    useEffect(() => {
+        if (!isOnboarding) {
+            router.push(`/${user?.type}`);
+        };
+    }, [isOnboarding, router, user]);
 
     const getStepSchema = () => {
         switch (step) {
@@ -95,14 +106,15 @@ export function RetailerOnboardingForm({ step, onComplete }: RetailerOnboardingF
                 title: 'Retailer registered successfully',
                 description: 'You can now start using the app',
             });
-
-            router.push('/retailer');
         } else {
             toast({
                 title: 'Error registering retailer',
                 description: 'Please try again',
             });
         };
+
+        setIsOnboarding(false);
+        router.push(`/${user?.type}`);
     };
 
     const onStepSubmit = (data: any) => {

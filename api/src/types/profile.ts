@@ -6,3 +6,9 @@ export interface IProfile {
     bio: string;
     type: 'retailer' | 'industry';
 };
+
+export interface IOnboardingProfile {
+    bio: string;
+    dateOfBirth: string;
+    phoneNumber: string;
+};

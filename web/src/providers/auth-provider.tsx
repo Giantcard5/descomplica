@@ -1,12 +1,27 @@
 'use client';
 
-import { createContext, useState, useEffect, ReactNode } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
-import { tokenService, type User } from '@/lib/auth/token-service';
+import { 
+    useState, 
+    useEffect, 
+    ReactNode,
+    createContext
+} from 'react';
 
-interface AuthContextType {
-    user: User | null;
+import { 
+    useRouter, 
+    usePathname 
+} from 'next/navigation';
+
+import { 
+    tokenService, 
+    IUser 
+} from '@/lib/auth/token-service';
+
+interface IAuthContext {
+    user: IUser | null;
     isLoading: boolean;
+    isOnboarding: boolean;
+    setIsOnboarding: (isOnboarding: boolean) => void;
     login: (email: string, password: string, rememberMe: boolean) => Promise<void>;
     register: (
         name: string,
@@ -15,18 +30,17 @@ interface AuthContextType {
         type: 'retailer' | 'industry'
     ) => Promise<void>;
     logout: () => Promise<void>;
-    forgotPassword: (email: string) => Promise<void>;
-    resetPassword: (password: string, token: string) => Promise<void>;
-}
+};
 
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<IAuthContext | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
     const router = useRouter();
     const pathname = usePathname();
 
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<IUser | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [isOnboarding, setIsOnboarding] = useState(false);
 
     useEffect(() => {
         checkAuth();
@@ -43,10 +57,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
                 if (pathname !== '/' && !pathname.startsWith('/auth')) {
                     router.push('/auth/login');
-                }
+                };
 
                 return;
-            }
+            };
 
             const userData = await response.json();
             setUser(userData);
@@ -55,26 +69,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
             if (pathname !== '/' && !pathname.startsWith('/auth')) {
                 router.push('/auth/login');
-            }
+            };
         } finally {
             setIsLoading(false);
         }
     };
 
-    const login = async (email: string, password: string, rememberMe: boolean) => {
+    const login = async (
+        email: string, 
+        password: string, 
+        rememberMe: boolean, 
+        onBoarding: boolean = false
+    ) => {
         try {
             await tokenService.login(email, password, rememberMe);
             const userData = await tokenService.checkAuth();
 
+            if (!userData) {
+                throw new Error('User not found');
+            };
             setUser(userData);
 
-            if (userData?.type === 'retailer') {
-                router.push('/retailer');
-            } else if (userData?.type === 'industry') {
-                router.push('/industry');
-            }
+            if (!onBoarding) {
+                router.push(`/${userData?.type}`)
+            } else {
+                setIsOnboarding(true);
+                router.push(`/auth/onboarding?type=${userData?.type}`);
+            };
         } catch (error) {
-            throw error;
+            throw new Error('Failed to login');
         };
     };
 
@@ -86,9 +109,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     ) => {
         try {
             await tokenService.register(name, email, password, type);
-            await login(email, password, false);
+            await login(email, password, false, true);
         } catch (error) {
-            throw error;
+            throw new Error('Failed to register');
         };
     };
 
@@ -98,23 +121,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setUser(null);
             router.push('/auth/login');
         } catch (error) {
-            throw error;
-        };
-    };
-
-    const forgotPassword = async (email: string) => {
-        try {
-            await tokenService.forgotPassword(email);
-        } catch (error) {
-            throw error;
-        };
-    };
-
-    const resetPassword = async (password: string, token: string) => {
-        try {
-            await tokenService.resetPassword(password, token);
-        } catch (error) {
-            throw error;
+            throw new Error('Failed to logout');
         };
     };
 
@@ -123,11 +130,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             value={{
                 user,
                 isLoading,
+                isOnboarding,
+                setIsOnboarding,
                 login,
                 register,
-                logout,
-                forgotPassword,
-                resetPassword,
+                logout
             }}
         >
             {children}

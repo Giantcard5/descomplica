@@ -17,3 +17,10 @@ export interface IPreferences {
     dateFormat: 'dd_mm_yyyy' | 'mm_dd_yyyy' | 'yyyy_mm_dd';
     reduceMotion: boolean;
 };
+
+export interface IOnboardingSettings {
+    language: 'en' | 'pt_BR' | 'es';
+    theme: 'light' | 'dark' | 'system';
+    dateFormat: 'dd_mm_yyyy' | 'mm_dd_yyyy' | 'yyyy_mm_dd';
+    notification: 'real_time' | 'daily' | 'weekly' | 'never';
+}

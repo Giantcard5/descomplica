@@ -43,7 +43,7 @@ export const retailerFormSchema = z.object({
     language: z.string().min(1, { message: 'Language is required' }),
     theme: z.enum(['light', 'dark', 'system'], { message: 'Theme is required' }),
     dateFormat: z.enum(['dd_mm_yyyy', 'mm_dd_yyyy', 'yyyy_mm_dd'], { message: 'Date format is required' }),
-    notification: z.enum(['real-time', 'daily', 'weekly', 'never'], { message: 'Notification preferences are required' }),
+    notification: z.enum(['real_time', 'daily', 'weekly', 'never'], { message: 'Notification preferences are required' }),
 });
 
 export const personalInfoSchema = retailerFormSchema.pick({

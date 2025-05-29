@@ -107,10 +107,10 @@ router.post('/logout', async (request: Request, response: Response) => {
 });
 
 router.post('/register', async (request: Request, response: Response) => {
-    const { email, password, type } = request.body;
+    const { email, password, type, name } = request.body;
 
     try {
-        const user = await registerUser({ email, password, type });
+        const user = await registerUser({ email, password, type, name });
 
         return response.json({
             name: user.name,

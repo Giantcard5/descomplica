@@ -76,6 +76,7 @@ model Profile {
   photoUrl    String
   bio         String
   type        Type
+  dateOfBirth String
 
   user   User   @relation("UserProfile", fields: [userId], references: [id])
   userId String @unique

@@ -59,6 +59,7 @@ export const createDefaultProfile = async (type: string, email: string, userId: 
             phoneNumber: '',
             photoUrl: '',
             bio: '',
+            dateOfBirth: '',
             userId: userId
         }
     });
