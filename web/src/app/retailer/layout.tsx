@@ -147,7 +147,7 @@ export default function RetailerDashboardLayout({ children }: { children: React.
                         </SidebarMenuItem>
                         <SidebarMenuItem>
                             <SidebarMenuButton asChild>
-                                <Link href="/auth/logout" onClick={() => logout()}>
+                                <Link href="/auth/login" onClick={() => logout()}>
                                     <LogOut className="h-5 w-5" />
                                     <span>Logout</span>
                                 </Link>

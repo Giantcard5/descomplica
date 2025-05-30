@@ -3,6 +3,10 @@
 import { useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
+import { 
+    useToast 
+} from '@/hooks/use-toast';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
     storeService
@@ -35,12 +39,15 @@ import {
 import { StoreType } from './types';
 
 export default function StoreSettingsPage() {
+    const { toast } = useToast();
+
     const {
         register,
         handleSubmit,
         reset,
         setValue,
-        watch
+        watch,
+        formState: { errors }
     } = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
     });
@@ -58,8 +65,16 @@ export default function StoreSettingsPage() {
         try {
             const response = await storeService.postStore(data);
 
-            if (response) {
-                reset(response);
+            if (response.status) {
+                toast({
+                    title: response.message,
+                    description: 'Your store details have been updated',
+                });
+            } else {
+                toast({
+                    title: response.message,
+                    description: 'Your store details could not be updated',
+                });
             };
         } catch (err: any) {
             console.error(err);
@@ -77,6 +92,9 @@ export default function StoreSettingsPage() {
                     <div className="space-y-2">
                         <Label htmlFor="store-name">Store Name</Label>
                         <Input id="store-name" {...register('name')} />
+                        {errors.name && (
+                            <p className="text-red-500 text-sm">{errors.name.message}</p>
+                        )}
                     </div>
 
                     <div className="space-y-2">
@@ -110,36 +128,57 @@ export default function StoreSettingsPage() {
                                 <SelectItem value="other">Other</SelectItem>
                             </SelectContent>
                         </Select>
+                        {errors.type && (
+                            <p className="text-red-500 text-sm">{errors.type.message}</p>
+                        )}
                     </div>
 
                     <div className="grid gap-4 sm:grid-cols-2">
                         <div className="space-y-2">
                             <Label htmlFor="store-size">Store Size (sq ft)</Label>
-                            <Input id="store-size" type="number" {...register('size')} />
+                            <Input id="store-size" type="number" {...register('size', { valueAsNumber: true })} />
+                            {errors.size && (
+                                <p className="text-red-500 text-sm">{errors.size.message}</p>
+                            )}
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="employees">Number of Employees</Label>
-                            <Input id="employees" type="number" {...register('employees')} />
+                            <Input id="employees" type="number" {...register('employees', { valueAsNumber: true })} />
+                            {errors.employees && (
+                                <p className="text-red-500 text-sm">{errors.employees.message}</p>
+                            )}
                         </div>
                     </div>
 
                     <div className="space-y-2">
                         <Label htmlFor="store-address">Store Address</Label>
                         <Input id="store-address" {...register('address')} />
+                        {errors.address && (
+                            <p className="text-red-500 text-sm">{errors.address.message}</p>
+                        )}
                     </div>
 
                     <div className="grid gap-4 sm:grid-cols-3">
                         <div className="space-y-2">
                             <Label htmlFor="city">City</Label>
                             <Input id="city" {...register('city')} />
+                            {errors.city && (
+                                <p className="text-red-500 text-sm">{errors.city.message}</p>
+                            )}
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="state">State/Province</Label>
                             <Input id="state" {...register('state')} />
+                            {errors.state && (
+                                <p className="text-red-500 text-sm">{errors.state.message}</p>
+                            )}
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="zip">Zip/Postal Code</Label>
                             <Input id="zip" {...register('zipCode')} />
+                            {errors.zipCode && (
+                                <p className="text-red-500 text-sm">{errors.zipCode.message}</p>
+                            )}
                         </div>
                     </div>
 
@@ -157,6 +196,9 @@ export default function StoreSettingsPage() {
                                 <SelectItem value="other">Other</SelectItem>
                             </SelectContent>
                         </Select>
+                        {errors.country && (
+                            <p className="text-red-500 text-sm">{errors.country.message}</p>
+                        )}
                     </div>
 
                     <div className="space-y-2">
@@ -168,6 +210,9 @@ export default function StoreSettingsPage() {
                             placeholder="Describe your store"
                             {...register('description')}
                         ></textarea>
+                        {errors.description && (
+                            <p className="text-red-500 text-sm">{errors.description.message}</p>
+                        )}
                     </div>
                 </CardContent>
                 <CardFooter className="flex justify-end gap-2">

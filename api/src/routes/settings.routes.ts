@@ -50,9 +50,9 @@ router.post('/notifications', async (request: Request, response: Response) => {
     };
 
     const token = request.cookies.access_token;
-    await updateUserNotifications(token, request.body);
+    const updatedNotifications = await updateUserNotifications(token, request.body);
 
-    return response.status(200).json({ message: 'Notifications updated successfully' });
+    return response.status(200).json(updatedNotifications);
 });
 
 router.get('/preferences', async (request: Request, response: Response) => {
@@ -88,9 +88,9 @@ router.post('/preferences', async (request: Request, response: Response) => {
     };
 
     const token = request.cookies.access_token;
-    await updateUserPreferences(token, request.body);
+    const updatedPreferences = await updateUserPreferences(token, request.body);
 
-    return response.status(200).json({ message: 'Preferences updated successfully' });
+    return response.status(200).json(updatedPreferences);
 });
 
 export const settingsRouter = router;

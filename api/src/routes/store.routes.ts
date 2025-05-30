@@ -48,9 +48,9 @@ router.post('/', async (request: Request, response: Response) => {
     };
 
     const token = request.cookies.access_token;
-    await updateStore(token, request.body);
+    const updatedStore = await updateStore(token, request.body);
 
-    return response.status(200).json({ message: 'Store updated successfully' });
+    return response.status(200).json(updatedStore);
 });
 
 export const storeRouter = router;

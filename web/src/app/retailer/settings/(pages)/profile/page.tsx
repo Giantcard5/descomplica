@@ -30,12 +30,18 @@ import {
     FormSchema
 } from './utils/schema';
 
+import { 
+    useToast 
+} from '@/hooks/use-toast';
+
 export default function ProfileSettingsPage() {
+    const { toast } = useToast();
+
     const {
         register,
         handleSubmit,
         reset,
-        getValues
+        formState: { errors }
     } = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
     });
@@ -53,8 +59,16 @@ export default function ProfileSettingsPage() {
         try {
             const response = await profileService.postProfile(data);
 
-            if (response) {
-                reset(response);
+            if (response.status) {
+                toast({
+                    title: response.message,
+                    description: 'Your profile has been updated',
+                });
+            } else {
+                toast({
+                    title: response.message,
+                    description: 'Your profile could not be updated',
+                });
             };
         } catch (err: any) {
             console.error(err);
@@ -72,7 +86,7 @@ export default function ProfileSettingsPage() {
                     <div className="flex flex-col items-center space-y-4 sm:flex-row sm:items-start sm:space-x-4 sm:space-y-0">
                         {/* Update to save the image URL */}
                         <Avatar className="h-24 w-24 border-2 border-gray-900">
-                            <AvatarImage src={getValues('photoUrl')} alt="User" />
+                            <AvatarImage src={''} alt="User" />
                             <AvatarFallback>AVATAR</AvatarFallback>
                         </Avatar>
                         <div className="space-y-2">
@@ -98,17 +112,26 @@ export default function ProfileSettingsPage() {
                         <div className="space-y-2">
                             <Label htmlFor="first-name">Full Name</Label>
                             <Input id="first-name" {...register('name')} placeholder='Full Name' />
+                            {errors.name && (
+                                <p className="text-red-500 text-sm">{errors.name.message}</p>
+                            )}
                         </div>
 
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
                             <Input id="email" type="email" {...register('email')} placeholder='Email' />
+                            {errors.email && (
+                                <p className="text-red-500 text-sm">{errors.email.message}</p>
+                            )}
                         </div>
                     </div>
 
                     <div className="space-y-2">
                         <Label htmlFor="phone">Phone Number</Label>
                         <Input id="phone" type="tel" {...register('phoneNumber')} placeholder='Phone Number' />
+                        {errors.phoneNumber && (
+                            <p className="text-red-500 text-sm">{errors.phoneNumber.message}</p>
+                        )}
                     </div>
 
                     <div className="space-y-2">
@@ -120,6 +143,9 @@ export default function ProfileSettingsPage() {
                             placeholder="Tell us about yourself"
                             {...register('bio')}
                         ></textarea>
+                        {errors.bio && (
+                            <p className="text-red-500 text-sm">{errors.bio.message}</p>
+                        )}
                     </div>
                 </CardContent>
                 <CardFooter className="flex justify-end gap-2">

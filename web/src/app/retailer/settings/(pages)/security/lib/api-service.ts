@@ -42,7 +42,10 @@ class SecurityService extends FetchService {
         };
     };
 
-    async postSecurity(security: ISecurity): Promise<ISecurity> {
+    async postSecurity(security: ISecurity): Promise<{
+        message: string;
+        status: boolean;
+    }> {
         try {
             const response = await this.fetch('/api/auth/reset-password', {
                 method: 'POST',

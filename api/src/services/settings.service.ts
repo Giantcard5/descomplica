@@ -39,38 +39,38 @@ export const getUserNotifications = async (token: string) => {
 export const updateUserNotifications = async (token: string, notifications: INotification) => {
     const decoded = verify(token, process.env.JWT_SECRET as string);
 
-    const updatedNotifications = await prisma.userNotifications.update({
+    const currentNotifications = await prisma.userNotifications.findUnique({
         where: {
             userId: decoded.sub as string
-        },
-        data: {
-            ...notifications,
-            notification_frequency: notifications.notification_frequency as 'real_time' | 'daily' | 'weekly' | 'never'
         }
     });
 
-    if (!updatedNotifications) {
+    if (!currentNotifications) {
         throw new Error('Notifications not found');
     };
-};
 
-export const createDefaultUserNotifications = async (userId: string) => {
-    const createdNotifications = await prisma.userNotifications.create({
-        data: {
-            userId: userId,
-            email_submision: false,
-            email_campaign: false,
-            email_rewards_and_points: false,
-            email_newsletter: false,
-            submission: false,
-            campaign: false,
-            rewards_and_points: false,
-            notification_frequency: 'never'
+    const changedFields: { [key: string]: any } = {};
+    for (const key of Object.keys(notifications) as (keyof INotification)[]) {
+        if (notifications[key] !== currentNotifications[key]) {
+            changedFields[key] = notifications[key];
         }
+    }
+
+    if (Object.keys(changedFields).length === 0) {
+        return {
+            message: 'No changes detected',
+            status: false
+        };
+    };
+    
+    await prisma.userNotifications.update({
+        where: { userId: decoded.sub as string },
+        data: changedFields
     });
 
-    if (!createdNotifications) {
-        throw new Error('Notifications not found');
+    return {
+        message: 'Notifications updated successfully',
+        status: true
     };
 };
 
@@ -98,34 +98,37 @@ export const getUserPreferences = async (token: string) => {
 export const updateUserPreferences = async (token: string, preferences: IPreferences) => {
     const decoded = verify(token, process.env.JWT_SECRET as string);
 
-    const updatedPreferences = await prisma.userPreferences.update({
+    const currentPreferences = await prisma.userPreferences.findUnique({
         where: {
             userId: decoded.sub as string
-        },
-        data: {
-            ...preferences,
-            language: preferences.language as 'en' | 'pt_BR' | 'es',
-            dateFormat: preferences.dateFormat as 'dd_mm_yyyy' | 'mm_dd_yyyy' | 'yyyy_mm_dd'
         }
     });
 
-    if (!updatedPreferences) {
+    if (!currentPreferences) {
         throw new Error('Preferences not found');
     };
-};
 
-export const createDefaultUserPreferences = async (userId: string) => {
-    const createdPreferences = await prisma.userPreferences.create({
-        data: {
-            userId: userId,
-            theme: 'light',
-            language: 'en',
-            dateFormat: 'dd_mm_yyyy',
-            reduceMotion: false
+    const changedFields: { [key: string]: any } = {};
+    for (const key of Object.keys(preferences) as (keyof IPreferences)[]) {
+        if (preferences[key] !== currentPreferences[key]) {
+            changedFields[key] = preferences[key];
         }
+    }
+
+    if (Object.keys(changedFields).length === 0) {
+        return {
+            message: 'No changes detected',
+            status: false
+        };
+    };
+    
+    await prisma.userPreferences.update({
+        where: { userId: decoded.sub as string },
+        data: changedFields
     });
 
-    if (!createdPreferences) {
-        throw new Error('Couldt create preferences');
+    return {
+        message: 'Preferences updated successfully',
+        status: true
     };
 };

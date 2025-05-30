@@ -34,7 +34,10 @@ class StoreService extends FetchService {
         };
     };
 
-    async postStore(Store: IStore): Promise<IStore> {
+    async postStore(Store: IStore): Promise<{
+        message: string;
+        status: boolean;
+    }> {
         try {
             const response = await this.fetch('/api/store', {
                 method: 'POST',

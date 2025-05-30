@@ -34,11 +34,14 @@ class PreferencesService extends FetchService {
         };
     };
 
-    async postPreferences(Preferences: IPreferences): Promise<IPreferences> {
+    async postPreferences(preferences: IPreferences): Promise<{
+        message: string;
+        status: boolean;
+    }> {
         try {
             const response = await this.fetch('/api/settings/preferences', {
                 method: 'POST',
-                body: JSON.stringify(Preferences),
+                body: JSON.stringify(preferences),
             });
 
             const data = await response.json();

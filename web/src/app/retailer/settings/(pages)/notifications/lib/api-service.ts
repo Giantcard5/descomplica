@@ -34,11 +34,14 @@ class NotificationsService extends FetchService {
         };
     };
 
-    async postNotifications(Notifications: INotifications): Promise<INotifications> {
+    async postNotifications(notifications: INotifications): Promise<{
+        message: string;
+        status: boolean;
+    }> {
         try {
             const response = await this.fetch('/api/settings/notifications', {
                 method: 'POST',
-                body: JSON.stringify(Notifications),
+                body: JSON.stringify(notifications),
             });
 
             const data = await response.json();

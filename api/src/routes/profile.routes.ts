@@ -48,9 +48,9 @@ router.post('/', async (request: Request, response: Response) => {
     };
 
     const token = request.cookies.access_token;
-    await updateProfile(token, request.body);
+    const updatedProfile = await updateProfile(token, request.body);
 
-    return response.status(200).json({ message: 'Profile updated successfully' });
+    return response.status(200).json(updatedProfile);
 });
 
 export const profileRouter = router;

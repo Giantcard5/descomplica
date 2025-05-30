@@ -54,7 +54,7 @@ export function PreferencesInfo({ watch, setValue, errors }: IPreferencesInfo) {
                 <div className="space-y-2">
                     <Label htmlFor="language">Preferred Language</Label>
                     <Select value={watch('language')} onValueChange={(value) => {
-                        setValue('language', value as 'en' | 'es' | 'pt-BR');
+                        setValue('language', value as 'en' | 'es' | 'pt_BR');
                     }}>
                         <SelectTrigger id="language">
                             <SelectValue placeholder="Select language" />
@@ -62,7 +62,7 @@ export function PreferencesInfo({ watch, setValue, errors }: IPreferencesInfo) {
                         <SelectContent>
                             <SelectItem value="en">English</SelectItem>
                             <SelectItem value="es">Español</SelectItem>
-                            <SelectItem value="pt-BR">Português</SelectItem>
+                            <SelectItem value="pt_BR">Português</SelectItem>
                         </SelectContent>
                     </Select>
                     {errors.language && (

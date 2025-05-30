@@ -6,10 +6,6 @@ import {
     prisma
 } from '../utils/prismaClient';
 
-import {
-    IProfile
-} from '../types/profile';
-
 export const getProfile = async (token: string) => {
     const decoded = verify(token, process.env.JWT_SECRET as string);
 
@@ -33,40 +29,43 @@ export const getProfile = async (token: string) => {
     };
 };
 
-export const updateProfile = async (token: string, profile: IProfile) => {
+export const updateProfile = async (token: string, profile: {
+    name: string;
+    phoneNumber: string;
+    bio: string;
+    photoUrl: string;
+}) => {
     const decoded = verify(token, process.env.JWT_SECRET as string);
 
-    const updatedProfile = await prisma.profile.update({
-        where: {
-            userId: decoded.sub as string
-        },
-        data: {
-            ...profile
-        }
+    const currentProfile = await prisma.profile.findUnique({
+        where: { userId: decoded.sub as string }
     });
 
-    if (!updatedProfile) {
-        throw new Error('Profile not found');
-    };
-};
-
-export const createDefaultProfile = async (type: string, email: string, userId: string) => {
-    const createdProfile = await prisma.profile.create({
-        data: {
-            name: '',
-            type: type as 'retailer' | 'industry',
-            email: email,
-            phoneNumber: '',
-            photoUrl: '',
-            bio: '',
-            dateOfBirth: '',
-            userId: userId
-        }
-    });
-
-    if (!createdProfile) {
+    if (!currentProfile) {
         throw new Error('Profile not found');
     };
 
-    return createdProfile;
+    const changedFields: Partial<typeof profile> = {};
+    for (const key of Object.keys(profile) as (keyof typeof profile)[]) {
+        if (profile[key] !== currentProfile[key]) {
+            changedFields[key] = profile[key];
+        }
+    }
+
+    if (Object.keys(changedFields).length === 0) {
+        return {
+            message: 'Profile update failed',
+            status: false
+        };
+    };
+
+    await prisma.profile.update({
+        where: { userId: decoded.sub as string },
+        data: changedFields
+    });
+
+    return {
+        message: 'Profile updated successfully',
+        status: true
+    };
 };

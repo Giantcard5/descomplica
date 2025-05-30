@@ -33,12 +33,19 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 
+import { 
+    useToast 
+} from '@/hooks/use-toast';
+
 export default function NotificationSettingsPage() {
+    const { toast } = useToast();
+
     const {
         handleSubmit,
         reset,
         setValue,
         watch,
+        formState: { errors }
     } = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
     });
@@ -46,6 +53,7 @@ export default function NotificationSettingsPage() {
     useEffect(() => {
         const getPreferences = async () => {
             const response = await notificationsService.getNotifications();
+            console.log(response);
             reset(response);
         };
 
@@ -56,8 +64,16 @@ export default function NotificationSettingsPage() {
         try {
             const response = await notificationsService.postNotifications(data);
 
-            if (response) {
-                reset(response);
+            if (response.status) {
+                toast({
+                    title: response.message,
+                    description: 'Your notification preferences have been updated',
+                });
+            } else {
+                toast({
+                    title: response.message,
+                    description: 'Your notification preferences could not be updated',
+                });
             };
         } catch (err: any) {
             console.error(err);
@@ -85,6 +101,9 @@ export default function NotificationSettingsPage() {
                                 <Switch id="email-submissions" checked={watch('email_submision')} onCheckedChange={(checked) => {
                                     setValue('email_submision', checked);
                                 }} />
+                                {errors.email_submision && (
+                                    <p className="text-red-500 text-sm">{errors.email_submision.message}</p>
+                                )}
                             </div>
                             <Separator />
                             <div className="flex items-center justify-between">
@@ -94,9 +113,12 @@ export default function NotificationSettingsPage() {
                                         Receive emails about new campaigns and promotions
                                     </p>
                                 </div>
-                                <Switch id="email-campaigns" checked={watch('email_compaing')} onCheckedChange={(checked) => {
-                                    setValue('email_compaing', checked);
+                                <Switch id="email-campaigns" checked={watch('email_campaign')} onCheckedChange={(checked) => {
+                                    setValue('email_campaign', checked);
                                 }} />
+                                {errors.email_campaign && (
+                                    <p className="text-red-500 text-sm">{errors.email_campaign.message}</p>
+                                )}
                             </div>
                             <Separator />
                             <div className="flex items-center justify-between">
@@ -109,6 +131,9 @@ export default function NotificationSettingsPage() {
                                 <Switch id="email-rewards" checked={watch('email_rewards_and_points')} onCheckedChange={(checked) => {
                                     setValue('email_rewards_and_points', checked);
                                 }} />
+                                {errors.email_rewards_and_points && (
+                                    <p className="text-red-500 text-sm">{errors.email_rewards_and_points.message}</p>
+                                )}
                             </div>
                             <Separator />
                             <div className="flex items-center justify-between">
@@ -121,6 +146,9 @@ export default function NotificationSettingsPage() {
                                 <Switch id="email-newsletter" checked={watch('email_newsletter')} onCheckedChange={(checked) => {
                                     setValue('email_newsletter', checked);
                                 }} />
+                                {errors.email_newsletter && (
+                                    <p className="text-red-500 text-sm">{errors.email_newsletter.message}</p>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -138,6 +166,9 @@ export default function NotificationSettingsPage() {
                                 <Switch id="push-submissions" checked={watch('submission')} onCheckedChange={(checked) => {
                                     setValue('submission', checked);
                                 }} />
+                                {errors.submission && (
+                                    <p className="text-red-500 text-sm">{errors.submission.message}</p>
+                                )}
                             </div>
                             <Separator />
                             <div className="flex items-center justify-between">
@@ -147,9 +178,12 @@ export default function NotificationSettingsPage() {
                                         Receive push notifications about new campaigns and promotions
                                     </p>
                                 </div>
-                                <Switch id="push-campaigns" checked={watch('compaing')} onCheckedChange={(checked) => {
-                                    setValue('compaing', checked);
+                                <Switch id="push-campaigns" checked={watch('campaign')} onCheckedChange={(checked) => {
+                                    setValue('campaign', checked);
                                 }} />
+                                {errors.campaign && (
+                                    <p className="text-red-500 text-sm">{errors.campaign.message}</p>
+                                )}
                             </div>
                             <Separator />
                             <div className="flex items-center justify-between">
@@ -162,6 +196,9 @@ export default function NotificationSettingsPage() {
                                 <Switch id="push-rewards" checked={watch('rewards_and_points')} onCheckedChange={(checked) => {
                                     setValue('rewards_and_points', checked);
                                 }} />
+                                {errors.rewards_and_points && (
+                                    <p className="text-red-500 text-sm">{errors.rewards_and_points.message}</p>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -171,18 +208,21 @@ export default function NotificationSettingsPage() {
                         <div className="space-y-2">
                             <Label htmlFor="notification-frequency">Email Digest Frequency</Label>
                             <Select value={watch('notification_frequency')} onValueChange={(value) => {
-                                setValue('notification_frequency', value as 'real-time' | 'daily' | 'weekly' | 'never');
+                                setValue('notification_frequency', value as 'real_time' | 'daily' | 'weekly' | 'never');
                             }}>
                                 <SelectTrigger id="notification-frequency">
                                     <SelectValue placeholder="Select frequency" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="real-time">Real-time</SelectItem>
+                                    <SelectItem value="real_time">Real-time</SelectItem>
                                     <SelectItem value="daily">Daily Digest</SelectItem>
                                     <SelectItem value="weekly">Weekly Digest</SelectItem>
                                     <SelectItem value="never">Never</SelectItem>
                                 </SelectContent>
                             </Select>
+                            {errors.notification_frequency && (
+                                <p className="text-red-500 text-sm">{errors.notification_frequency.message}</p>
+                            )}
                         </div>
                     </div>
                 </CardContent>

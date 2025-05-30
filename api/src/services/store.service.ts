@@ -40,38 +40,38 @@ export const getStore = async (token: string) => {
 export const updateStore = async (token: string, store: IStore) => {
     const decoded = verify(token, process.env.JWT_SECRET as string);
 
-    const updatedStore = await prisma.store.update({
+
+    const currentStore = await prisma.store.findUnique({
         where: {
             userId: decoded.sub as string
-        },
-        data: {
-            ...store
         }
     });
 
-    if (!updatedStore) {
+    if (!currentStore) {
         throw new Error('Store not found');
     };
-};
 
-export const createDefaultStore = async (userId: string) => {
-    const createdStore = await prisma.store.create({
-        data: {
-            userId: userId,
-            name: '',
-            type: '',
-            size: 0,
-            employees: 0,
-            address: '',
-            city: '',
-            state: '',
-            zipCode: '',
-            country: '',
-            description: ''
+    const changedFields: { [key: string]: any } = {};
+    for (const key of Object.keys(store) as (keyof IStore)[]) {
+        if (store[key] !== currentStore[key]) {
+            changedFields[key] = store[key];
         }
+    }
+
+    if (Object.keys(changedFields).length === 0) {
+        return {
+            message: 'No changes detected',
+            status: false
+        };
+    };
+    
+    await prisma.store.update({
+        where: { userId: decoded.sub as string },
+        data: changedFields
     });
 
-    if (!createdStore) {
-        throw new Error('Store not found');
+    return {
+        message: 'Store updated successfully',
+        status: true
     };
 };

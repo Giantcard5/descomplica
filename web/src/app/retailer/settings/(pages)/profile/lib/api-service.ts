@@ -32,7 +32,10 @@ class ProfileService extends FetchService {
         };
     };
 
-    async postProfile(profile: IProfile): Promise<IProfile> {
+    async postProfile(profile: IProfile): Promise<{
+        message: string;
+        status: boolean;
+    }> {
         try {
             const response = await this.fetch('/api/profile', {
                 method: 'POST',

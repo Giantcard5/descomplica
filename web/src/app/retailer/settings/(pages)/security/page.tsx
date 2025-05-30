@@ -29,7 +29,13 @@ import { Badge } from '@/components/ui/badge';
 
 import { Shield } from 'lucide-react';
 
+import { 
+    useToast 
+} from '@/hooks/use-toast';
+
 export default function SecuritySettingsPage() {
+    const { toast } = useToast();
+
     const [security, setSecurity] = useState<{
         two_factor_authentication: boolean;
         login_sessions: {
@@ -43,7 +49,7 @@ export default function SecuritySettingsPage() {
     const {
         register,
         handleSubmit,
-        reset
+        formState: { errors }
     } = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
     });
@@ -62,8 +68,16 @@ export default function SecuritySettingsPage() {
         try {
             const response = await securityService.postSecurity(data);
 
-            if (response) {
-                reset(response);
+            if (response.status) {
+                toast({
+                    title: response.message,
+                    description: 'Your account security has been updated',
+                });
+            } else {
+                toast({
+                    title: response.message,
+                    description: 'Your account security could not be updated',
+                });
             };
         } catch (err: any) {
             console.error(err);
@@ -83,14 +97,23 @@ export default function SecuritySettingsPage() {
                         <div className="space-y-2">
                             <Label htmlFor="current-password">Current Password</Label>
                             <Input id="current-password" type="password" {...register('current_password')} placeholder="Current Password" />
+                            {errors.current_password && (
+                                <p className="text-red-500 text-sm">{errors.current_password.message}</p>
+                            )}
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="new-password">New Password</Label>
                             <Input id="new-password" type="password" {...register('new_password')} placeholder="New Password" />
+                            {errors.new_password && (
+                                <p className="text-red-500 text-sm">{errors.new_password.message}</p>
+                            )}
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="confirm-password">Confirm New Password</Label>
                             <Input id="confirm-password" type="password" {...register('confirm_password')} placeholder="Confirm New Password" />
+                            {errors.confirm_password && (
+                                <p className="text-red-500 text-sm">{errors.confirm_password.message}</p>
+                            )}
                         </div>
                         <Button>Update Password</Button>
                     </div>

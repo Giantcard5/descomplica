@@ -33,13 +33,20 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 
+import { 
+    useToast 
+} from '@/hooks/use-toast';
+
 export default function PreferencesSettingsPage() {
+    const { toast } = useToast();
+
     const {
         register,
         handleSubmit,
         reset,
         setValue,
-        watch
+        watch,
+        formState: { errors }
     } = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
     });
@@ -57,8 +64,16 @@ export default function PreferencesSettingsPage() {
         try {
             const response = await preferencesService.postPreferences(data);
 
-            if (response) {
-                reset(response);
+            if (response.status) {
+                toast({
+                    title: response.message,
+                    description: 'Your app preferences have been updated',
+                });
+            } else {
+                toast({
+                    title: response.message,
+                    description: 'Your app preferences could not be updated',
+                });
             };
         } catch (err: any) {
             console.error(err);
@@ -89,6 +104,9 @@ export default function PreferencesSettingsPage() {
                                     <SelectItem value="system">System</SelectItem>
                                 </SelectContent>
                             </Select>
+                            {errors.theme && (
+                                <p className="text-red-500 text-sm">{errors.theme.message}</p>
+                            )}
                         </div>
                     </div>
 
@@ -99,7 +117,7 @@ export default function PreferencesSettingsPage() {
                         <div className="space-y-2">
                             <Label htmlFor="language">Language</Label>
                             <Select value={watch('language')} onValueChange={(value) => {
-                                setValue('language', value as 'en' | 'es' | 'pt-BR');
+                                setValue('language', value as 'en' | 'es' | 'pt_BR');
                             }}>
                                 <SelectTrigger id="language">
                                     <SelectValue placeholder="Select language" />
@@ -107,9 +125,12 @@ export default function PreferencesSettingsPage() {
                                 <SelectContent>
                                     <SelectItem value="en">English</SelectItem>
                                     <SelectItem value="es">Español</SelectItem>
-                                    <SelectItem value="pt-BR">Português</SelectItem>
+                                    <SelectItem value="pt_BR">Português</SelectItem>
                                 </SelectContent>
                             </Select>
+                            {errors.language && (
+                                <p className="text-red-500 text-sm">{errors.language.message}</p>
+                            )}
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="date-format">Date Format</Label>
@@ -125,6 +146,9 @@ export default function PreferencesSettingsPage() {
                                     <SelectItem value="yyyy_mm_dd">YYYY/MM/DD</SelectItem>
                                 </SelectContent>
                             </Select>
+                            {errors.dateFormat && (
+                                <p className="text-red-500 text-sm">{errors.dateFormat.message}</p>
+                            )}
                         </div>
                     </div>
 
@@ -141,6 +165,9 @@ export default function PreferencesSettingsPage() {
                             </div>
                             <Switch id="reduced-motion" {...register('reduceMotion')} />
                         </div>
+                        {errors.reduceMotion && (
+                            <p className="text-red-500 text-sm">{errors.reduceMotion.message}</p>
+                        )}
                     </div>
                 </CardContent>
                 <CardFooter className="flex justify-end gap-2">
