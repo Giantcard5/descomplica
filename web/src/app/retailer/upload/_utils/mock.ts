@@ -1,0 +1,19 @@
+export const mockReceiptData = {
+    store: 'Market Express',
+    date: '2025-05-14',
+    items: [
+        { id: 1, alias: 'Z012', quantity: 2, price: 3.99, total: 7.98, status: 'unmatched' as const },
+        { id: 2, alias: 'SA943S', quantity: 1, price: 2.49, total: 2.49, status: 'unmatched' as const },
+        {
+            id: 3,
+            alias: 'COKE500',
+            quantity: 3,
+            price: 1.99,
+            total: 5.97,
+            status: 'matched' as const,
+            matchedProduct: 'Coca-Cola Original 500ml',
+        },
+        { id: 4, alias: 'CHIPS123', quantity: 2, price: 3.29, total: 6.58, status: 'unmatched' as const },
+    ],
+    total: 22.02,
+};
