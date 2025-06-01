@@ -53,7 +53,6 @@ export default function NotificationSettingsPage() {
     useEffect(() => {
         const getPreferences = async () => {
             const response = await notificationsService.getNotifications();
-            console.log(response);
             reset(response);
         };
 

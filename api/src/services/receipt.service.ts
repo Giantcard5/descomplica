@@ -1,3 +1,12 @@
+import { loadPrompt } from "../prompts";
+
+interface ReceiptItem {
+    product_id: string;
+    product_name: string;
+    quantity: number;
+    unit_price: number;
+}
+
 export class ReceiptService {
     private static instance: ReceiptService;
     private readonly apiKey: string;
@@ -15,23 +24,27 @@ export class ReceiptService {
         return ReceiptService.instance;
     }
 
-    public async fetchAPI(prompt: string) {
+    public async fetchAPI(prompt: string, images?: { mimeType: string; data: string }[]): Promise<string> {
         try {
+            const contents = [{
+                parts: [
+                    { text: prompt },
+                    ...(images?.map(image => ({
+                        inlineData: {
+                            mimeType: image.mimeType,
+                            data: image.data
+                        }
+                    })) || [])
+                ]
+            }];
+
             const response = await fetch(this.apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'x-goog-api-key': this.apiKey
                 },
-                body: JSON.stringify({
-                    contents: [
-                        {
-                            parts: [
-                                { text: prompt }
-                            ]
-                        }
-                    ]
-                })
+                body: JSON.stringify({ contents })
             });
 
             const data = await response.json();
@@ -42,19 +55,23 @@ export class ReceiptService {
         }
     }
 
-    async analyzeReceipt(receipt: string) {
-        const cleanBase64 = receipt.replace(/^data:image\/\w+;base64,/, '');
+    async analyzeReceipt(receipt: Express.Multer.File): Promise<ReceiptItem[]> {
+        const cleanBase64 = receipt.buffer.toString('base64');
+        const prompt = loadPrompt('receipt.txt');
 
-        const prompt = `
-            Analyze the following receipt and extract the following information:
-            - Total amount
-            - Date
-            - Time
-            - Location
-        `;
+        const response = await this.fetchAPI(prompt, [{ mimeType: receipt.mimetype, data: cleanBase64 }]);
 
-        const response = await this.fetchAPI(prompt);
+        if (!response || response.length === 0) {
+            throw new Error('No items found on receipt');
+        }
+
+        let jsonString = response.trim();
+        if (jsonString.startsWith('```')) {
+            jsonString = jsonString.replace(/^```[a-zA-Z]*\n?/, '').replace(/```$/, '');
+        }
+
+        return JSON.parse(jsonString);
     };
-}
+};
 
 export const receiptService = ReceiptService.getInstance();

@@ -1,6 +1,10 @@
 import { Router, Request, Response } from 'express';
 import multer from 'multer';
 
+import { 
+    receiptService
+} from '../services/receipt.service';
+
 const router = Router();
 
 const upload = multer({
@@ -11,14 +15,14 @@ const upload = multer({
     }
 });
 
-router.post('/upload', upload.single('file'), (request: Request, response: Response) => {
-    console.log('Uploaded file:', request.file);
-
+router.post('/upload', upload.single('file'), async (request: Request, response: Response) => {
     if (!request.file) {
         return response.status(400).json({ message: 'No file uploaded' });
     };
 
-    response.json({ message: 'File received', file: request.file, fields: request.body });
+    const receipt = await receiptService.analyzeReceipt(request.file);
+
+    return response.json(receipt);
 });
 
 export const receiptRouter = router;

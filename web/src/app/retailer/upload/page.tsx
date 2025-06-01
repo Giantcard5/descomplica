@@ -84,6 +84,17 @@ export default function UploadReceiptPage() {
             formData.append('file', file);
 
             const response = await uploadService.postUpload(formData);
+
+            if (response.length > 0) {
+                setIsProcessing(false)
+                setIsUploaded(true)
+                setCurrentStep(1)
+            } else {
+                toast({
+                    title: "Failed to process receipt",
+                    description: "No items found, please try again or contact support",
+                });
+            }
         } catch (error: any) {
             toast({
                 title: "Failed to process receipt",
