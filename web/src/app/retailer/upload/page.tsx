@@ -24,9 +24,17 @@ import {
     Upload 
 } from "lucide-react";
 
-import { useToast } from "@/hooks/use-toast";
+import { 
+    useToast 
+} from "@/hooks/use-toast";
 
-import { mockReceiptData } from "./_utils/mock";
+import { 
+    mockReceiptData 
+} from "./_utils/mock";
+
+import { 
+    uploadService 
+} from "./_lib/api-service";
 
 export default function UploadReceiptPage() {
     const { toast } = useToast()
@@ -61,27 +69,29 @@ export default function UploadReceiptPage() {
         },
     ]
 
-    const handleProcessReceipt = () => {
-        setIsProcessing(true)
-        // Simulate processing delay based on method
-        const processingTime = uploadMethod === "photo" ? 2000 : uploadMethod === "file" ? 1500 : 1000
+    const handleProcessReceipt = async (file: File) => {
+        if (!file) {
+            return toast({
+                title: "No file selected",
+                description: "Please select a file to upload",
+            });
+        };
 
-        setTimeout(() => {
-            setIsProcessing(false)
-            setIsUploaded(true)
-            setCurrentStep(1)
+        try {
+            setIsProcessing(true);
 
-            const methodLabels = {
-                photo: "Receipt photo processed",
-                manual: "Manual data submitted",
-                file: "File uploaded and processed",
-            }
+            const formData = new FormData();
+            formData.append('file', file);
 
+            const response = await uploadService.postUpload(formData);
+        } catch (error: any) {
             toast({
-                title: methodLabels[uploadMethod as keyof typeof methodLabels],
-                description: "We've extracted the product information. Please review and confirm.",
-            })
-        }, processingTime)
+                title: "Failed to process receipt",
+                description: error?.message || "Please try again or contact support",
+            });
+        } finally {
+            setIsProcessing(false);
+        };
     }
 
     const handleProductUpdate = (updatedItems: any) => {

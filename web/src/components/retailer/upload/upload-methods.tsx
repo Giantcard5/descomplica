@@ -27,7 +27,7 @@ import { useToast } from "@/hooks/use-toast";
 
 interface UploadMethodsProps {
     method: string
-    onProcess: () => void
+    onProcess: (file: File) => void
     isProcessing: boolean
     isUploaded: boolean
 };
@@ -205,7 +205,7 @@ export function UploadMethods({ method, onProcess, isProcessing, isUploaded }: U
                     </div>
 
                     <div className="flex justify-end">
-                        <Button onClick={onProcess} disabled={isProcessing || !selectedFile || isUploaded}>
+                        <Button onClick={() => onProcess(selectedFile!)} disabled={isProcessing || !selectedFile || isUploaded}>
                             {isProcessing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             {isProcessing ? "Processing..." : "Process Receipt"}
                         </Button>
@@ -237,7 +237,7 @@ export function UploadMethods({ method, onProcess, isProcessing, isUploaded }: U
                     <ProductEntryForm />
 
                     <div className="flex justify-end">
-                        <Button onClick={onProcess} disabled={isProcessing || isUploaded}>
+                        <Button onClick={() => onProcess(selectedFile!)} disabled={isProcessing || isUploaded}>
                             {isProcessing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             {isProcessing ? "Processing..." : "Submit Data"}
                         </Button>
@@ -321,7 +321,7 @@ export function UploadMethods({ method, onProcess, isProcessing, isUploaded }: U
                     </div>
 
                     <div className="flex justify-end">
-                        <Button onClick={onProcess} disabled={isProcessing || !selectedFile || isUploaded}>
+                        <Button onClick={() => onProcess(selectedFile!)} disabled={isProcessing || !selectedFile || isUploaded}>
                             {isProcessing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             {isProcessing ? "Processing..." : "Upload File"}
                         </Button>
