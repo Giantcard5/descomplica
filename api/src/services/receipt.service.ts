@@ -55,9 +55,9 @@ export class ReceiptService {
         }
     }
 
-    async analyzeReceipt(receipt: Express.Multer.File): Promise<ReceiptItem[]> {
+    async analyzeReceipt(receipt: Express.Multer.File, method: 'photo' | 'file'): Promise<ReceiptItem[]> {
         const cleanBase64 = receipt.buffer.toString('base64');
-        const prompt = loadPrompt('receipt.txt');
+        const prompt = loadPrompt(method === 'photo' ? 'receipt-photo.md' : 'receipt-file.md');
 
         const response = await this.fetchAPI(prompt, [{ mimeType: receipt.mimetype, data: cleanBase64 }]);
 

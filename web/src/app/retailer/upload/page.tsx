@@ -82,10 +82,13 @@ export default function UploadReceiptPage() {
 
             const formData = new FormData();
             formData.append('file', file);
+            formData.append('method', uploadMethod);
 
             const response = await uploadService.postUpload(formData);
 
             if (response.length > 0) {
+                console.log(response);
+                
                 setIsProcessing(false)
                 setIsUploaded(true)
                 setCurrentStep(1)

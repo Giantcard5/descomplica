@@ -108,10 +108,20 @@ model Store {
   country     String
   description String
 
-  user   User   @relation(fields: [userId], references: [id])
-  userId String @unique
+  user    User      @relation(fields: [userId], references: [id])
+  userId  String    @unique
+  Product Product[]
 
   @@map("store")
+}
+
+model Product {
+  id      String @id @default(uuid())
+  name    String
+  store   Store  @relation(fields: [storeId], references: [id])
+  storeId String
+
+  @@map("products")
 }
 
 model UserPreferences {

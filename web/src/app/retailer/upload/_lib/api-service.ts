@@ -33,7 +33,7 @@ class UploadService extends FetchService {
             });
 
             const data = await response.json();
-            return data.products;
+            return data;
         } catch (error) {
             console.error('Upload error:', error);
             throw error;

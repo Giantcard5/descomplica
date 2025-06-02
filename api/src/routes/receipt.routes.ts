@@ -20,7 +20,7 @@ router.post('/upload', upload.single('file'), async (request: Request, response:
         return response.status(400).json({ message: 'No file uploaded' });
     };
 
-    const receipt = await receiptService.analyzeReceipt(request.file);
+    const receipt = await receiptService.analyzeReceipt(request.file, request.body.method);
 
     return response.json(receipt);
 });
