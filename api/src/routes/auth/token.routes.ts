@@ -6,7 +6,7 @@ import {
 
 import {
     tokenService
-} from '../services/token.service';
+} from '../../services/auth/token.service';
 
 const router = Router();
 

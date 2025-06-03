@@ -4,11 +4,11 @@ import {
 
 import {
     PrismaClientSingleton
-} from '../utils/prismaClient';
+} from '../../utils/prismaClient';
 
 import { 
     ITokenPayload 
-} from '../types/token';
+} from '../../types/token';
 
 export class TokenService extends PrismaClientSingleton {
     private static instance: TokenService;

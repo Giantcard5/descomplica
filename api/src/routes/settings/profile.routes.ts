@@ -6,11 +6,11 @@ import {
 
 import {
     validateAccessToken
-} from '../middleware/authenticated';
+} from '../../middleware/authenticated';
 
 import {
     profileService
-} from '../services/profile.service';
+} from '../../services/settings/profile.service';
 
 const router = Router();
 

@@ -1,29 +1,35 @@
-import { 
-    PrismaClientSingleton 
-} from "../utils/prismaClient";
+import {
+    PrismaClientSingleton
+} from "../../utils/prismaClient";
 
-import { 
-    loadPrompt 
-} from "../prompts";
+import {
+    loadPrompt
+} from "../../utils/prompts";
 
-import { productsService } from "./products.service";
+import {
+    StoreService
+} from "../../services/store/store.service";
+import {
+    ProductsService
+} from "../../services/store/products.service";
 
-interface ReceiptItem {
-    product_id: string;
-    product_name: string;
-    quantity: number;
-    unit_price: number;
-}
+import {
+    IReceiptItem
+} from "../../types/receipt";
 
 export class ReceiptService extends PrismaClientSingleton {
     private static instance: ReceiptService;
     private readonly apiKey: string;
     private readonly apiUrl: string;
+    private readonly storeService: StoreService;
+    private readonly productsService: ProductsService;
 
     private constructor() {
         super();
         this.apiKey = process.env.GEMINI_API_KEY as string;
         this.apiUrl = process.env.GEMINI_API_URL as string;
+        this.storeService = StoreService.getInstance();
+        this.productsService = ProductsService.getInstance();
     }
 
     static getInstance(): ReceiptService {
@@ -64,7 +70,7 @@ export class ReceiptService extends PrismaClientSingleton {
         }
     }
 
-    async analyzeReceipt(receipt: Express.Multer.File, method: 'photo' | 'file'): Promise<ReceiptItem[]> {
+    async analyzeReceipt(receipt: Express.Multer.File, method: 'photo' | 'file', token: string): Promise<IReceiptItem[]> {
         const cleanBase64 = receipt.buffer.toString('base64');
         const prompt = loadPrompt(method === 'photo' ? 'receipt-photo.md' : 'receipt-file.md');
 
@@ -79,31 +85,31 @@ export class ReceiptService extends PrismaClientSingleton {
             jsonString = jsonString.replace(/^```[a-zA-Z]*\n?/, '').replace(/```$/, '');
         }
 
-        const items: ReceiptItem[] = JSON.parse(jsonString);
-        // const storeId = receipt.storeId || "default-store-id"; // Adjust as needed to get storeId
-        // const storeId = "0f1ee5c1-834d-458c-862c-8cbf053aebfe"; // Adjust as needed to get storeId
-        // const suggestions: { item: ReceiptItem, suggestion: string }[] = [];
+        const items: IReceiptItem[] = JSON.parse(jsonString);
+        const storeId = await this.storeService.getStoreId(token);
 
-        // for (const item of items) {
-        //     const exists = await productsService.findByIdOrName(item.product_id, item.product_name, storeId);
-        //     if (!exists) {
-        //         // Check for similar product (same name, different id)
-        //         const similar = await productsService.getProducts();
-        //         const similarProduct = similar.find(p => p.name === item.product_name && p.id !== item.product_id && p.storeId === storeId);
-        //         if (similarProduct) {
-        //             suggestions.push({
-        //                 item,
-        //                 suggestion: `Produto semelhante encontrado: ${similarProduct.name} (ID: ${similarProduct.id}). Considere substituir.`
-        //             });
-        //         } else {
-        //             await productsService.createProduct({
-        //                 id: item.product_id,
-        //                 name: item.product_name,
-        //                 storeId: storeId
-        //             });
-        //         }
-        //     }
-        // }
+        const suggestions: { item: IReceiptItem, suggestion: string }[] = [];
+
+        for (const item of items) {
+            const exists = await this.productsService.findByIdOrName(item.product_id, item.product_name, storeId);
+            if (!exists) {
+                // Check for similar product(same name, different id)
+                // const similar = await this.productsService.getProductsByStoreId(storeId);
+                // const similarProduct = similar.find(p => p.name === item.product_name && p.id !== item.product_id && p.storeId === storeId);
+                // if (similarProduct) {
+                //     suggestions.push({
+                //         item,
+                //         suggestion: `Produto semelhante encontrado: ${similarProduct.name} (ID: ${similarProduct.id}). Considere substituir.`
+                //     });
+                // } else {
+                //     await this.productsService.createProduct({
+                //         id: item.product_id,
+                //         name: item.product_name,
+                //         storeId: storeId
+                //     });
+                // }
+            }
+        }
 
         // if (suggestions.length > 0) {
         //     // You may want to return suggestions or handle them as needed

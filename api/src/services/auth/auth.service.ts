@@ -7,7 +7,7 @@ import {
 
 import {
     PrismaClientSingleton
-} from '../utils/prismaClient';
+} from '../../utils/prismaClient';
 
 import {
     tokenService
@@ -21,7 +21,7 @@ import {
     IRegister,
     IRegisterOnboarding,
     IResetPassword
-} from '../types/auth';
+} from '../../types/auth';
 
 export class AuthService extends PrismaClientSingleton {
     private static instance: AuthService;

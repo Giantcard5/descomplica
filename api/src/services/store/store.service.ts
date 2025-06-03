@@ -4,12 +4,12 @@ import {
 
 import {
     PrismaClientSingleton
-} from '../utils/prismaClient';
+} from '../../utils/prismaClient';
 
 import {
     IStore,
     IUpdate
-} from '../types/store';
+} from '../../types/store';
 
 export class StoreService extends PrismaClientSingleton {
     private static instance: StoreService;
@@ -88,6 +88,22 @@ export class StoreService extends PrismaClientSingleton {
             message: 'Store updated successfully',
             status: true
         };
+    }
+
+    async getStoreId(token: string) {
+        const decoded = verify(token, process.env.JWT_SECRET as string);
+    
+        const store = await this.prisma.store.findUnique({
+            where: {
+                userId: decoded.sub as string
+            }
+        });
+    
+        if (!store) {
+            throw new Error('Store not found');
+        };
+
+        return store.id;
     }
 }
 

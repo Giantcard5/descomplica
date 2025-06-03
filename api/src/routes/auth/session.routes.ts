@@ -6,11 +6,11 @@ import {
 
 import {
     validateAccessToken
-} from '../middleware/authenticated';
+} from '../../middleware/authenticated';
 
 import {
     sessionService
-} from '../services/session.service';
+} from '../../services/auth/session.service';
 
 const router = Router();
 

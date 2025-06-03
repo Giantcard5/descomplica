@@ -6,7 +6,7 @@ import {
 
 import {
     authService
-} from '../services/auth.service';
+} from '../../services/auth/auth.service';
 
 const router = Router();
 

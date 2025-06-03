@@ -4,14 +4,14 @@ import {
 
 import {
     PrismaClientSingleton
-} from '../utils/prismaClient';
+} from '../../utils/prismaClient';
 
 import {
     INotification,
     IPreferences,
     IUpdateNotifications,
     IUpdatePreferences
-} from '../types/settings';
+} from '../../types/settings';
 
 export class SettingsService extends PrismaClientSingleton {
     private static instance: SettingsService;

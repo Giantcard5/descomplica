@@ -4,11 +4,11 @@ import {
 
 import {
     PrismaClientSingleton
-} from '../utils/prismaClient';
+} from '../../utils/prismaClient';
 
 import { 
     IUpdate 
-} from '../types/profile';
+} from '../../types/profile';
 
 export class ProfileService extends PrismaClientSingleton {
     private static instance: ProfileService;

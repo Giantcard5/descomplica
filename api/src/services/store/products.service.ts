@@ -1,4 +1,6 @@
-import { PrismaClientSingleton } from "../utils/prismaClient";
+import { 
+    PrismaClientSingleton 
+} from "../../utils/prismaClient";
 
 export class ProductsService extends PrismaClientSingleton {
     private static instance: ProductsService;
@@ -14,14 +16,14 @@ export class ProductsService extends PrismaClientSingleton {
         return ProductsService.instance;
     }
 
-    async getProducts(): Promise<{
-        id: string;
-        name: string;
-        storeId: string;
-    }[]> {
-        const products = await this.prisma.product.findMany();
+    async getProductsByStoreId(storeId: string) {
+        const products = await this.prisma.product.findMany({
+            where: {
+                storeId: storeId
+            }
+        });
         return products;
-    };
+    }
 
     async createProduct(product: { 
         id: string,
@@ -52,7 +54,7 @@ export class ProductsService extends PrismaClientSingleton {
         }
 
         // Load products from products.json
-        const products = await this.getProducts();
+        const products = await this.getProductsByStoreId(storeId);
 
         console.log(products);
 
@@ -85,7 +87,7 @@ export class ProductsService extends PrismaClientSingleton {
             }
         })
 
-        return !!product; // Return a boolean
+        return product; // Return a boolean
     }
 };
 

@@ -4,7 +4,7 @@ import {
 
 import {
     PrismaClientSingleton
-} from '../utils/prismaClient';
+} from '../../utils/prismaClient';
 
 export class SessionService extends PrismaClientSingleton {
     private static instance: SessionService;
