@@ -31,7 +31,7 @@ export const formSchema = z.object({
     state: z.string().min(1, { message: 'State is required' }),
     zipCode: z.string().min(1, { message: 'Zip Code is required' }),
     country: z.enum(['br', 'us', 'other'], { message: 'Country is required' }),
-    description: z.string().min(1, { message: 'Description is required' }),
+    description: z.string().min(1, { message: 'Description is required' }).max(200, { message: 'Description must be less than 200 characters' }),
 });
 
 export type FormSchema = z.infer<typeof formSchema>;

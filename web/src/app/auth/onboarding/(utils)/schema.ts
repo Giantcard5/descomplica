@@ -4,7 +4,7 @@ export const retailerFormSchema = z.object({
     // Personal info
     dateOfBirth: z.string().min(1, { message: 'Date of birth is required' }),
     phoneNumber: z.string().min(1, { message: 'Phone number is required' }),
-    bio: z.string().min(1, { message: 'Bio is required' }),
+    bio: z.string().min(1, { message: 'Bio is required' }).max(200, { message: 'Bio must be less than 200 characters' }),
     
     // Store info
     name: z.string().min(1, { message: 'Store name is required' }),
