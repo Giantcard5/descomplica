@@ -5,7 +5,7 @@ import {
 } from 'express';
 
 import {
-    refreshToken
+    tokenService
 } from '../services/token.service';
 
 const router = Router();
@@ -20,7 +20,7 @@ router.post('/refresh-token', async (request: Request, response: Response) => {
     };
 
     try {
-        const result = await refreshToken(refreshTokenCookie);
+        const result = await tokenService.refreshToken(refreshTokenCookie);
         
         if (!result) {
             return response.status(401).json({ 

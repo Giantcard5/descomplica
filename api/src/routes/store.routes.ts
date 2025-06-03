@@ -9,8 +9,7 @@ import {
 } from '../middleware/authenticated';
 
 import {
-    getStore,
-    updateStore,
+    storeService
 } from '../services/store.service';
 
 const router = Router();
@@ -29,7 +28,7 @@ router.get('/', async (request: Request, response: Response) => {
     };
 
     const token = request.cookies.access_token;
-    const store = await getStore(token);
+    const store = await storeService.get(token);
 
     return response.json(store);
 });
@@ -48,7 +47,7 @@ router.post('/', async (request: Request, response: Response) => {
     };
 
     const token = request.cookies.access_token;
-    const updatedStore = await updateStore(token, request.body);
+    const updatedStore = await storeService.update({ token, store: request.body });
 
     return response.status(200).json(updatedStore);
 });

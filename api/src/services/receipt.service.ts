@@ -13,8 +13,8 @@ export class ReceiptService {
     private readonly apiUrl: string;
 
     private constructor() {
-        this.apiKey = 'AIzaSyANAzlKLswzS-bx2mRe_R5xtYfn2ykeKMA';
-        this.apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent';
+        this.apiKey = process.env.GEMINI_API_KEY as string;
+        this.apiUrl = process.env.GEMINI_API_URL as string;
     }
 
     static getInstance(): ReceiptService {

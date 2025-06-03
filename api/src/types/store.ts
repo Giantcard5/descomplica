@@ -44,4 +44,9 @@ export interface IOnboardingStore {
     zipCode: string;
     country: 'br' | 'us' | 'other';
     description: string;  
-}
+};
+
+export interface IUpdate {
+    token: string;
+    store: IStore;
+};

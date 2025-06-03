@@ -9,7 +9,7 @@ import {
 } from '../middleware/authenticated';
 
 import {
-    getSession
+    sessionService
 } from '../services/session.service';
 
 const router = Router();
@@ -28,7 +28,7 @@ router.get('/', async (request: Request, response: Response) => {
     };
 
     const token = request.cookies.access_token;
-    const session = await getSession(token);
+    const session = await sessionService.get(token);
 
     return response.json(session);
 });

@@ -1,16 +1,10 @@
-import { prisma } from "../utils/prismaClient";
+import { PrismaClientSingleton } from "../utils/prismaClient";
 
-// Criar um documento referente aquela loja que irá alimentar com alguns padrões de product_id e seu product_name referente. 
-// fazer uma validacao entre o documento recebido com o documento com os valores alimentados, 
-// caso n exista algum valor do documento recebido nele, adiciona-lo, caso tenha verificar se o product_id e o product_name é igual. 
-// caso o product_name ou product_id já exista, retorne uma sugestão para o usuário altera-lo para o nome e id já existente.
-
-export class ProductsService {
+export class ProductsService extends PrismaClientSingleton {
     private static instance: ProductsService;
-    private readonly prisma: typeof prisma;
 
     private constructor() { 
-        this.prisma = prisma;
+        super();
     }
 
     static getInstance(): ProductsService {
@@ -91,7 +85,7 @@ export class ProductsService {
             }
         })
 
-        return !!product; // Return a boolean value
+        return !!product; // Return a boolean
     }
 };
 

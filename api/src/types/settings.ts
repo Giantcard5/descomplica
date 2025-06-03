@@ -23,4 +23,14 @@ export interface IOnboardingSettings {
     theme: 'light' | 'dark' | 'system';
     dateFormat: 'dd_mm_yyyy' | 'mm_dd_yyyy' | 'yyyy_mm_dd';
     notification: 'real_time' | 'daily' | 'weekly' | 'never';
-}
+};
+
+export interface IUpdateNotifications {
+    token: string;
+    notifications: INotification;
+};
+
+export interface IUpdatePreferences {
+    token: string;
+    preferences: IPreferences;
+};

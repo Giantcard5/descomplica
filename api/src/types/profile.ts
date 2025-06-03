@@ -12,3 +12,13 @@ export interface IOnboardingProfile {
     dateOfBirth: string;
     phoneNumber: string;
 };
+
+export interface IUpdate {
+    token: string;
+    profile: {
+        name: string;
+        phoneNumber: string;
+        bio: string;
+        photoUrl: string;
+    };
+};

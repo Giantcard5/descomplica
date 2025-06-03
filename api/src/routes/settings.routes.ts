@@ -9,10 +9,7 @@ import {
 } from '../middleware/authenticated';
 
 import {
-    updateUserPreferences,
-    getUserPreferences,
-    updateUserNotifications,
-    getUserNotifications
+    settingsService
 } from '../services/settings.service';
 
 const router = Router();
@@ -31,7 +28,7 @@ router.get('/notifications', async (request: Request, response: Response) => {
     };
 
     const token = request.cookies.access_token;
-    const notifications = await getUserNotifications(token);
+    const notifications = await settingsService.getNotifications(token);
 
     return response.json(notifications);
 });
@@ -50,7 +47,7 @@ router.post('/notifications', async (request: Request, response: Response) => {
     };
 
     const token = request.cookies.access_token;
-    const updatedNotifications = await updateUserNotifications(token, request.body);
+    const updatedNotifications = await settingsService.updateNotifications({ token, notifications: request.body });
 
     return response.status(200).json(updatedNotifications);
 });
@@ -69,7 +66,7 @@ router.get('/preferences', async (request: Request, response: Response) => {
     };
 
     const token = request.cookies.access_token;
-    const preferences = await getUserPreferences(token);
+    const preferences = await settingsService.getPreferences(token);
 
     return response.json(preferences);
 });
@@ -88,7 +85,7 @@ router.post('/preferences', async (request: Request, response: Response) => {
     };
 
     const token = request.cookies.access_token;
-    const updatedPreferences = await updateUserPreferences(token, request.body);
+    const updatedPreferences = await settingsService.updatePreferences({ token, preferences: request.body });
 
     return response.status(200).json(updatedPreferences);
 });
