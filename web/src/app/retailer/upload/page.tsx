@@ -191,7 +191,7 @@ export default function UploadReceiptPage() {
                     <ProductMappingTable items={receiptData.items} onUpdate={handleProductUpdate} />
 
                     <div className="flex justify-between pt-4">
-                        <Button variant="outline" onClick={() => setCurrentStep(0)} disabled={isProcessing}>
+                        <Button variant="outline" onClick={handleReset} disabled={isProcessing}>
                             <ArrowLeft className="mr-2 h-4 w-4" />
                             Back to Upload
                         </Button>
