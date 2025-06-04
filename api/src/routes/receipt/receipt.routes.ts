@@ -10,7 +10,7 @@ import {
     receiptService
 } from '../../services/receipt/receipt.service';
 
-import suggestionsService from '../../services/receipt/suggestions.service';
+import similarityService from '../../services/receipt/similarity.service';
 
 const router = Router();
 
@@ -42,9 +42,9 @@ router.post('/upload', upload.single('file'), async (request: Request, response:
 router.get('/similarity', async (request: Request, response: Response) => {
     const { item1, item2 } = request.body;
 
-    await suggestionsService.getSimilarity(item1, item2);
+    const similarity = await similarityService.getSimilarity(item1, item2);
 
-    return response.json({ message: 'Similarity calculated' });
+    return response.json({ similarity });
 });
 
 export const receiptRouter = router;

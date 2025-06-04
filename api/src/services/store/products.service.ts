@@ -2,6 +2,10 @@ import {
     PrismaClientSingleton 
 } from "../../utils/prismaClient";
 
+import {
+    IProduct
+} from "../../types/product";
+
 export class ProductsService extends PrismaClientSingleton {
     private static instance: ProductsService;
 
@@ -76,7 +80,7 @@ export class ProductsService extends PrismaClientSingleton {
         return existingProduct;
     };
 
-    async findByIdOrName(product_id: string, product_name: string, storeId: string) {
+    async findByIdOrName(product_id: string, product_name: string, storeId: string): Promise<IProduct | null> {
         const product = await this.prisma.product.findFirst({
             where: {
                 OR: [
@@ -87,7 +91,7 @@ export class ProductsService extends PrismaClientSingleton {
             }
         })
 
-        return product; // Return a boolean
+        return product;
     }
 };
 
