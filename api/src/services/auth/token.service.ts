@@ -45,7 +45,7 @@ export class TokenService extends PrismaClientSingleton {
             const payload: ITokenPayload = {
                 sub: userId,
                 iat: now,
-                type: 'access'
+                type: userExists.auth.type
             };
     
             if (!process.env.JWT_SECRET) {

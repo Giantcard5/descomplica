@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+import { decodeJwt } from 'jose';
+
 const PUBLIC_ROUTES = [
     { prefix: '/', whenAuthenticated: 'next' },
     { prefix: '/auth/login', whenAuthenticated: 'redirect' },
@@ -13,65 +15,65 @@ const PRIVATE_ROUTES = [
     { prefix: '/industry', type: 'industry' },
 ] as const;
 
-function isPublicRoute(path: string) {
-    if (path === '/') {
-        return PUBLIC_ROUTES.find((route) => route.prefix === '/');
+export default async function middleware(request: NextRequest) {
+    const url = request.nextUrl;
+    const path = url.pathname;
+    const token = request.cookies.get('access_token')?.value;
+
+    const publicRoute = PUBLIC_ROUTES.find(
+        (r) => path === r.prefix || path.startsWith(r.prefix + '/')
+    );
+    const privateRoute = PRIVATE_ROUTES.find((r) =>
+        path.startsWith(r.prefix)
+    );
+
+    // 1. Não autenticado + rota pública → segue + cache otimizado
+    if (!token && publicRoute) {
+        const response = NextResponse.next()
+        response.headers.set(
+            'cache-control',
+            'public, max-age=3600, stale-while-revalidate=59'
+        )
+        return response
     }
 
-    return PUBLIC_ROUTES.find(
-        (route) =>
-            route.prefix !== '/' && (path === route.prefix || path.startsWith(route.prefix + '/'))
-    );
-}
+    // 2. Não autenticado + rota privada → login
+    if (!token && !publicRoute) {
+        return NextResponse.redirect(new URL('/auth/login', request.url))
+    }
 
-function getPrivateRouteType(path: string): 'retailer' | 'industry' | null {
-    for (const route of PRIVATE_ROUTES) {
-        if (path.startsWith(route.prefix)) {
-            return route.type;
+    // 3. Autenticado + rota pública com redirect → dashboard
+    if (token && publicRoute?.whenAuthenticated === 'redirect') {
+        try {
+            const { type } = decodeJwt(token);
+            const dest = type === 'retailer' ? '/retailer' : '/industry';
+            return NextResponse.redirect(new URL(dest, request.url))
+        } catch (error) {
+            console.error(error);
+            return NextResponse.redirect(new URL('/auth/login', request.url))
         }
     }
-    return null;
-}
 
-const REDIRECT_WHEN_NOT_AUTHENTICATED = '/auth/login';
-
-export default async function middleware(request: NextRequest) {
-    const path = request.nextUrl.pathname;
-
-    const accessToken = request.cookies.get('access_token')?.value;
-    const type = request.cookies.get('user_type')?.value;
-
-    const publicRoute = isPublicRoute(path);
-    const requiredType = getPrivateRouteType(path);
-
-    // ✅ 1. Não autenticado acessando rota pública → OK
-    if (!accessToken && publicRoute) {
-        return NextResponse.next();
+    // 4. Checagem leve de JWT (expiração + claims básicas)
+    let payload: any
+    try {
+        payload = decodeJwt(token!) as any
+        if (!payload.exp || Date.now() / 1000 > payload.exp) {
+            throw new Error('Token expirado');
+        };
+    } catch (err) {
+        console.error(err);
+        return NextResponse.redirect(new URL('/auth/login', request.url))
     }
 
-    // ✅ 2. Não autenticado tentando acessar rota privada → redireciona
-    if (!accessToken && !publicRoute) {
-        const redirectUrl = request.nextUrl.clone();
-        redirectUrl.pathname = REDIRECT_WHEN_NOT_AUTHENTICATED;
-        return NextResponse.redirect(redirectUrl);
+    // 5. Autorização claim-based para rotas privadas
+    if (privateRoute && payload.type !== privateRoute.type) {
+        const dest = payload.type === 'retailer' ? '/retailer' : '/industry'
+        return NextResponse.redirect(new URL(dest, request.url))
     }
 
-    // ✅ 3. Autenticado acessando rota pública com `whenAuthenticated: 'redirect'`
-    if (accessToken && publicRoute?.whenAuthenticated === 'redirect') {
-        const redirectUrl = request.nextUrl.clone();
-        redirectUrl.pathname = type === 'retailer' ? '/retailer' : '/industry';
-        return NextResponse.redirect(redirectUrl);
-    }
-
-    // ✅ 4. Autenticado tentando acessar rota de outro tipo → redireciona para sua rota correta
-    if (requiredType && type !== requiredType) {
-        const redirectUrl = request.nextUrl.clone();
-        redirectUrl.pathname = type === 'retailer' ? '/retailer' : '/industry';
-        return NextResponse.redirect(redirectUrl);
-    }
-
-    // ✅ 5. Tudo OK → segue para rota solicitada
-    return NextResponse.next();
+    // 6. Tudo ok → prossegue. Verificação de assinatura completa fica no backend.
+    return NextResponse.next()
 }
 
 export const config = {
