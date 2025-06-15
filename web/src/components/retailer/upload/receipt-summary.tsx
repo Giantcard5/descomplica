@@ -1,13 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 import { Check, FileText, ArrowLeft } from 'lucide-react';
 
@@ -19,7 +13,7 @@ interface ReceiptSummaryProps {
         total: number;
     };
     onReset: () => void;
-};
+}
 
 export function ReceiptSummary({ receiptData, onReset }: ReceiptSummaryProps) {
     return (
@@ -102,4 +96,4 @@ export function ReceiptSummary({ receiptData, onReset }: ReceiptSummaryProps) {
             </Card>
         </div>
     );
-};
+}

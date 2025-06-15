@@ -9,12 +9,8 @@ import { Progress } from '@/components/ui/progress';
 
 import Header from '@/components/auth/header';
 
-import { 
-    RetailerOnboardingForm 
-} from '@/app/auth/onboarding/(pages)/(retailer)/form';
-import { 
-    IndustryOnboardingForm 
-} from '@/app/auth/onboarding/(pages)/(industry)/form';
+import { RetailerOnboardingForm } from '@/app/auth/onboarding/(pages)/(retailer)/form';
+import { IndustryOnboardingForm } from '@/app/auth/onboarding/(pages)/(industry)/form';
 
 export default function OnboardingPage() {
     const searchParams = useSearchParams();
@@ -29,7 +25,7 @@ export default function OnboardingPage() {
         if (!type || (type !== 'retailer' && type !== 'industry')) {
             router.push('/auth/register');
             return;
-        };
+        }
 
         setAccountType(type);
     }, [searchParams, router]);
@@ -38,12 +34,12 @@ export default function OnboardingPage() {
         if (step < totalSteps) {
             setStep(step + 1);
             window.scrollTo(0, 0);
-        };
+        }
     };
 
     return (
         <div className="flex min-h-screen flex-col">
-            <Header/>
+            <Header />
             <div className="flex flex-1 flex-col p-4 md:p-6">
                 <div className="mx-auto w-full max-w-3xl space-y-6">
                     <div className="space-y-2">
@@ -91,4 +87,4 @@ export default function OnboardingPage() {
             </div>
         </div>
     );
-};
+}

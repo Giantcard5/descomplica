@@ -21,16 +21,19 @@ import { Loader2 } from 'lucide-react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import {
-    FormSchema,
-    formSchema
-} from './(lib)/schema';
+import { FormSchema, formSchema } from './(lib)/schema';
 
 export default function RegisterPage() {
     const { register: registerAuth } = useAuth();
     const { toast } = useToast();
 
-    const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<FormSchema>({
+    const {
+        register,
+        handleSubmit,
+        setValue,
+        watch,
+        formState: { errors },
+    } = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             type: '' as 'retailer' | 'industry',
@@ -66,12 +69,12 @@ export default function RegisterPage() {
             });
         } finally {
             setIsLoading(false);
-        };
+        }
     };
 
     return (
         <div className="flex min-h-screen flex-col">
-            <Header/>
+            <Header />
             <form
                 className="flex flex-1 items-center justify-center p-4"
                 onSubmit={handleSubmit(handleRegister)}
@@ -221,4 +224,4 @@ export default function RegisterPage() {
             </form>
         </div>
     );
-};
+}

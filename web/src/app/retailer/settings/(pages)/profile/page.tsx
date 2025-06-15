@@ -21,18 +21,11 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 import { Upload } from 'lucide-react';
 
-import {
-    profileService
-} from './lib/api-service';
+import { profileService } from './lib/api-service';
 
-import {
-    formSchema,
-    FormSchema
-} from './utils/schema';
+import { formSchema, FormSchema } from './utils/schema';
 
-import { 
-    useToast 
-} from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 export default function ProfileSettingsPage() {
     const { toast } = useToast();
@@ -41,7 +34,7 @@ export default function ProfileSettingsPage() {
         register,
         handleSubmit,
         reset,
-        formState: { errors }
+        formState: { errors },
     } = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
     });
@@ -69,10 +62,10 @@ export default function ProfileSettingsPage() {
                     title: response.message,
                     description: 'Your profile could not be updated',
                 });
-            };
+            }
         } catch (err: any) {
             console.error(err);
-        };
+        }
     };
 
     return (
@@ -111,7 +104,7 @@ export default function ProfileSettingsPage() {
                     <div className="grid gap-4 sm:grid-cols-2">
                         <div className="space-y-2">
                             <Label htmlFor="first-name">Full Name</Label>
-                            <Input id="first-name" {...register('name')} placeholder='Full Name' />
+                            <Input id="first-name" {...register('name')} placeholder="Full Name" />
                             {errors.name && (
                                 <p className="text-red-500 text-sm">{errors.name.message}</p>
                             )}
@@ -119,7 +112,12 @@ export default function ProfileSettingsPage() {
 
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
-                            <Input id="email" type="email" {...register('email')} placeholder='Email' />
+                            <Input
+                                id="email"
+                                type="email"
+                                {...register('email')}
+                                placeholder="Email"
+                            />
                             {errors.email && (
                                 <p className="text-red-500 text-sm">{errors.email.message}</p>
                             )}
@@ -128,7 +126,12 @@ export default function ProfileSettingsPage() {
 
                     <div className="space-y-2">
                         <Label htmlFor="phone">Phone Number</Label>
-                        <Input id="phone" type="tel" {...register('phoneNumber')} placeholder='Phone Number' />
+                        <Input
+                            id="phone"
+                            type="tel"
+                            {...register('phoneNumber')}
+                            placeholder="Phone Number"
+                        />
                         {errors.phoneNumber && (
                             <p className="text-red-500 text-sm">{errors.phoneNumber.message}</p>
                         )}
@@ -143,13 +146,13 @@ export default function ProfileSettingsPage() {
                             placeholder="Tell us about yourself"
                             {...register('bio')}
                         ></textarea>
-                        {errors.bio && (
-                            <p className="text-red-500 text-sm">{errors.bio.message}</p>
-                        )}
+                        {errors.bio && <p className="text-red-500 text-sm">{errors.bio.message}</p>}
                     </div>
                 </CardContent>
                 <CardFooter className="flex justify-end gap-2">
-                    <Button type='button' variant="outline">Cancel</Button>
+                    <Button type="button" variant="outline">
+                        Cancel
+                    </Button>
                     <Button type="submit">Save Changes</Button>
                 </CardFooter>
             </form>

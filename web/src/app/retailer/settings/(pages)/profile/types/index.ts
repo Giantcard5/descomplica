@@ -3,4 +3,4 @@ export interface IProfile {
     email: string;
     phoneNumber: string;
     bio: string;
-};
+}

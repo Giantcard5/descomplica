@@ -1,81 +1,63 @@
 'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
-import { 
-    Tabs, 
-    TabsList, 
-    TabsTrigger, 
-    TabsContent 
-} from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-import { UploadMethods } from "@/components/retailer/upload/upload-methods";
-import { ReceiptSummary } from "@/components/retailer/upload/receipt-summary";
-import { ProgressStepper } from "@/components/retailer/upload/progress-stepper";
-import { ProductMappingTable } from "@/components/retailer/upload/product-mapping-table";
-import { 
-    ArrowLeft, 
-    ArrowRight, 
-    Check, 
-    Camera, 
-    FileText, 
-    Upload 
-} from "lucide-react";
+import { UploadMethods } from '@/components/retailer/upload/upload-methods';
+import { ReceiptSummary } from '@/components/retailer/upload/receipt-summary';
+import { ProgressStepper } from '@/components/retailer/upload/progress-stepper';
+import { ProductMappingTable } from '@/components/retailer/upload/product-mapping-table';
+import { ArrowLeft, ArrowRight, Check, Camera, FileText, Upload } from 'lucide-react';
 
-import { 
-    useToast 
-} from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 
-import { 
-    mockReceiptData 
-} from "./_utils/mock";
+import { mockReceiptData } from './_utils/mock';
 
-import { 
-    uploadService 
-} from "./_lib/api-service";
+import { uploadService } from './_lib/api-service';
 
 export default function UploadReceiptPage() {
-    const { toast } = useToast()
+    const { toast } = useToast();
 
-    const [currentStep, setCurrentStep] = useState(0)
-    const [uploadMethod, setUploadMethod] = useState("photo")
-    const [receiptData, setReceiptData] = useState(mockReceiptData)
-    const [isProcessing, setIsProcessing] = useState(false)
-    const [isUploaded, setIsUploaded] = useState(false)
+    const [currentStep, setCurrentStep] = useState(0);
+    const [uploadMethod, setUploadMethod] = useState('photo');
+    const [receiptData, setReceiptData] = useState(mockReceiptData);
+    const [isProcessing, setIsProcessing] = useState(false);
+    const [isUploaded, setIsUploaded] = useState(false);
 
     const steps = [
-        { id: "upload", label: "Upload Receipt" },
-        { id: "review", label: "Review Products" },
-        { id: "confirm", label: "Confirm & Submit" },
-    ]
+        { id: 'upload', label: 'Upload Receipt' },
+        { id: 'review', label: 'Review Products' },
+        { id: 'confirm', label: 'Confirm & Submit' },
+    ];
 
     const uploadMethods = [
         {
-            id: "photo",
-            label: "Photo Upload",
-            icon: Camera
+            id: 'photo',
+            label: 'Photo Upload',
+            icon: Camera,
         },
         {
-            id: "manual",
-            label: "Manual Entry",
-            icon: FileText
+            id: 'manual',
+            label: 'Manual Entry',
+            icon: FileText,
         },
         {
-            id: "file",
-            label: "File Upload",
-            icon: Upload
+            id: 'file',
+            label: 'File Upload',
+            icon: Upload,
         },
-    ]
+    ];
 
     const handleProcessReceipt = async (file: File) => {
         if (!file) {
             return toast({
-                title: "No file selected",
-                description: "Please select a file to upload",
+                title: 'No file selected',
+                description: 'Please select a file to upload',
             });
-        };
+        }
 
         try {
             setIsProcessing(true);
@@ -88,55 +70,55 @@ export default function UploadReceiptPage() {
 
             if (response.length > 0) {
                 console.log(response);
-                
-                setIsProcessing(false)
-                setIsUploaded(true)
-                setCurrentStep(1)
+
+                setIsProcessing(false);
+                setIsUploaded(true);
+                setCurrentStep(1);
             } else {
                 toast({
-                    title: "Failed to process receipt",
-                    description: "No items found, please try again or contact support",
+                    title: 'Failed to process receipt',
+                    description: 'No items found, please try again or contact support',
                 });
             }
         } catch (error: any) {
             toast({
-                title: "Failed to process receipt",
-                description: error?.message || "Please try again or contact support",
+                title: 'Failed to process receipt',
+                description: error?.message || 'Please try again or contact support',
             });
         } finally {
             setIsProcessing(false);
-        };
-    }
+        }
+    };
 
     const handleProductUpdate = (updatedItems: any) => {
-        setReceiptData({ ...receiptData, items: updatedItems })
-    }
+        setReceiptData({ ...receiptData, items: updatedItems });
+    };
 
     const handleSubmit = () => {
-        setIsProcessing(true)
+        setIsProcessing(true);
         // Simulate submission delay
         setTimeout(() => {
-            setIsProcessing(false)
-            setCurrentStep(2)
+            setIsProcessing(false);
+            setCurrentStep(2);
             toast({
-                title: "Receipt submitted successfully",
-                description: "Your receipt data has been saved and is being processed.",
-            })
-        }, 1500)
-    }
+                title: 'Receipt submitted successfully',
+                description: 'Your receipt data has been saved and is being processed.',
+            });
+        }, 1500);
+    };
 
     const handleReset = () => {
-        setCurrentStep(0)
-        setIsUploaded(false)
-        setReceiptData(mockReceiptData)
-        setUploadMethod("photo")
-    }
+        setCurrentStep(0);
+        setIsUploaded(false);
+        setReceiptData(mockReceiptData);
+        setUploadMethod('photo');
+    };
 
     const handleMethodChange = (method: string) => {
         if (!isProcessing && !isUploaded) {
-            setUploadMethod(method)
+            setUploadMethod(method);
         }
-    }
+    };
 
     return (
         <div className="space-y-6">
@@ -147,7 +129,7 @@ export default function UploadReceiptPage() {
                     <div className="flex justify-center">
                         <TabsList className="grid w-full grid-cols-3 bg-muted/50">
                             {uploadMethods.map((method) => {
-                                const Icon = method.icon
+                                const Icon = method.icon;
                                 return (
                                     <TabsTrigger
                                         key={method.id}
@@ -158,7 +140,7 @@ export default function UploadReceiptPage() {
                                         <Icon className="h-4 w-4" />
                                         <span className="hidden sm:inline">{method.label}</span>
                                     </TabsTrigger>
-                                )
+                                );
                             })}
                         </TabsList>
                     </div>
@@ -181,10 +163,12 @@ export default function UploadReceiptPage() {
                     <Alert variant="default" className="bg-muted/50">
                         <AlertTitle className="flex items-center gap-2">
                             <Check className="h-4 w-4 text-green-500" />
-                            Receipt Processed via {uploadMethods.find((m) => m.id === uploadMethod)?.label}
+                            Receipt Processed via{' '}
+                            {uploadMethods.find((m) => m.id === uploadMethod)?.label}
                         </AlertTitle>
                         <AlertDescription>
-                            We've detected {receiptData.items.length} products. Please review and confirm the product matches below.
+                            We've detected {receiptData.items.length} products. Please review and
+                            confirm the product matches below.
                         </AlertDescription>
                     </Alert>
 
@@ -197,16 +181,21 @@ export default function UploadReceiptPage() {
                         </Button>
                         <Button
                             onClick={handleSubmit}
-                            disabled={isProcessing || receiptData.items.some((item) => item.status === "unmatched")}
+                            disabled={
+                                isProcessing ||
+                                receiptData.items.some((item) => item.status === 'unmatched')
+                            }
                         >
-                            {isProcessing ? "Processing..." : "Confirm & Submit"}
+                            {isProcessing ? 'Processing...' : 'Confirm & Submit'}
                             {!isProcessing && <ArrowRight className="ml-2 h-4 w-4" />}
                         </Button>
                     </div>
                 </div>
             )}
 
-            {currentStep === 2 && <ReceiptSummary receiptData={receiptData} onReset={handleReset} />}
+            {currentStep === 2 && (
+                <ReceiptSummary receiptData={receiptData} onReset={handleReset} />
+            )}
         </div>
-    )
+    );
 }

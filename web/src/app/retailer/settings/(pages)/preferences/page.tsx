@@ -4,14 +4,9 @@ import { useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-    preferencesService
-} from './lib/api-service';
+import { preferencesService } from './lib/api-service';
 
-import {
-    formSchema,
-    FormSchema
-} from './utils/schema';
+import { formSchema, FormSchema } from './utils/schema';
 
 import {
     Card,
@@ -33,9 +28,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 
-import { 
-    useToast 
-} from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 export default function PreferencesSettingsPage() {
     const { toast } = useToast();
@@ -46,7 +39,7 @@ export default function PreferencesSettingsPage() {
         reset,
         setValue,
         watch,
-        formState: { errors }
+        formState: { errors },
     } = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
     });
@@ -74,10 +67,10 @@ export default function PreferencesSettingsPage() {
                     title: response.message,
                     description: 'Your app preferences could not be updated',
                 });
-            };
+            }
         } catch (err: any) {
             console.error(err);
-        };
+        }
     };
 
     return (
@@ -92,9 +85,12 @@ export default function PreferencesSettingsPage() {
                         <h3 className="text-lg font-medium">Appearance</h3>
                         <div className="space-y-2">
                             <Label htmlFor="theme">Theme</Label>
-                            <Select value={watch('theme')} onValueChange={(value) => {
-                                setValue('theme', value as 'light' | 'dark' | 'system');
-                            }}>
+                            <Select
+                                value={watch('theme')}
+                                onValueChange={(value) => {
+                                    setValue('theme', value as 'light' | 'dark' | 'system');
+                                }}
+                            >
                                 <SelectTrigger id="theme">
                                     <SelectValue placeholder="Select theme" />
                                 </SelectTrigger>
@@ -116,9 +112,12 @@ export default function PreferencesSettingsPage() {
                         <h3 className="text-lg font-medium">Language & Region</h3>
                         <div className="space-y-2">
                             <Label htmlFor="language">Language</Label>
-                            <Select value={watch('language')} onValueChange={(value) => {
-                                setValue('language', value as 'en' | 'es' | 'pt_BR');
-                            }}>
+                            <Select
+                                value={watch('language')}
+                                onValueChange={(value) => {
+                                    setValue('language', value as 'en' | 'es' | 'pt_BR');
+                                }}
+                            >
                                 <SelectTrigger id="language">
                                     <SelectValue placeholder="Select language" />
                                 </SelectTrigger>
@@ -134,9 +133,15 @@ export default function PreferencesSettingsPage() {
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="date-format">Date Format</Label>
-                            <Select value={watch('dateFormat')} onValueChange={(value) => {
-                                setValue('dateFormat', value as 'dd_mm_yyyy' | 'mm_dd_yyyy' | 'yyyy_mm_dd');
-                            }}>
+                            <Select
+                                value={watch('dateFormat')}
+                                onValueChange={(value) => {
+                                    setValue(
+                                        'dateFormat',
+                                        value as 'dd_mm_yyyy' | 'mm_dd_yyyy' | 'yyyy_mm_dd'
+                                    );
+                                }}
+                            >
                                 <SelectTrigger id="date-format">
                                     <SelectValue placeholder="Select date format" />
                                 </SelectTrigger>
@@ -171,7 +176,9 @@ export default function PreferencesSettingsPage() {
                     </div>
                 </CardContent>
                 <CardFooter className="flex justify-end gap-2">
-                    <Button variant="outline" type="reset">Reset to Defaults</Button>
+                    <Button variant="outline" type="reset">
+                        Reset to Defaults
+                    </Button>
                     <Button type="submit">Save Preferences</Button>
                 </CardFooter>
             </form>

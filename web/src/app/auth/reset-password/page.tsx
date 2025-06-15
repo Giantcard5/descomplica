@@ -25,10 +25,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { tokenService } from '@/lib/auth/token-service';
 
-import {
-    FormSchema,
-    formSchema
-} from './(lib)/schema';
+import { FormSchema, formSchema } from './(lib)/schema';
 
 export default function ResetPasswordPage() {
     const { register, handleSubmit, setError } = useForm<FormSchema>({
@@ -176,4 +173,4 @@ export default function ResetPasswordPage() {
             </Card>
         </div>
     );
-};
+}

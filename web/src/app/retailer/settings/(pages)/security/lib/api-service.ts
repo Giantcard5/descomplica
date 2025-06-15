@@ -1,24 +1,20 @@
-import { 
-    FetchService 
-} from '../../../(lib)/fetch-service';
+import { FetchService } from '../../../(lib)/fetch-service';
 
-import { 
-    ISecurity 
-} from '../types';
+import { ISecurity } from '../types';
 
 class SecurityService extends FetchService {
     private static instance: SecurityService;
 
     private constructor() {
         super();
-    };
+    }
 
     static getInstance(): SecurityService {
         if (!SecurityService.instance) {
             SecurityService.instance = new SecurityService();
         }
         return SecurityService.instance;
-    };
+    }
 
     async getSecurity(): Promise<{
         two_factor_authentication: boolean;
@@ -31,7 +27,7 @@ class SecurityService extends FetchService {
     }> {
         try {
             const response = await this.fetch('/api/session', {
-                method: 'GET'
+                method: 'GET',
             });
 
             const data = await response.json();
@@ -39,8 +35,8 @@ class SecurityService extends FetchService {
         } catch (error) {
             console.error('Security error:', error);
             throw error;
-        };
-    };
+        }
+    }
 
     async postSecurity(security: ISecurity): Promise<{
         message: string;
@@ -57,8 +53,8 @@ class SecurityService extends FetchService {
         } catch (error) {
             console.error('Security error:', error);
             throw error;
-        };
-    };
-};
+        }
+    }
+}
 
 export const securityService = SecurityService.getInstance();

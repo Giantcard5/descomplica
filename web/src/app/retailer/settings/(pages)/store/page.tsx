@@ -3,19 +3,12 @@
 import { useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
-import { 
-    useToast 
-} from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-    storeService
-} from './lib/api-service';
+import { storeService } from './lib/api-service';
 
-import {
-    formSchema,
-    FormSchema
-} from './utils/schema';
+import { formSchema, FormSchema } from './utils/schema';
 
 import {
     Card,
@@ -47,7 +40,7 @@ export default function StoreSettingsPage() {
         reset,
         setValue,
         watch,
-        formState: { errors }
+        formState: { errors },
     } = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
     });
@@ -75,10 +68,10 @@ export default function StoreSettingsPage() {
                     title: response.message,
                     description: 'Your store details could not be updated',
                 });
-            };
+            }
         } catch (err: any) {
             console.error(err);
-        };
+        }
     };
 
     return (
@@ -99,9 +92,12 @@ export default function StoreSettingsPage() {
 
                     <div className="space-y-2">
                         <Label htmlFor="store-type">Store Type</Label>
-                        <Select value={watch('type')} onValueChange={(value) => {
-                            setValue('type', value as StoreType);
-                        }}>
+                        <Select
+                            value={watch('type')}
+                            onValueChange={(value) => {
+                                setValue('type', value as StoreType);
+                            }}
+                        >
                             <SelectTrigger id="store-type">
                                 <SelectValue placeholder="Select store type" />
                             </SelectTrigger>
@@ -136,14 +132,22 @@ export default function StoreSettingsPage() {
                     <div className="grid gap-4 sm:grid-cols-2">
                         <div className="space-y-2">
                             <Label htmlFor="store-size">Store Size (sq ft)</Label>
-                            <Input id="store-size" type="number" {...register('size', { valueAsNumber: true })} />
+                            <Input
+                                id="store-size"
+                                type="number"
+                                {...register('size', { valueAsNumber: true })}
+                            />
                             {errors.size && (
                                 <p className="text-red-500 text-sm">{errors.size.message}</p>
                             )}
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="employees">Number of Employees</Label>
-                            <Input id="employees" type="number" {...register('employees', { valueAsNumber: true })} />
+                            <Input
+                                id="employees"
+                                type="number"
+                                {...register('employees', { valueAsNumber: true })}
+                            />
                             {errors.employees && (
                                 <p className="text-red-500 text-sm">{errors.employees.message}</p>
                             )}
@@ -184,9 +188,12 @@ export default function StoreSettingsPage() {
 
                     <div className="space-y-2">
                         <Label htmlFor="country">Country</Label>
-                        <Select value={watch('country')} onValueChange={(value) => {
-                            setValue('country', value as 'us' | 'br' | 'other');
-                        }}>
+                        <Select
+                            value={watch('country')}
+                            onValueChange={(value) => {
+                                setValue('country', value as 'us' | 'br' | 'other');
+                            }}
+                        >
                             <SelectTrigger id="country">
                                 <SelectValue placeholder="Select country" />
                             </SelectTrigger>

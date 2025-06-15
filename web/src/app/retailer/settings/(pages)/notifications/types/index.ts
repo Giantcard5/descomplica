@@ -9,4 +9,4 @@ export interface INotifications {
     rewards_and_points: boolean;
 
     notification_frequency: 'real_time' | 'daily' | 'weekly' | 'never';
-};
+}

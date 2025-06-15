@@ -19,7 +19,7 @@ interface IPreferencesInfo {
     watch: UseFormWatch<RetailerFormSchema>;
     setValue: UseFormSetValue<RetailerFormSchema>;
     errors: FieldErrors<RetailerFormSchema>;
-};
+}
 
 export function PreferencesInfo({ watch, setValue, errors }: IPreferencesInfo) {
     return (
@@ -34,9 +34,12 @@ export function PreferencesInfo({ watch, setValue, errors }: IPreferencesInfo) {
             <div className="space-y-4">
                 <div className="space-y-2">
                     <Label htmlFor="theme">Theme</Label>
-                    <Select value={watch('theme')} onValueChange={(value) => {
-                        setValue('theme', value as 'light' | 'dark' | 'system');
-                    }}>
+                    <Select
+                        value={watch('theme')}
+                        onValueChange={(value) => {
+                            setValue('theme', value as 'light' | 'dark' | 'system');
+                        }}
+                    >
                         <SelectTrigger id="theme">
                             <SelectValue placeholder="Select theme" />
                         </SelectTrigger>
@@ -46,16 +49,17 @@ export function PreferencesInfo({ watch, setValue, errors }: IPreferencesInfo) {
                             <SelectItem value="system">System</SelectItem>
                         </SelectContent>
                     </Select>
-                    {errors.theme && (
-                        <p className="text-red-500 text-sm">{errors.theme.message}</p>
-                    )}
+                    {errors.theme && <p className="text-red-500 text-sm">{errors.theme.message}</p>}
                 </div>
 
                 <div className="space-y-2">
                     <Label htmlFor="language">Preferred Language</Label>
-                    <Select value={watch('language')} onValueChange={(value) => {
-                        setValue('language', value as 'en' | 'es' | 'pt_BR');
-                    }}>
+                    <Select
+                        value={watch('language')}
+                        onValueChange={(value) => {
+                            setValue('language', value as 'en' | 'es' | 'pt_BR');
+                        }}
+                    >
                         <SelectTrigger id="language">
                             <SelectValue placeholder="Select language" />
                         </SelectTrigger>
@@ -72,9 +76,15 @@ export function PreferencesInfo({ watch, setValue, errors }: IPreferencesInfo) {
 
                 <div className="space-y-2">
                     <Label htmlFor="date-format">Date Format</Label>
-                    <Select value={watch('dateFormat')} onValueChange={(value) => {
-                        setValue('dateFormat', value as 'dd_mm_yyyy' | 'mm_dd_yyyy' | 'yyyy_mm_dd');
-                    }}>
+                    <Select
+                        value={watch('dateFormat')}
+                        onValueChange={(value) => {
+                            setValue(
+                                'dateFormat',
+                                value as 'dd_mm_yyyy' | 'mm_dd_yyyy' | 'yyyy_mm_dd'
+                            );
+                        }}
+                    >
                         <SelectTrigger id="date-format">
                             <SelectValue placeholder="Select date format" />
                         </SelectTrigger>
@@ -90,12 +100,16 @@ export function PreferencesInfo({ watch, setValue, errors }: IPreferencesInfo) {
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="notification-preferences">
-                        Notification Preferences
-                    </Label>
-                    <Select value={watch('notification')} onValueChange={(value) => {
-                        setValue('notification', value as 'real_time' | 'daily' | 'weekly' | 'never');
-                    }}>
+                    <Label htmlFor="notification-preferences">Notification Preferences</Label>
+                    <Select
+                        value={watch('notification')}
+                        onValueChange={(value) => {
+                            setValue(
+                                'notification',
+                                value as 'real_time' | 'daily' | 'weekly' | 'never'
+                            );
+                        }}
+                    >
                         <SelectTrigger id="notification-preferences">
                             <SelectValue placeholder="Select notification preferences" />
                         </SelectTrigger>
@@ -113,4 +127,4 @@ export function PreferencesInfo({ watch, setValue, errors }: IPreferencesInfo) {
             </div>
         </div>
     );
-};
+}

@@ -1,4 +1,4 @@
-import { FetchService } from "./fetch-service";
+import { FetchService } from './fetch-service';
 
 interface ReceiptItem {
     product_id: string;
@@ -12,19 +12,19 @@ class UploadService extends FetchService {
 
     private constructor() {
         super();
-    };
+    }
 
     static getInstance(): UploadService {
         if (!UploadService.instance) {
             UploadService.instance = new UploadService();
-        };
+        }
         return UploadService.instance;
-    };
+    }
 
     async postUpload(formData: FormData): Promise<ReceiptItem[]> {
         if (!formData.get('file')) {
             throw new Error('No file uploaded');
-        };
+        }
 
         try {
             const response = await this.fetch('/api/receipts/upload', {
@@ -37,8 +37,8 @@ class UploadService extends FetchService {
         } catch (error) {
             console.error('Upload error:', error);
             throw error;
-        };
-    };
-};
+        }
+    }
+}
 
 export const uploadService = UploadService.getInstance();

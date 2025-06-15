@@ -4,33 +4,39 @@ export const retailerFormSchema = z.object({
     // Personal info
     dateOfBirth: z.string().min(1, { message: 'Date of birth is required' }),
     phoneNumber: z.string().min(1, { message: 'Phone number is required' }),
-    bio: z.string().min(1, { message: 'Bio is required' }).max(200, { message: 'Bio must be less than 200 characters' }),
-    
+    bio: z
+        .string()
+        .min(1, { message: 'Bio is required' })
+        .max(200, { message: 'Bio must be less than 200 characters' }),
+
     // Store info
     name: z.string().min(1, { message: 'Store name is required' }),
     size: z.string().min(1, { message: 'Store size is required' }),
-    type: z.enum([
-        'grocery',
-        'pharmacy',
-        'convenience',
-        'hardware',
-        'clothing',
-        'electronics',
-        'bakery',
-        'butcher',
-        'pet',
-        'stationery',
-        'beauty',
-        'florist',
-        'bookstore',
-        'toy',
-        'automotive',
-        'sports',
-        'furniture',
-        'jewelry',
-        'service',
-        'other',
-    ], { message: 'Store type is required' }),
+    type: z.enum(
+        [
+            'grocery',
+            'pharmacy',
+            'convenience',
+            'hardware',
+            'clothing',
+            'electronics',
+            'bakery',
+            'butcher',
+            'pet',
+            'stationery',
+            'beauty',
+            'florist',
+            'bookstore',
+            'toy',
+            'automotive',
+            'sports',
+            'furniture',
+            'jewelry',
+            'service',
+            'other',
+        ],
+        { message: 'Store type is required' }
+    ),
     country: z.enum(['us', 'br', 'other'], { message: 'Country is required' }),
     employees: z.string().min(1, { message: 'Number of employees is required' }),
     address: z.string().min(1, { message: 'Store address is required' }),
@@ -42,8 +48,12 @@ export const retailerFormSchema = z.object({
     // Preferences info
     language: z.string().min(1, { message: 'Language is required' }),
     theme: z.enum(['light', 'dark', 'system'], { message: 'Theme is required' }),
-    dateFormat: z.enum(['dd_mm_yyyy', 'mm_dd_yyyy', 'yyyy_mm_dd'], { message: 'Date format is required' }),
-    notification: z.enum(['real_time', 'daily', 'weekly', 'never'], { message: 'Notification preferences are required' }),
+    dateFormat: z.enum(['dd_mm_yyyy', 'mm_dd_yyyy', 'yyyy_mm_dd'], {
+        message: 'Date format is required',
+    }),
+    notification: z.enum(['real_time', 'daily', 'weekly', 'never'], {
+        message: 'Notification preferences are required',
+    }),
 });
 
 export const personalInfoSchema = retailerFormSchema.pick({
@@ -70,7 +80,7 @@ export const preferencesInfoSchema = retailerFormSchema.pick({
     theme: true,
     dateFormat: true,
     notification: true,
-}); 
+});
 
 export type RetailerFormSchema = z.infer<typeof retailerFormSchema>;
 

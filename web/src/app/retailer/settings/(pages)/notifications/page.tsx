@@ -4,14 +4,9 @@ import { useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-    notificationsService
-} from './lib/api-service';
+import { notificationsService } from './lib/api-service';
 
-import {
-    formSchema,
-    FormSchema
-} from './utils/schema';
+import { formSchema, FormSchema } from './utils/schema';
 
 import {
     Card,
@@ -33,9 +28,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 
-import { 
-    useToast 
-} from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 export default function NotificationSettingsPage() {
     const { toast } = useToast();
@@ -45,7 +38,7 @@ export default function NotificationSettingsPage() {
         reset,
         setValue,
         watch,
-        formState: { errors }
+        formState: { errors },
     } = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
     });
@@ -73,10 +66,10 @@ export default function NotificationSettingsPage() {
                     title: response.message,
                     description: 'Your notification preferences could not be updated',
                 });
-            };
+            }
         } catch (err: any) {
             console.error(err);
-        };
+        }
     };
 
     return (
@@ -97,11 +90,17 @@ export default function NotificationSettingsPage() {
                                         Receive emails about your data submission status
                                     </p>
                                 </div>
-                                <Switch id="email-submissions" checked={watch('email_submision')} onCheckedChange={(checked) => {
-                                    setValue('email_submision', checked);
-                                }} />
+                                <Switch
+                                    id="email-submissions"
+                                    checked={watch('email_submision')}
+                                    onCheckedChange={(checked) => {
+                                        setValue('email_submision', checked);
+                                    }}
+                                />
                                 {errors.email_submision && (
-                                    <p className="text-red-500 text-sm">{errors.email_submision.message}</p>
+                                    <p className="text-red-500 text-sm">
+                                        {errors.email_submision.message}
+                                    </p>
                                 )}
                             </div>
                             <Separator />
@@ -112,11 +111,17 @@ export default function NotificationSettingsPage() {
                                         Receive emails about new campaigns and promotions
                                     </p>
                                 </div>
-                                <Switch id="email-campaigns" checked={watch('email_campaign')} onCheckedChange={(checked) => {
-                                    setValue('email_campaign', checked);
-                                }} />
+                                <Switch
+                                    id="email-campaigns"
+                                    checked={watch('email_campaign')}
+                                    onCheckedChange={(checked) => {
+                                        setValue('email_campaign', checked);
+                                    }}
+                                />
                                 {errors.email_campaign && (
-                                    <p className="text-red-500 text-sm">{errors.email_campaign.message}</p>
+                                    <p className="text-red-500 text-sm">
+                                        {errors.email_campaign.message}
+                                    </p>
                                 )}
                             </div>
                             <Separator />
@@ -127,11 +132,17 @@ export default function NotificationSettingsPage() {
                                         Receive emails about your rewards and points
                                     </p>
                                 </div>
-                                <Switch id="email-rewards" checked={watch('email_rewards_and_points')} onCheckedChange={(checked) => {
-                                    setValue('email_rewards_and_points', checked);
-                                }} />
+                                <Switch
+                                    id="email-rewards"
+                                    checked={watch('email_rewards_and_points')}
+                                    onCheckedChange={(checked) => {
+                                        setValue('email_rewards_and_points', checked);
+                                    }}
+                                />
                                 {errors.email_rewards_and_points && (
-                                    <p className="text-red-500 text-sm">{errors.email_rewards_and_points.message}</p>
+                                    <p className="text-red-500 text-sm">
+                                        {errors.email_rewards_and_points.message}
+                                    </p>
                                 )}
                             </div>
                             <Separator />
@@ -142,11 +153,17 @@ export default function NotificationSettingsPage() {
                                         Receive our monthly newsletter with tips and updates
                                     </p>
                                 </div>
-                                <Switch id="email-newsletter" checked={watch('email_newsletter')} onCheckedChange={(checked) => {
-                                    setValue('email_newsletter', checked);
-                                }} />
+                                <Switch
+                                    id="email-newsletter"
+                                    checked={watch('email_newsletter')}
+                                    onCheckedChange={(checked) => {
+                                        setValue('email_newsletter', checked);
+                                    }}
+                                />
                                 {errors.email_newsletter && (
-                                    <p className="text-red-500 text-sm">{errors.email_newsletter.message}</p>
+                                    <p className="text-red-500 text-sm">
+                                        {errors.email_newsletter.message}
+                                    </p>
                                 )}
                             </div>
                         </div>
@@ -162,11 +179,17 @@ export default function NotificationSettingsPage() {
                                         Receive push notifications about your data submission status
                                     </p>
                                 </div>
-                                <Switch id="push-submissions" checked={watch('submission')} onCheckedChange={(checked) => {
-                                    setValue('submission', checked);
-                                }} />
+                                <Switch
+                                    id="push-submissions"
+                                    checked={watch('submission')}
+                                    onCheckedChange={(checked) => {
+                                        setValue('submission', checked);
+                                    }}
+                                />
                                 {errors.submission && (
-                                    <p className="text-red-500 text-sm">{errors.submission.message}</p>
+                                    <p className="text-red-500 text-sm">
+                                        {errors.submission.message}
+                                    </p>
                                 )}
                             </div>
                             <Separator />
@@ -174,14 +197,21 @@ export default function NotificationSettingsPage() {
                                 <div className="space-y-0.5">
                                     <Label htmlFor="push-campaigns">Campaign Notifications</Label>
                                     <p className="text-sm text-muted-foreground">
-                                        Receive push notifications about new campaigns and promotions
+                                        Receive push notifications about new campaigns and
+                                        promotions
                                     </p>
                                 </div>
-                                <Switch id="push-campaigns" checked={watch('campaign')} onCheckedChange={(checked) => {
-                                    setValue('campaign', checked);
-                                }} />
+                                <Switch
+                                    id="push-campaigns"
+                                    checked={watch('campaign')}
+                                    onCheckedChange={(checked) => {
+                                        setValue('campaign', checked);
+                                    }}
+                                />
                                 {errors.campaign && (
-                                    <p className="text-red-500 text-sm">{errors.campaign.message}</p>
+                                    <p className="text-red-500 text-sm">
+                                        {errors.campaign.message}
+                                    </p>
                                 )}
                             </div>
                             <Separator />
@@ -192,11 +222,17 @@ export default function NotificationSettingsPage() {
                                         Receive push notifications about your rewards and points
                                     </p>
                                 </div>
-                                <Switch id="push-rewards" checked={watch('rewards_and_points')} onCheckedChange={(checked) => {
-                                    setValue('rewards_and_points', checked);
-                                }} />
+                                <Switch
+                                    id="push-rewards"
+                                    checked={watch('rewards_and_points')}
+                                    onCheckedChange={(checked) => {
+                                        setValue('rewards_and_points', checked);
+                                    }}
+                                />
                                 {errors.rewards_and_points && (
-                                    <p className="text-red-500 text-sm">{errors.rewards_and_points.message}</p>
+                                    <p className="text-red-500 text-sm">
+                                        {errors.rewards_and_points.message}
+                                    </p>
                                 )}
                             </div>
                         </div>
@@ -206,9 +242,15 @@ export default function NotificationSettingsPage() {
                         <h3 className="text-lg font-medium">Notification Frequency</h3>
                         <div className="space-y-2">
                             <Label htmlFor="notification-frequency">Email Digest Frequency</Label>
-                            <Select value={watch('notification_frequency')} onValueChange={(value) => {
-                                setValue('notification_frequency', value as 'real_time' | 'daily' | 'weekly' | 'never');
-                            }}>
+                            <Select
+                                value={watch('notification_frequency')}
+                                onValueChange={(value) => {
+                                    setValue(
+                                        'notification_frequency',
+                                        value as 'real_time' | 'daily' | 'weekly' | 'never'
+                                    );
+                                }}
+                            >
                                 <SelectTrigger id="notification-frequency">
                                     <SelectValue placeholder="Select frequency" />
                                 </SelectTrigger>
@@ -220,13 +262,17 @@ export default function NotificationSettingsPage() {
                                 </SelectContent>
                             </Select>
                             {errors.notification_frequency && (
-                                <p className="text-red-500 text-sm">{errors.notification_frequency.message}</p>
+                                <p className="text-red-500 text-sm">
+                                    {errors.notification_frequency.message}
+                                </p>
                             )}
                         </div>
                     </div>
                 </CardContent>
                 <CardFooter className="flex justify-end gap-2">
-                    <Button variant="outline" type='reset'>Cancel</Button>
+                    <Button variant="outline" type="reset">
+                        Cancel
+                    </Button>
                     <Button type="submit">Save Preferences</Button>
                 </CardFooter>
             </form>

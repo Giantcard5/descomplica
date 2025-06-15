@@ -19,45 +19,45 @@ import {
     preferencesInfoSchema,
     PersonalInfoSchema,
     PreferencesInfoSchema,
-    StoreInfoSchema
+    StoreInfoSchema,
 } from '../../(utils)/schema';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useToast } from '@/hooks/use-toast';
 
-import {
-    apiService
-} from '../../(lib)/api-service';
+import { apiService } from '../../(lib)/api-service';
 
-import { 
-    useAuth 
-} from '@/hooks/use-auth';
+import { useAuth } from '@/hooks/use-auth';
 
 interface RetailerOnboardingFormProps {
     step: number;
     onComplete: () => void;
-};
+}
 
 export function RetailerOnboardingForm({ step, onComplete }: RetailerOnboardingFormProps) {
     const router = useRouter();
-    
+
     const { user, isOnboarding, setIsOnboarding } = useAuth();
     const { toast } = useToast();
 
     useEffect(() => {
         if (!isOnboarding) {
             router.push(`/${user?.type}`);
-        };
+        }
     }, [isOnboarding, router, user]);
 
     const getStepSchema = () => {
         switch (step) {
-            case 1: return personalInfoSchema;
-            case 2: return storeInfoSchema;
-            case 3: return preferencesInfoSchema;
-            default: return personalInfoSchema;
-        };
+            case 1:
+                return personalInfoSchema;
+            case 2:
+                return storeInfoSchema;
+            case 3:
+                return preferencesInfoSchema;
+            default:
+                return personalInfoSchema;
+        }
     };
 
     const {
@@ -66,7 +66,7 @@ export function RetailerOnboardingForm({ step, onComplete }: RetailerOnboardingF
         watch,
         setValue,
         getValues,
-        formState: { errors }
+        formState: { errors },
     } = useForm<RetailerFormSchema>({
         resolver: zodResolver(getStepSchema()),
     });
@@ -98,7 +98,7 @@ export function RetailerOnboardingForm({ step, onComplete }: RetailerOnboardingF
                 theme: data.theme,
                 dateFormat: data.dateFormat,
                 notification: data.notification,
-            }
+            },
         });
 
         if (response) {
@@ -111,7 +111,7 @@ export function RetailerOnboardingForm({ step, onComplete }: RetailerOnboardingF
                 title: 'Error registering retailer',
                 description: 'Please try again',
             });
-        };
+        }
 
         setIsOnboarding(false);
         router.push(`/${user?.type}`);
@@ -125,45 +125,45 @@ export function RetailerOnboardingForm({ step, onComplete }: RetailerOnboardingF
                 ...getValues(),
                 ...data,
             });
-        };
+        }
     };
 
     const renderStep = () => {
         switch (step) {
             case 1:
-                return <PersonalInfo
-                    register={register}
-                    errors={errors}
-                    profileImage={profileImage}
-                    setProfileImage={setProfileImage}
-                />
+                return (
+                    <PersonalInfo
+                        register={register}
+                        errors={errors}
+                        profileImage={profileImage}
+                        setProfileImage={setProfileImage}
+                    />
+                );
             case 2:
-                return <StoreInfo
-                    register={register}
-                    watch={watch}
-                    setValue={setValue}
-                    errors={errors}
-                    storeImage={storeImage}
-                    setStoreImage={setStoreImage}
-                />
+                return (
+                    <StoreInfo
+                        register={register}
+                        watch={watch}
+                        setValue={setValue}
+                        errors={errors}
+                        storeImage={storeImage}
+                        setStoreImage={setStoreImage}
+                    />
+                );
             case 3:
-                return <PreferencesInfo
-                    watch={watch}
-                    setValue={setValue}
-                    errors={errors}
-                />
+                return <PreferencesInfo watch={watch} setValue={setValue} errors={errors} />;
             default:
                 return null;
-        };
+        }
     };
 
     return (
-        <form onSubmit={handleSubmit(onStepSubmit)} className='space-y-6'>
+        <form onSubmit={handleSubmit(onStepSubmit)} className="space-y-6">
             {renderStep()}
 
-            <Button type='submit' className='w-full'>
+            <Button type="submit" className="w-full">
                 {step === 3 ? 'Complete Setup' : 'Next'}
             </Button>
         </form>
     );
-};
+}

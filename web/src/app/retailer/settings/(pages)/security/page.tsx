@@ -4,22 +4,11 @@ import { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-    securityService
-} from './lib/api-service';
+import { securityService } from './lib/api-service';
 
-import {
-    formSchema,
-    FormSchema
-} from './utils/schema';
+import { formSchema, FormSchema } from './utils/schema';
 
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -29,9 +18,7 @@ import { Badge } from '@/components/ui/badge';
 
 import { Shield } from 'lucide-react';
 
-import { 
-    useToast 
-} from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 export default function SecuritySettingsPage() {
     const { toast } = useToast();
@@ -43,13 +30,13 @@ export default function SecuritySettingsPage() {
             type: string;
             address: string;
             last_login: string;
-        }[]
+        }[];
     }>();
 
     const {
         register,
         handleSubmit,
-        formState: { errors }
+        formState: { errors },
     } = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
     });
@@ -78,10 +65,10 @@ export default function SecuritySettingsPage() {
                     title: response.message,
                     description: 'Your account security could not be updated',
                 });
-            };
+            }
         } catch (err: any) {
             console.error(err);
-        };
+        }
     };
 
     return (
@@ -96,23 +83,44 @@ export default function SecuritySettingsPage() {
                         <h3 className="text-lg font-medium">Change Password</h3>
                         <div className="space-y-2">
                             <Label htmlFor="current-password">Current Password</Label>
-                            <Input id="current-password" type="password" {...register('current_password')} placeholder="Current Password" />
+                            <Input
+                                id="current-password"
+                                type="password"
+                                {...register('current_password')}
+                                placeholder="Current Password"
+                            />
                             {errors.current_password && (
-                                <p className="text-red-500 text-sm">{errors.current_password.message}</p>
+                                <p className="text-red-500 text-sm">
+                                    {errors.current_password.message}
+                                </p>
                             )}
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="new-password">New Password</Label>
-                            <Input id="new-password" type="password" {...register('new_password')} placeholder="New Password" />
+                            <Input
+                                id="new-password"
+                                type="password"
+                                {...register('new_password')}
+                                placeholder="New Password"
+                            />
                             {errors.new_password && (
-                                <p className="text-red-500 text-sm">{errors.new_password.message}</p>
+                                <p className="text-red-500 text-sm">
+                                    {errors.new_password.message}
+                                </p>
                             )}
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="confirm-password">Confirm New Password</Label>
-                            <Input id="confirm-password" type="password" {...register('confirm_password')} placeholder="Confirm New Password" />
+                            <Input
+                                id="confirm-password"
+                                type="password"
+                                {...register('confirm_password')}
+                                placeholder="Confirm New Password"
+                            />
                             {errors.confirm_password && (
-                                <p className="text-red-500 text-sm">{errors.confirm_password.message}</p>
+                                <p className="text-red-500 text-sm">
+                                    {errors.confirm_password.message}
+                                </p>
                             )}
                         </div>
                         <Button>Update Password</Button>
@@ -164,4 +172,4 @@ export default function SecuritySettingsPage() {
             </CardContent>
         </Card>
     );
-};
+}

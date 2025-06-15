@@ -19,9 +19,7 @@ import { ImageUpload } from './image-upload';
 
 import { RetailerFormSchema } from '@/app/auth/onboarding/(utils)/schema';
 
-import { 
-    StoreType 
-} from '@/app/retailer/settings/(pages)/store/types';
+import { StoreType } from '@/app/retailer/settings/(pages)/store/types';
 
 interface IStoreInfo {
     register: UseFormRegister<RetailerFormSchema>;
@@ -30,16 +28,22 @@ interface IStoreInfo {
     errors: FieldErrors<RetailerFormSchema>;
     storeImage: string | null;
     setStoreImage: (url: string) => void;
-};
+}
 
-export function StoreInfo({ register, watch, setValue, errors, storeImage, setStoreImage }: IStoreInfo) {
+export function StoreInfo({
+    register,
+    watch,
+    setValue,
+    errors,
+    storeImage,
+    setStoreImage,
+}: IStoreInfo) {
     return (
         <div className="space-y-6">
             <div className="space-y-2">
                 <h2 className="text-xl font-semibold">Store Information</h2>
                 <p className="text-sm text-muted-foreground">
-                    Tell us about your store. This information helps us provide relevant
-                    insights.
+                    Tell us about your store. This information helps us provide relevant insights.
                 </p>
             </div>
 
@@ -50,16 +54,17 @@ export function StoreInfo({ register, watch, setValue, errors, storeImage, setSt
             <div className="space-y-2">
                 <Label htmlFor="store-name">Store Name</Label>
                 <Input id="store-name" placeholder="John's Market" {...register('name')} />
-                {errors.name && (
-                    <p className="text-red-500 text-sm">{errors.name.message}</p>
-                )}
+                {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
             </div>
 
             <div className="space-y-2">
                 <Label htmlFor="store-type">Store Type</Label>
-                <Select value={watch('type')} onValueChange={(value) => {
-                    setValue('type', value as StoreType);
-                }}>
+                <Select
+                    value={watch('type')}
+                    onValueChange={(value) => {
+                        setValue('type', value as StoreType);
+                    }}
+                >
                     <SelectTrigger id="store-type">
                         <SelectValue placeholder="Select store type" />
                     </SelectTrigger>
@@ -86,18 +91,14 @@ export function StoreInfo({ register, watch, setValue, errors, storeImage, setSt
                         <SelectItem value="other">Other</SelectItem>
                     </SelectContent>
                 </Select>
-                {errors.type && (
-                    <p className="text-red-500 text-sm">{errors.type.message}</p>
-                )}
+                {errors.type && <p className="text-red-500 text-sm">{errors.type.message}</p>}
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
                     <Label htmlFor="store-size">Store Size (sq ft)</Label>
                     <Input id="store-size" type="number" {...register('size')} />
-                    {errors.size && (
-                        <p className="text-red-500 text-sm">{errors.size.message}</p>
-                    )}
+                    {errors.size && <p className="text-red-500 text-sm">{errors.size.message}</p>}
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="employees">Number of Employees</Label>
@@ -111,25 +112,19 @@ export function StoreInfo({ register, watch, setValue, errors, storeImage, setSt
             <div className="space-y-2">
                 <Label htmlFor="store-address">Store Address</Label>
                 <Input id="store-address" {...register('address')} />
-                {errors.address && (
-                    <p className="text-red-500 text-sm">{errors.address.message}</p>
-                )}
+                {errors.address && <p className="text-red-500 text-sm">{errors.address.message}</p>}
             </div>
 
             <div className="grid gap-4 sm:grid-cols-3">
                 <div className="space-y-2">
                     <Label htmlFor="city">City</Label>
                     <Input id="city" {...register('city')} />
-                    {errors.city && (
-                        <p className="text-red-500 text-sm">{errors.city.message}</p>
-                    )}
+                    {errors.city && <p className="text-red-500 text-sm">{errors.city.message}</p>}
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="state">State/Province</Label>
                     <Input id="state" {...register('state')} />
-                    {errors.state && (
-                        <p className="text-red-500 text-sm">{errors.state.message}</p>
-                    )}
+                    {errors.state && <p className="text-red-500 text-sm">{errors.state.message}</p>}
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="zip">Zip/Postal Code</Label>
@@ -142,9 +137,12 @@ export function StoreInfo({ register, watch, setValue, errors, storeImage, setSt
 
             <div className="space-y-2">
                 <Label htmlFor="country">Country</Label>
-                <Select value={watch('country')} onValueChange={(value) => {
-                    setValue('country', value as 'us' | 'br' | 'other');
-                }}>
+                <Select
+                    value={watch('country')}
+                    onValueChange={(value) => {
+                        setValue('country', value as 'us' | 'br' | 'other');
+                    }}
+                >
                     <SelectTrigger id="country">
                         <SelectValue placeholder="Select country" />
                     </SelectTrigger>
@@ -154,9 +152,7 @@ export function StoreInfo({ register, watch, setValue, errors, storeImage, setSt
                         <SelectItem value="other">Other</SelectItem>
                     </SelectContent>
                 </Select>
-                {errors.country && (
-                    <p className="text-red-500 text-sm">{errors.country.message}</p>
-                )}
+                {errors.country && <p className="text-red-500 text-sm">{errors.country.message}</p>}
             </div>
 
             <div className="space-y-2">
@@ -173,4 +169,4 @@ export function StoreInfo({ register, watch, setValue, errors, storeImage, setSt
             </div>
         </div>
     );
-};
+}

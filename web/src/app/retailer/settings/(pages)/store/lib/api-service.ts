@@ -1,29 +1,25 @@
-import { 
-    FetchService 
-} from '../../../(lib)/fetch-service';
+import { FetchService } from '../../../(lib)/fetch-service';
 
-import { 
-    IStore 
-} from '../types';
+import { IStore } from '../types';
 
 class StoreService extends FetchService {
     private static instance: StoreService;
 
     private constructor() {
         super();
-    };
+    }
 
     static getInstance(): StoreService {
         if (!StoreService.instance) {
             StoreService.instance = new StoreService();
         }
         return StoreService.instance;
-    };
+    }
 
     async getStore(): Promise<IStore> {
         try {
             const response = await this.fetch('/api/store', {
-                method: 'GET'
+                method: 'GET',
             });
 
             const data = await response.json();
@@ -31,8 +27,8 @@ class StoreService extends FetchService {
         } catch (error) {
             console.error('Store Store error:', error);
             throw error;
-        };
-    };
+        }
+    }
 
     async postStore(Store: IStore): Promise<{
         message: string;
@@ -49,8 +45,8 @@ class StoreService extends FetchService {
         } catch (error) {
             console.error('Store Store error:', error);
             throw error;
-        };
-    };
-};
+        }
+    }
+}
 
 export const storeService = StoreService.getInstance();

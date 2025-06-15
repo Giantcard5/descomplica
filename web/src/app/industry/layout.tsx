@@ -40,7 +40,7 @@ export default function IndustryDashboardLayout({ children }: { children: React.
     const isActive = (path: string) => {
         if (pathname.includes('/industry/settings/')) {
             return path.includes('/industry/settings');
-        };
+        }
 
         return pathname === path;
     };

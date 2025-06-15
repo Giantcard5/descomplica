@@ -9,7 +9,7 @@ export interface IStore {
     zipCode: string;
     country: 'br' | 'us' | 'other';
     description: string;
-};
+}
 
 export type StoreType =
     | 'grocery'

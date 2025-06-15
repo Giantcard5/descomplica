@@ -1,45 +1,45 @@
-"use client";
+'use client';
 
-import React, { useState, useRef, useLayoutEffect } from "react"
+import React, { useState, useRef, useLayoutEffect } from 'react';
 
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent } from '@/components/ui/card';
 
-import { Send, Bot, Share, Search, BarChart3, Lightbulb, Code } from "lucide-react";
+import { Send, Bot, Share, Search, BarChart3, Lightbulb, Code } from 'lucide-react';
 
-import { defaultMessages } from "./_mock/defaultMessages";
-import { IMessage } from "./_types/message";
+import { defaultMessages } from './_mock/defaultMessages';
+import { IMessage } from './_types/message';
 
 export default function ChatbotPage() {
-    const [message, setMessage] = useState("");
+    const [message, setMessage] = useState('');
     const [messages, setMessages] = useState<IMessage[]>(defaultMessages);
     const [selectedAction, setSelectedAction] = useState<string | null>(null);
     const [isTyping, setIsTyping] = useState(false);
-    
+
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const chatContainerRef = useRef<HTMLDivElement>(null);
 
     useLayoutEffect(() => {
         const isFirstRender = messages.length === 0;
         messagesEndRef.current?.scrollIntoView({
-            behavior: isFirstRender ? 'smooth' : 'auto'
+            behavior: isFirstRender ? 'smooth' : 'auto',
         });
     }, [messages]);
 
     const handleSend = async () => {
-        if (!message.trim()) return
+        if (!message.trim()) return;
 
         const userMessage: IMessage = {
             id: messages.length + 1,
-            type: "user",
+            type: 'user',
             content: message.trim(),
             timestamp: new Date(),
-        }
+        };
 
         setMessages((prev) => [...prev, userMessage]);
-        setMessage("");
+        setMessage('');
         setIsTyping(true);
 
         try {
@@ -51,14 +51,14 @@ export default function ChatbotPage() {
                 body: JSON.stringify({
                     message: userMessage.content,
                     action: selectedAction,
-                })
-            })
+                }),
+            });
 
             const data = await response.json();
 
             const botResponse: IMessage = {
                 id: messages.length + 2,
-                type: "bot",
+                type: 'bot',
                 content: data.content,
                 timestamp: new Date(),
             };
@@ -67,19 +67,19 @@ export default function ChatbotPage() {
             console.error('Error sending message:', error);
         } finally {
             setIsTyping(false);
-        };
+        }
     };
 
     const handleKeyPress = (e: React.KeyboardEvent) => {
-        if (e.key === "Enter" && !e.shiftKey) {
+        if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             handleSend();
-        };
+        }
     };
 
     const handleActionSelect = (action: string) => {
-        setSelectedAction(selectedAction === action ? null : action)
-    }
+        setSelectedAction(selectedAction === action ? null : action);
+    };
 
     return (
         <div className="flex flex-col justify-between h-[745px] max-w-7xl mx-auto">
@@ -90,9 +90,12 @@ export default function ChatbotPage() {
             >
                 {messages.map((msg) => (
                     <div key={msg.id} className="space-y-4">
-                        {msg.type === "user" ? (
+                        {msg.type === 'user' ? (
                             <div className="flex justify-end">
-                                <Badge variant="secondary" className="px-4 py-2 text-sm bg-muted max-w-[80%]">
+                                <Badge
+                                    variant="secondary"
+                                    className="px-4 py-2 text-sm bg-muted max-w-[80%]"
+                                >
                                     {msg.content}
                                 </Badge>
                             </div>
@@ -103,8 +106,11 @@ export default function ChatbotPage() {
                                 </div>
                                 <div className="flex-1">
                                     <div className="prose prose-sm max-w-none">
-                                        {msg.content.split("\n").map((paragraph, index) => (
-                                            <p key={index} className="text-foreground leading-relaxed mb-3 last:mb-0">
+                                        {msg.content.split('\n').map((paragraph, index) => (
+                                            <p
+                                                key={index}
+                                                className="text-foreground leading-relaxed mb-3 last:mb-0"
+                                            >
                                                 {paragraph}
                                             </p>
                                         ))}
@@ -154,28 +160,36 @@ export default function ChatbotPage() {
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-2">
                                         <Button
-                                            variant={selectedAction === "research" ? "default" : "ghost"}
+                                            variant={
+                                                selectedAction === 'research' ? 'default' : 'ghost'
+                                            }
                                             size="sm"
-                                            className={`gap-2 ${selectedAction !== "research" && "text-muted-foreground"}`}
-                                            onClick={() => handleActionSelect("research")}
+                                            className={`gap-2 ${selectedAction !== 'research' && 'text-muted-foreground'}`}
+                                            onClick={() => handleActionSelect('research')}
                                         >
                                             <Search className="h-4 w-4" />
                                             Research
                                         </Button>
                                         <Button
-                                            variant={selectedAction === "analyze" ? "default" : "ghost"}
+                                            variant={
+                                                selectedAction === 'analyze' ? 'default' : 'ghost'
+                                            }
                                             size="sm"
-                                            className={`gap-2 ${selectedAction !== "analyze" && "text-muted-foreground"}`}
-                                            onClick={() => handleActionSelect("analyze")}
+                                            className={`gap-2 ${selectedAction !== 'analyze' && 'text-muted-foreground'}`}
+                                            onClick={() => handleActionSelect('analyze')}
                                         >
                                             <BarChart3 className="h-4 w-4" />
                                             Analyze
                                         </Button>
                                         <Button
-                                            variant={selectedAction === "brainstorm" ? "default" : "ghost"}
+                                            variant={
+                                                selectedAction === 'brainstorm'
+                                                    ? 'default'
+                                                    : 'ghost'
+                                            }
                                             size="sm"
-                                            className={`gap-2 ${selectedAction !== "brainstorm" && "text-muted-foreground"}`}
-                                            onClick={() => handleActionSelect("brainstorm")}
+                                            className={`gap-2 ${selectedAction !== 'brainstorm' && 'text-muted-foreground'}`}
+                                            onClick={() => handleActionSelect('brainstorm')}
                                         >
                                             <Lightbulb className="h-4 w-4" />
                                             Brainstorm
@@ -187,7 +201,12 @@ export default function ChatbotPage() {
                                             <Share className="h-4 w-4" />
                                             Share
                                         </Button>
-                                        <Button onClick={handleSend} size="sm" disabled={!message.trim() || isTyping} className="gap-2">
+                                        <Button
+                                            onClick={handleSend}
+                                            size="sm"
+                                            disabled={!message.trim() || isTyping}
+                                            className="gap-2"
+                                        >
                                             <Send className="h-4 w-4" />
                                         </Button>
                                     </div>
@@ -198,5 +217,5 @@ export default function ChatbotPage() {
                 </div>
             </div>
         </div>
-    )
+    );
 }

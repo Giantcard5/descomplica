@@ -1,27 +1,25 @@
 import { IProfile } from '../types';
 
-import { 
-    FetchService 
-} from '../../../(lib)/fetch-service';
+import { FetchService } from '../../../(lib)/fetch-service';
 
 class ProfileService extends FetchService {
     private static instance: ProfileService;
 
     private constructor() {
         super();
-    };
+    }
 
     static getInstance(): ProfileService {
         if (!ProfileService.instance) {
             ProfileService.instance = new ProfileService();
         }
         return ProfileService.instance;
-    };
+    }
 
     async getProfile(): Promise<IProfile> {
         try {
             const response = await this.fetch('/api/profile', {
-                method: 'GET'
+                method: 'GET',
             });
 
             const data = await response.json();
@@ -29,8 +27,8 @@ class ProfileService extends FetchService {
         } catch (error) {
             console.error('Profile Profile error:', error);
             throw error;
-        };
-    };
+        }
+    }
 
     async postProfile(profile: IProfile): Promise<{
         message: string;
@@ -47,8 +45,8 @@ class ProfileService extends FetchService {
         } catch (error) {
             console.error('Profile Profile error:', error);
             throw error;
-        };
-    };
-};
+        }
+    }
+}
 
 export const profileService = ProfileService.getInstance();

@@ -3,18 +3,14 @@
 import React from 'react';
 
 import { Button } from '@/components/ui/button';
-import { 
-    Avatar, 
-    AvatarFallback, 
-    AvatarImage 
-} from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 import { Upload } from 'lucide-react';
 
 interface IImageUpload {
     image: string | null;
     setImage: (url: string) => void;
-};
+}
 
 export function ImageUpload({ image, setImage }: IImageUpload) {
     const handleImageUpload = (
@@ -25,16 +21,13 @@ export function ImageUpload({ image, setImage }: IImageUpload) {
         if (file) {
             const url = URL.createObjectURL(file);
             setImage(url);
-        };
+        }
     };
 
     return (
         <div className="flex flex-col items-center space-y-4 sm:flex-row sm:items-start sm:space-x-4 sm:space-y-0">
             <Avatar className="h-24 w-24">
-                <AvatarImage
-                    src={image || '/placeholder.svg?height=96&width=96'}
-                    alt="Profile"
-                />
+                <AvatarImage src={image || '/placeholder.svg?height=96&width=96'} alt="Profile" />
                 <AvatarFallback>JD</AvatarFallback>
             </Avatar>
             <div className="space-y-2">
@@ -71,4 +64,4 @@ export function ImageUpload({ image, setImage }: IImageUpload) {
             </div>
         </div>
     );
-};
+}

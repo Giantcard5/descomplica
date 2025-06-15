@@ -1,6 +1,6 @@
 export interface IMessage {
-    id: number
-    type: "user" | "bot"
-    content: string
-    timestamp: Date
+    id: number;
+    type: 'user' | 'bot';
+    content: string;
+    timestamp: Date;
 }

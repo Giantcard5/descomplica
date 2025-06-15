@@ -1,5 +1,5 @@
-import { Skeleton } from "@/components/ui/skeleton"
-import { Separator } from "@/components/ui/separator"
+import { Skeleton } from '@/components/ui/skeleton';
+import { Separator } from '@/components/ui/separator';
 
 export default function PreferencesSettingsLoading() {
     return (
@@ -90,5 +90,5 @@ export default function PreferencesSettingsLoading() {
                 </div>
             </div>
         </div>
-    )
+    );
 }

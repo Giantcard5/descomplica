@@ -18,7 +18,7 @@ interface IPersonalInfo {
     errors: FieldErrors<RetailerFormSchema>;
     profileImage: string | null;
     setProfileImage: (url: string) => void;
-};
+}
 
 export function PersonalInfo({ register, errors, profileImage, setProfileImage }: IPersonalInfo) {
     return (
@@ -26,8 +26,7 @@ export function PersonalInfo({ register, errors, profileImage, setProfileImage }
             <div className="space-y-2">
                 <h2 className="text-xl font-semibold">Personal Information</h2>
                 <p className="text-sm text-muted-foreground">
-                    Tell us about yourself. This information will be displayed on your
-                    profile.
+                    Tell us about yourself. This information will be displayed on your profile.
                 </p>
             </div>
 
@@ -45,7 +44,12 @@ export function PersonalInfo({ register, errors, profileImage, setProfileImage }
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="phone">Phone Number</Label>
-                    <Input id="phone" type="tel" placeholder="+1 (555) 123-4567" {...register('phoneNumber')} />
+                    <Input
+                        id="phone"
+                        type="tel"
+                        placeholder="+1 (555) 123-4567"
+                        {...register('phoneNumber')}
+                    />
                     {errors.phoneNumber && (
                         <p className="text-red-500 text-sm">{errors.phoneNumber.message}</p>
                     )}
@@ -54,11 +58,14 @@ export function PersonalInfo({ register, errors, profileImage, setProfileImage }
 
             <div className="space-y-2">
                 <Label htmlFor="bio">Bio</Label>
-                <Textarea id="bio" placeholder="Tell us about yourself" rows={3} {...register('bio')} />
-                {errors.bio && (
-                    <p className="text-red-500 text-sm">{errors.bio.message}</p>
-                )}
+                <Textarea
+                    id="bio"
+                    placeholder="Tell us about yourself"
+                    rows={3}
+                    {...register('bio')}
+                />
+                {errors.bio && <p className="text-red-500 text-sm">{errors.bio.message}</p>}
             </div>
         </div>
     );
-};
+}

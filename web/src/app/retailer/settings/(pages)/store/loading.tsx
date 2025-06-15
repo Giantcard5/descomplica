@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton"
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function StoreSettingsLoading() {
     return (
@@ -67,4 +67,4 @@ export default function StoreSettingsLoading() {
             </div>
         </div>
     );
-};
+}

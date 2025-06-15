@@ -34,7 +34,7 @@ export default function RetailerDashboardLayout({ children }: { children: React.
     const isActive = (path: string) => {
         if (pathname.includes('/retailer/settings/')) {
             return path.includes('/retailer/settings');
-        };
+        }
 
         return pathname === path;
     };

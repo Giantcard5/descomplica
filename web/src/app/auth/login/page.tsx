@@ -18,16 +18,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Loader2 } from 'lucide-react';
 
-import { 
-    FormSchema, 
-    formSchema 
-} from './(lib)/schema';
+import { FormSchema, formSchema } from './(lib)/schema';
 
 export default function LoginPage() {
     const { login } = useAuth();
     const { toast } = useToast();
 
-    const { register, handleSubmit, formState: { errors } } = useForm<FormSchema>({
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
     });
 
@@ -46,12 +47,12 @@ export default function LoginPage() {
             });
         } finally {
             setIsLoading(false);
-        };
+        }
     };
 
     return (
         <form className="flex min-h-screen flex-col" onSubmit={handleSubmit(handleLogin)}>
-            <Header/>
+            <Header />
             <div className="flex flex-1 items-center justify-center p-4">
                 <div className="mx-auto w-full max-w-md space-y-6">
                     <div className="space-y-2 text-center">
@@ -77,7 +78,9 @@ export default function LoginPage() {
                                 <Label htmlFor="password">Password</Label>
                                 <Input {...register('password')} placeholder="Password" />
                                 {errors.password && (
-                                    <p className="text-red-500 text-sm">{errors.password.message}</p>
+                                    <p className="text-red-500 text-sm">
+                                        {errors.password.message}
+                                    </p>
                                 )}
                             </div>
                         </div>

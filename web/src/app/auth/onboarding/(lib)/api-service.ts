@@ -1,8 +1,4 @@
-import { 
-    PersonalInfoSchema, 
-    StoreInfoSchema, 
-    PreferencesInfoSchema 
-} from "../(utils)/schema";
+import { PersonalInfoSchema, StoreInfoSchema, PreferencesInfoSchema } from '../(utils)/schema';
 
 export class ApiService {
     private static instance: ApiService;
@@ -10,14 +6,14 @@ export class ApiService {
 
     constructor() {
         this.API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-    };
+    }
 
     static getInstance(): ApiService {
         if (!ApiService.instance) {
             ApiService.instance = new ApiService();
         }
         return ApiService.instance;
-    };
+    }
 
     async fetch(url: string, options: RequestInit = {}) {
         try {
@@ -37,13 +33,13 @@ export class ApiService {
                     throw new Error(
                         'Unable to connect to the server. Please check your internet connection and try again.'
                     );
-                };
+                }
 
                 throw error;
             }
             throw new Error('An unexpected error occurred');
-        };
-    };
+        }
+    }
 
     async registerRetailer(data: {
         personalInfo: PersonalInfoSchema;
@@ -59,9 +55,9 @@ export class ApiService {
         });
 
         return response.json();
-    };
+    }
 
-    async registerIndustry(data: { }) {
+    async registerIndustry(data: {}) {
         const response = await this.fetch('/api/auth/onboarding', {
             method: 'POST',
             body: JSON.stringify({
@@ -71,7 +67,7 @@ export class ApiService {
         });
 
         return response.json();
-    };
-};
+    }
+}
 
 export const apiService = ApiService.getInstance();

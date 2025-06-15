@@ -1,5 +1,5 @@
-import { Skeleton } from "@/components/ui/skeleton"
-import { Separator } from "@/components/ui/separator"
+import { Skeleton } from '@/components/ui/skeleton';
+import { Separator } from '@/components/ui/separator';
 
 export default function SecuritySettingsLoading() {
     return (
@@ -66,7 +66,7 @@ export default function SecuritySettingsLoading() {
                     <Skeleton className="h-6 w-32" />
                     <div className="rounded-md border border-border">
                         {[1, 2, 3].map((i) => (
-                            <div key={i} className={`p-4 ${i < 3 ? "border-b border-border" : ""}`}>
+                            <div key={i} className={`p-4 ${i < 3 ? 'border-b border-border' : ''}`}>
                                 <div className="flex items-center justify-between">
                                     <div>
                                         <Skeleton className="h-4 w-28" />
@@ -82,4 +82,4 @@ export default function SecuritySettingsLoading() {
             </div>
         </div>
     );
-};
+}

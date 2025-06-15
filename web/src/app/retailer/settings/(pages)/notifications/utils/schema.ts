@@ -9,7 +9,6 @@ export const formSchema = z.object({
     campaign: z.boolean(),
     rewards_and_points: z.boolean(),
     notification_frequency: z.enum(['real_time', 'daily', 'weekly', 'never']),
-
 });
 
 export type FormSchema = z.infer<typeof formSchema>;
