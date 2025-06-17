@@ -1,14 +1,21 @@
 'use client';
 
-import { useState, useEffect, ReactNode, createContext } from 'react';
+import {
+    useState,
+    useEffect,
+    useCallback,
+    useMemo,
+    ReactNode,
+    createContext
+} from 'react';
 
 import { useRouter, usePathname } from 'next/navigation';
 
 import { tokenService, IUser } from '@/lib/auth/token-service';
+import { useLoadingBar } from '@/hooks/use-loading';
 
 interface IAuthContext {
     user: IUser | null;
-    isLoading: boolean;
     isOnboarding: boolean;
     setIsOnboarding: (isOnboarding: boolean) => void;
     login: (email: string, password: string, rememberMe: boolean) => Promise<void>;
@@ -27,105 +34,94 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const router = useRouter();
     const pathname = usePathname();
 
+    const { setLoading } = useLoadingBar();
+
     const [user, setUser] = useState<IUser | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
     const [isOnboarding, setIsOnboarding] = useState(false);
 
     useEffect(() => {
         checkAuth();
     }, []);
 
-    const checkAuth = async () => {
+    const checkAuth = useCallback(async () => {
+        setLoading(true);
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/check`, {
-                credentials: 'include',
-            });
+            const data = await tokenService.checkAuth();
+            setUser(data);
 
-            if (!response.ok) {
-                setUser(null);
-
-                if (pathname !== '/' && !pathname.startsWith('/auth')) {
-                    router.push('/auth/login');
-                }
-
-                return;
+            if (!isOnboarding) {
+                router.push(`/${data?.type}`);
+            } else {
+                setIsOnboarding(true);
+                router.push(`/auth/onboarding?type=${data?.type}`);
             }
-
-            const userData = await response.json();
-            setUser(userData);
         } catch (error) {
             setUser(null);
-
             if (pathname !== '/' && !pathname.startsWith('/auth')) {
                 router.push('/auth/login');
             }
         } finally {
-            setIsLoading(false);
+            setLoading(false);
         }
-    };
+    }, []);
 
-    const login = async (
+    const login = useCallback(async (
         email: string,
         password: string,
         rememberMe: boolean,
-        onBoarding: boolean = false
     ) => {
+        setLoading(true);
         try {
             await tokenService.login(email, password, rememberMe);
-            const userData = await tokenService.checkAuth();
-
-            if (!userData) {
-                throw new Error('User not found');
-            }
-            setUser(userData);
-
-            if (!onBoarding) {
-                router.push(`/${userData?.type}`);
-            } else {
-                setIsOnboarding(true);
-                router.push(`/auth/onboarding?type=${userData?.type}`);
-            }
+            await checkAuth();
         } catch (error) {
             throw new Error('Failed to login');
+        } finally {
+            setLoading(false);
         }
-    };
+    }, [router]);
 
-    const register = async (
-        name: string,
-        email: string,
-        password: string,
-        type: 'retailer' | 'industry'
-    ) => {
-        try {
-            await tokenService.register(name, email, password, type);
-            await login(email, password, false, true);
-        } catch (error) {
-            throw new Error('Failed to register');
-        }
-    };
-
-    const logout = async () => {
+    const logout = useCallback(async () => {
+        setLoading(true);
         try {
             await tokenService.logout();
             setUser(null);
             router.push('/auth/login');
         } catch (error) {
             throw new Error('Failed to logout');
-        }
-    };
+        } finally {
+            setLoading(false);
+        };
+    }, [router]);
+
+    const register = useCallback(async (
+        name: string,
+        email: string,
+        password: string,
+        type: 'retailer' | 'industry'
+    ) => {
+        setLoading(true);
+        try {
+            await tokenService.register(name, email, password, type);
+            await login(email, password, false);
+        } catch (error) {
+            throw new Error('Failed to register');
+        } finally {
+            setLoading(false);
+        };
+    }, [router]);
+
+    const value = useMemo(() => ({
+        user,
+        isOnboarding,
+        setIsOnboarding,
+        login,
+        register,
+        logout,
+    }), [user, isOnboarding]);
 
     return (
-        <AuthContext.Provider
-            value={{
-                user,
-                isLoading,
-                isOnboarding,
-                setIsOnboarding,
-                login,
-                register,
-                logout,
-            }}
-        >
+        <AuthContext.Provider value={value}>
             {children}
         </AuthContext.Provider>
     );

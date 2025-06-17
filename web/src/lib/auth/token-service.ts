@@ -74,27 +74,6 @@ class TokenService {
         }
     }
 
-    private async fetchWithAutoRefresh(url: string, options: RequestInit = {}, retry = true) {
-        try {
-            return await this.fetchWithError(url, { ...options, credentials: 'include' });
-        } catch (error) {
-            if (
-                retry &&
-                error instanceof Error &&
-                error.message.toLowerCase().includes('token expired')
-            ) {
-                try {
-                    await this.refreshToken();
-                    return await this.fetchWithError(url, { ...options, credentials: 'include' });
-                } catch (refreshError) {
-                    await this.logout();
-                    throw new Error('Session expired. Please log in again.');
-                }
-            }
-            throw error;
-        }
-    }
-
     async login(email: string, password: string, rememberMe: boolean): Promise<ILoginResponse> {
         try {
             const response = await this.fetchWithError(`${this.API_URL}/api/auth/login`, {
@@ -142,17 +121,13 @@ class TokenService {
 
     async checkAuth(): Promise<IUser | null> {
         try {
-            const response = await this.fetchWithAutoRefresh(`${this.API_URL}/api/auth/check`);
+            const response = await fetch(`${this.API_URL}/api/auth/check`, {
+                credentials: 'include',
+            });
+
             const data = await response.json();
             return data;
         } catch (error) {
-            if (
-                error instanceof Error &&
-                (error.message.includes('401') ||
-                    error.message.toLowerCase().includes('not authenticated'))
-            ) {
-                return null;
-            }
             console.error('Auth check error:', error);
             throw error;
         }
