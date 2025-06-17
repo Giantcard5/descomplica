@@ -1,4 +1,4 @@
-import { FetchService } from './fetch-service';
+import { FetchService } from '@/lib/api/fetch-service';
 
 interface ChatbotResponse {
     message: string;

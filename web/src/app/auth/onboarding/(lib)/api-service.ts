@@ -1,11 +1,12 @@
 import { PersonalInfoSchema, StoreInfoSchema, PreferencesInfoSchema } from '../(utils)/schema';
 
-export class ApiService {
-    private static instance: ApiService;
-    private readonly API_URL: string;
+import { FetchService } from '@/lib/api/fetch-service';
 
-    constructor() {
-        this.API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+export class ApiService extends FetchService {
+    private static instance: ApiService;
+
+    private constructor() {
+        super();
     }
 
     static getInstance(): ApiService {
@@ -13,32 +14,6 @@ export class ApiService {
             ApiService.instance = new ApiService();
         }
         return ApiService.instance;
-    }
-
-    async fetch(url: string, options: RequestInit = {}) {
-        try {
-            const response = await fetch(this.API_URL + url, {
-                ...options,
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...options.headers,
-                },
-            });
-
-            return response;
-        } catch (error) {
-            if (error instanceof Error) {
-                if (error.message === 'Failed to fetch') {
-                    throw new Error(
-                        'Unable to connect to the server. Please check your internet connection and try again.'
-                    );
-                }
-
-                throw error;
-            }
-            throw new Error('An unexpected error occurred');
-        }
     }
 
     async registerRetailer(data: {

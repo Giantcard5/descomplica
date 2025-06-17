@@ -1,6 +1,6 @@
 import { IProfile } from '../types';
 
-import { FetchService } from '../../../(lib)/fetch-service';
+import { FetchService } from '@/lib/api/fetch-service';
 
 class ProfileService extends FetchService {
     private static instance: ProfileService;

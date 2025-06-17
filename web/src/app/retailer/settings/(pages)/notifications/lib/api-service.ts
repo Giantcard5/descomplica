@@ -1,4 +1,4 @@
-import { FetchService } from '../../../(lib)/fetch-service';
+import { FetchService } from '@/lib/api/fetch-service';
 
 import { INotifications } from '../types';
 
