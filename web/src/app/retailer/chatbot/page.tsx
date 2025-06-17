@@ -7,6 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 
+import Markdown from '@/components/ui/markdown';
+
 import { Send, Bot, Share, Search, BarChart3, Lightbulb, Code } from 'lucide-react';
 
 import { defaultMessages } from './_mock/defaultMessages';
@@ -96,23 +98,23 @@ export default function ChatbotPage() {
                                     variant="secondary"
                                     className="px-4 py-2 text-sm bg-muted max-w-[80%]"
                                 >
-                                    {msg.content}
+                                    <Markdown content={msg.content} />
                                 </Badge>
                             </div>
                         ) : (
                             <div className="flex gap-3">
-                                <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center flex-shrink-0 mt-1">
-                                    <Bot className="h-4 w-4" />
+                                <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center flex-shrink-0 mt-1">
+                                    <Bot className="h-5 w-5" />
                                 </div>
                                 <div className="flex-1">
                                     <div className="prose prose-sm max-w-none">
                                         {msg.content.split('\n').map((paragraph, index) => (
-                                            <p
+                                            <div
                                                 key={index}
                                                 className="text-foreground leading-relaxed mb-3 last:mb-0"
                                             >
-                                                {paragraph}
-                                            </p>
+                                                <Markdown content={paragraph} />
+                                            </div>
                                         ))}
                                     </div>
                                 </div>
