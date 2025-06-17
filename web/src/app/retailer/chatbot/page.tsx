@@ -9,15 +9,19 @@ import { Card, CardContent } from '@/components/ui/card';
 
 import Markdown from '@/components/ui/markdown';
 
-import { Send, Bot, Share, Search, BarChart3, Lightbulb, Code } from 'lucide-react';
+import { Send, Bot, Share, Search, BarChart3, Lightbulb } from 'lucide-react';
 
 import { defaultMessages } from './_mock/defaultMessages';
 import { IMessage } from './_types/message';
 
+import { chatbotService } from './_lib/api-service';
+
 export default function ChatbotPage() {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState<IMessage[]>(defaultMessages);
-    const [selectedAction, setSelectedAction] = useState<string | null>(null);
+    const [selectedAction, setSelectedAction] = useState<
+        'research' | 'analyze' | 'brainstorm' | null
+    >(null);
     const [isTyping, setIsTyping] = useState(false);
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -45,23 +49,17 @@ export default function ChatbotPage() {
         setIsTyping(true);
 
         try {
-            const response = await fetch('/api/chatbot', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    message: userMessage.content,
-                    action: selectedAction,
-                }),
+            const response = await chatbotService.getChatbotResponse({
+                message: userMessage.content,
+                action: selectedAction,
             });
 
-            const data = await response.json();
+            const data = JSON.parse(response);
 
             const botResponse: IMessage = {
                 id: messages.length + 2,
                 type: 'bot',
-                content: data.content,
+                content: data.message,
                 timestamp: new Date(),
             };
             setMessages((prev) => [...prev, botResponse]);
@@ -79,7 +77,7 @@ export default function ChatbotPage() {
         }
     };
 
-    const handleActionSelect = (action: string) => {
+    const handleActionSelect = (action: 'research' | 'analyze' | 'brainstorm' | null) => {
         setSelectedAction(selectedAction === action ? null : action);
     };
 
