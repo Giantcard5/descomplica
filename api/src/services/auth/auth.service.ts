@@ -216,6 +216,14 @@ export class AuthService extends PrismaClientSingleton {
                             notification_frequency: params.data.preferencesInfo.notification,
                             userId: decoded.sub as string
                         }
+                    }),
+                    this.prisma.rewards.create({
+                        data: {
+                            points: 0,
+                            streak: 0,
+                            longest_streak: 0,
+                            storeId: decoded.sub as string
+                        }
                     })
                 ]);
             } else if (params.type === 'industry') {

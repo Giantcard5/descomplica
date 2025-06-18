@@ -13,6 +13,8 @@ import { receiptRouter } from './receipt/receipt.routes';
 
 import { chatbotRouter } from './chatbot/chatbot.routes';
 
+import { rewardsRouter } from './rewards/rewards.routes';
+
 const router = Router();
 
 router.use('/auth', authRouter);
@@ -27,5 +29,7 @@ router.use('/store', storeRouter);
 router.use('/receipts', receiptRouter);
 
 router.use('/chatbot', chatbotRouter);
+
+router.use('/rewards', rewardsRouter);
 
 export default router;

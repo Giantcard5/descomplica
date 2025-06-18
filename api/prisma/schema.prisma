@@ -37,6 +37,14 @@ enum DateFormat {
   yyyy_mm_dd
 }
 
+enum RewardsType {
+  credit
+  analystic
+  support
+  training
+  ticket
+}
+
 model User {
   id String @id @default(uuid())
 
@@ -108,11 +116,36 @@ model Store {
   country     String
   description String
 
+  rewards   Rewards? @relation("StoreRewards")
+  rewardsId String?  @unique
+
   user    User      @relation(fields: [userId], references: [id])
   userId  String    @unique
   Product Product[]
 
   @@map("store")
+}
+
+model Rewards {
+  id             String @id @default(uuid())
+  points         Int
+  streak         Int
+  longest_streak Int
+
+  store   Store  @relation("StoreRewards", fields: [storeId], references: [id])
+  storeId String @unique
+
+  @@map("rewards")
+}
+
+model RewardsList {
+  id          String      @id @default(uuid())
+  title       String
+  description String
+  type        RewardsType
+  points      Int
+
+  @@map("rewards_list")
 }
 
 model Product {
