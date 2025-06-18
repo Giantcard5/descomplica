@@ -1,5 +1,6 @@
-import { ItemProps } from "./item";
-
-export interface SummaryRewardsProps extends ItemProps {
-    content: string;
+export interface SummaryRewardsProps {
+    points: number;
+    streak: number;
+    longestStreak: number;
+    redeemable: number;
 };

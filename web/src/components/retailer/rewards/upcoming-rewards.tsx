@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 
 import { UpcomingRewardProps } from '@/app/retailer/rewards/_types/upcoming';
+import { iconsByType } from '@/app/retailer/rewards/_utils/icons';
 
 export default function UpcomingRewards({ params }: { params: UpcomingRewardProps[] }) {
     return (
@@ -29,7 +30,7 @@ export default function UpcomingRewards({ params }: { params: UpcomingRewardProp
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3">
                                     <div className="rounded-full bg-primary/10 p-2">
-                                        {reward.icon}
+                                        {iconsByType[reward.type]}
                                     </div>
                                     <div>
                                         <h4 className="font-semibold">{reward.title}</h4>

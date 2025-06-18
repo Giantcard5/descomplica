@@ -1,5 +1,16 @@
 export interface ItemProps {
     title: string;
     description: string;
-    icon: React.ReactNode;
+    type: 
+        'credit' | 
+        'analystic' | 
+        'support' | 
+        'training' | 
+        'ticket' | 
+        'submission' | 
+        'streak' | 
+        'champion' | 
+        'variety' | 
+        'master' | 
+        'accuracy';
 }

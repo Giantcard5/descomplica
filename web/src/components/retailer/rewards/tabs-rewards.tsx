@@ -21,6 +21,8 @@ import {
     AchievementProps,
 } from '@/app/retailer/rewards/_types/tabs';
 
+import { iconsByType } from '@/app/retailer/rewards/_utils/icons';
+
 export default function TabsRewards({ params }: {
     params: {
         avaliableRewards: AvaliableRewardProps[],
@@ -41,7 +43,7 @@ export default function TabsRewards({ params }: {
                             <CardHeader>
                                 <div className="flex items-center justify-between">
                                     <div className="rounded-full bg-primary/10 p-2">
-                                        {reward.icon}
+                                        {iconsByType[reward.type]}
                                     </div>
                                     <Badge variant="outline">{reward.points} points</Badge>
                                 </div>
@@ -76,7 +78,7 @@ export default function TabsRewards({ params }: {
                                             : 'bg-muted text-muted-foreground'
                                             }`}
                                     >
-                                        {achievement.icon}
+                                        {iconsByType[achievement.type]}
                                     </div>
                                     <Badge
                                         variant={achievement.completed ? 'default' : 'outline'}

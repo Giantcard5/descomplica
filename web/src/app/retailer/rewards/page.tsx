@@ -13,9 +13,7 @@ import { AvaliableRewardProps, AchievementProps } from './_types/tabs';
 import { UpcomingRewardProps } from './_types/upcoming';
 
 import {
-    mockHeaderRewards, 
     mockNextReward, 
-    mockAvaliableRewards, 
     mockAchievements,
     mockUpcomingRewards 
 } from './_mock/rewards';
@@ -29,9 +27,9 @@ import { rewardsService } from './_lib/api-service';
 export default function RewardsPage() {
     const { isLoading, setLoading } = useLoadingBar();
     
-    const [summaryRewards, setSummaryRewards] = useState<SummaryRewardsProps[]>(mockHeaderRewards);
+    const [summaryRewards, setSummaryRewards] = useState<SummaryRewardsProps>({} as SummaryRewardsProps);
     const [nextReward, setNextReward] = useState<NextRewardProps>(mockNextReward);
-    const [avaliableRewards, setAvaliableRewards] = useState<AvaliableRewardProps[]>(mockAvaliableRewards);
+    const [avaliableRewards, setAvaliableRewards] = useState<AvaliableRewardProps[]>([]);
     const [achievements, setAchievements] = useState<AchievementProps[]>(mockAchievements);
     const [upcomingRewards, setUpcomingRewards] = useState<UpcomingRewardProps[]>(mockUpcomingRewards);
 
@@ -40,7 +38,16 @@ export default function RewardsPage() {
             setLoading(true);
             try {
                 const response = await rewardsService.getRewards();
-                console.log(response);
+
+                setSummaryRewards({
+                    points: response.points,
+                    streak: response.streak,
+                    longestStreak: response.longestStreak,
+                    redeemable: 3
+                });
+
+                setAvaliableRewards(response.rewardsList);
+
             } catch (error) {
                 console.error(error);
             } finally {
@@ -57,7 +64,12 @@ export default function RewardsPage() {
 
     return (
         <div className="space-y-6">
-            <SummaryRewards params={summaryRewards} />
+            <SummaryRewards 
+                points={summaryRewards.points} 
+                streak={summaryRewards.streak} 
+                longestStreak={summaryRewards.longestStreak} 
+                redeemable={summaryRewards.redeemable} 
+            />
 
             <NextReward params={nextReward} />
 
