@@ -33,8 +33,8 @@ export class RewardsService extends PrismaClientSingleton {
             throw new Error('Store not found');
         };
 
-        const rewardsList = await this.getRewardsList();
         const rewardsSummary = await this.getRewardsSummary(store.id);
+        const rewardsList = await this.getRewardsList(rewardsSummary?.points || 0);
 
         return {
             points: rewardsSummary?.points,
@@ -85,12 +85,6 @@ export class RewardsService extends PrismaClientSingleton {
                     type: 'accuracy'
                 },
             ],
-            nextReward: {
-                title: 'Next Reward',
-                description: 'Next Reward Description',
-                type: 'credit',
-                totalPoints: 1500
-            },
             upcomingRewards: [
                 {
                     title: 'Double Points Weekend',
@@ -114,10 +108,13 @@ export class RewardsService extends PrismaClientSingleton {
         };
     }
 
-    async getRewardsList() {
+    async getRewardsList(userPoints: number) {
         const rewardsList = await this.prisma.rewardsList.findMany({});
 
-        return rewardsList;
+        return rewardsList.map(reward => ({
+            ...reward,
+            redeemable: reward.points <= userPoints
+        }));
     }
 
     async getRewardsSummary(id: string) {
@@ -126,7 +123,6 @@ export class RewardsService extends PrismaClientSingleton {
                 storeId: id
             }
         });
-
         return rewardsSummary;
     }
 };

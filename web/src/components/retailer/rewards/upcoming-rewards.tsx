@@ -6,17 +6,18 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import {
-    Award,
-    Calendar,
-    Clock,
-    Trophy,
-} from 'lucide-react';
+
+import { Clock } from 'lucide-react';
 
 import { UpcomingRewardProps } from '@/app/retailer/rewards/_types/upcoming';
+
 import { iconsByType } from '@/app/retailer/rewards/_utils/icons';
 
-export default function UpcomingRewards({ params }: { params: UpcomingRewardProps[] }) {
+export default function UpcomingRewards({
+    upcomingRewards
+}: {
+    upcomingRewards: UpcomingRewardProps[]
+}) {
     return (
         <Card>
             <CardHeader>
@@ -25,7 +26,7 @@ export default function UpcomingRewards({ params }: { params: UpcomingRewardProp
             </CardHeader>
             <CardContent>
                 <div className="space-y-4">
-                    {params.map((reward, index) => (
+                    {upcomingRewards.map((reward, index) => (
                         <div className="rounded-lg border bg-card p-4" key={index}>
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3">

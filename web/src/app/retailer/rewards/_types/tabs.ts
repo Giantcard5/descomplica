@@ -1,7 +1,8 @@
 import { ItemProps } from "./item";
 
-export interface AvaliableRewardProps extends ItemProps {
+export interface AvailableRewardProps extends ItemProps {
     points: number;
+    redeemable: boolean;
 };
 
 export interface AchievementProps extends ItemProps {

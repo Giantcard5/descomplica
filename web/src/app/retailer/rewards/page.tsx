@@ -1,89 +1,57 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
 import NextReward from '@/components/retailer/rewards/next-reward';
 import UpcomingRewards from '@/components/retailer/rewards/upcoming-rewards';
 import TabsRewards from '@/components/retailer/rewards/tabs-rewards';
 import SummaryRewards from '@/components/retailer/rewards/summary';
 
-import { SummaryRewardsProps } from './_types/summary';
-import { NextRewardProps } from './_types/next-rewards';
-import { AvaliableRewardProps, AchievementProps } from './_types/tabs';
-import { UpcomingRewardProps } from './_types/upcoming';
-
-import { useLoadingBar } from '@/hooks/use-loading';
-
 import Loading from './loading';
 
-import { rewardsService } from './_lib/api-service';
+import { useRewards } from './_hooks/useRewards';
 
 export default function RewardsPage() {
-    const { isLoading, setLoading } = useLoadingBar();
-    
-    const [summaryRewards, setSummaryRewards] = useState<SummaryRewardsProps>({} as SummaryRewardsProps);
-    const [nextReward, setNextReward] = useState<NextRewardProps>({} as NextRewardProps);
-    const [avaliableRewards, setAvaliableRewards] = useState<AvaliableRewardProps[]>([]);
-    const [achievements, setAchievements] = useState<AchievementProps[]>([]);
-    const [upcomingRewards, setUpcomingRewards] = useState<UpcomingRewardProps[]>([]);
-
-    useEffect(() => {
-        const fetchRewards = async () => {
-            setLoading(true);
-            try {
-                const response = await rewardsService.getRewards();
-
-                setSummaryRewards({
-                    points: response.points,
-                    streak: response.streak,
-                    longestStreak: response.longestStreak,
-                    redeemable: 3
-                });
-
-                setAvaliableRewards(response.rewardsList);
-                setAchievements(response.achievements);
-                setUpcomingRewards(response.upcomingRewards);
-
-                setNextReward({
-                    title: response.nextReward.title,
-                    description: response.nextReward.description,
-                    type: response.nextReward.type,
-                    points: response.points,
-                    totalPoints: response.nextReward.totalPoints
-                });
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchRewards();
-    }, []);
+    const { 
+        summaryRewards,
+        availableRewards,
+        achievements,
+        upcomingRewards,
+        redeemableRewards,
+        nextRedeemableReward,
+        isLoading,
+        error
+    } = useRewards();
 
     if (isLoading) {
         return <Loading />;
     };
 
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    };
+
     return (
         <div className="space-y-6">
-            <SummaryRewards 
-                points={summaryRewards.points} 
-                streak={summaryRewards.streak} 
-                longestStreak={summaryRewards.longestStreak} 
-                redeemable={summaryRewards.redeemable} 
+            <SummaryRewards
+                points={summaryRewards.points}
+                streak={summaryRewards.streak}
+                longestStreak={summaryRewards.longestStreak}
+                redeemable={redeemableRewards}
             />
 
-            <NextReward params={nextReward} />
+            <NextReward
+                title={nextRedeemableReward.title}
+                description={nextRedeemableReward.description}
+                type={nextRedeemableReward.type}
+                points={summaryRewards.points}
+                totalPoints={nextRedeemableReward.points}
+            />
 
             <TabsRewards
-                params={{
-                    avaliableRewards,
-                    achievements
-                }}
+                availableRewards={availableRewards}
+                achievements={achievements}
             />
 
-            <UpcomingRewards params={upcomingRewards} />
+            <UpcomingRewards upcomingRewards={upcomingRewards} />
         </div>
     );
 }

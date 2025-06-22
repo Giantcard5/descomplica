@@ -17,17 +17,18 @@ import {
 } from '@/components/ui/tabs';
 
 import {
-    AvaliableRewardProps,
+    AvailableRewardProps,
     AchievementProps,
 } from '@/app/retailer/rewards/_types/tabs';
 
 import { iconsByType } from '@/app/retailer/rewards/_utils/icons';
 
-export default function TabsRewards({ params }: {
-    params: {
-        avaliableRewards: AvaliableRewardProps[],
-        achievements: AchievementProps[],
-    }
+export default function TabsRewards({
+    availableRewards,
+    achievements
+}: {
+    availableRewards: AvailableRewardProps[],
+    achievements: AchievementProps[],
 }) {
     return (
         <Tabs defaultValue="rewards" className="space-y-4">
@@ -38,7 +39,7 @@ export default function TabsRewards({ params }: {
 
             <TabsContent value="rewards" className="space-y-4">
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    {params.avaliableRewards.map((reward, i) => (
+                    {availableRewards.map((reward, i) => (
                         <Card key={i}>
                             <CardHeader>
                                 <div className="flex items-center justify-between">
@@ -52,13 +53,13 @@ export default function TabsRewards({ params }: {
                             </CardHeader>
                             <CardFooter>
                                 <Button
-                                    variant={reward.points <= 1250 ? 'default' : 'outline'}
+                                    variant={reward.redeemable ? 'default' : 'outline'}
                                     className="w-full"
-                                    disabled={reward.points > 1250}
+                                    disabled={!reward.redeemable}
                                 >
-                                    {reward.points <= 1250
+                                    {reward.redeemable
                                         ? 'Redeem Now'
-                                        : `Need ${reward.points - 1250} more points`}
+                                        : `Need ${reward.points} more points`}
                                 </Button>
                             </CardFooter>
                         </Card>
@@ -68,7 +69,7 @@ export default function TabsRewards({ params }: {
 
             <TabsContent value="achievements" className="space-y-4">
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    {params.achievements.map((achievement, i) => (
+                    {achievements.map((achievement, i) => (
                         <Card key={i} className={achievement.completed ? '' : 'opacity-75'}>
                             <CardHeader>
                                 <div className="flex items-center justify-between">
