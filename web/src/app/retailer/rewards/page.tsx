@@ -12,12 +12,6 @@ import { NextRewardProps } from './_types/next-rewards';
 import { AvaliableRewardProps, AchievementProps } from './_types/tabs';
 import { UpcomingRewardProps } from './_types/upcoming';
 
-import {
-    mockNextReward, 
-    mockAchievements,
-    mockUpcomingRewards 
-} from './_mock/rewards';
-
 import { useLoadingBar } from '@/hooks/use-loading';
 
 import Loading from './loading';
@@ -28,10 +22,10 @@ export default function RewardsPage() {
     const { isLoading, setLoading } = useLoadingBar();
     
     const [summaryRewards, setSummaryRewards] = useState<SummaryRewardsProps>({} as SummaryRewardsProps);
-    const [nextReward, setNextReward] = useState<NextRewardProps>(mockNextReward);
+    const [nextReward, setNextReward] = useState<NextRewardProps>({} as NextRewardProps);
     const [avaliableRewards, setAvaliableRewards] = useState<AvaliableRewardProps[]>([]);
-    const [achievements, setAchievements] = useState<AchievementProps[]>(mockAchievements);
-    const [upcomingRewards, setUpcomingRewards] = useState<UpcomingRewardProps[]>(mockUpcomingRewards);
+    const [achievements, setAchievements] = useState<AchievementProps[]>([]);
+    const [upcomingRewards, setUpcomingRewards] = useState<UpcomingRewardProps[]>([]);
 
     useEffect(() => {
         const fetchRewards = async () => {
@@ -47,7 +41,16 @@ export default function RewardsPage() {
                 });
 
                 setAvaliableRewards(response.rewardsList);
+                setAchievements(response.achievements);
+                setUpcomingRewards(response.upcomingRewards);
 
+                setNextReward({
+                    title: response.nextReward.title,
+                    description: response.nextReward.description,
+                    type: response.nextReward.type,
+                    points: response.points,
+                    totalPoints: response.nextReward.totalPoints
+                });
             } catch (error) {
                 console.error(error);
             } finally {
