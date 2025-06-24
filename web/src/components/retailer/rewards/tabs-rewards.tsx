@@ -22,6 +22,7 @@ import {
 } from '@/app/retailer/rewards/_types/tabs';
 
 import { iconsByType } from '@/app/retailer/rewards/_utils/icons';
+import { useRewards } from '@/app/retailer/rewards/_hooks/useRewards';
 
 export default function TabsRewards({
     availableRewards,
@@ -30,6 +31,8 @@ export default function TabsRewards({
     availableRewards: AvailableRewardProps[],
     achievements: AchievementProps[],
 }) {
+    const { handleRedeemReward } = useRewards();
+
     return (
         <Tabs defaultValue="rewards" className="space-y-4">
             <TabsList>
@@ -39,8 +42,8 @@ export default function TabsRewards({
 
             <TabsContent value="rewards" className="space-y-4">
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    {availableRewards.map((reward, i) => (
-                        <Card key={i}>
+                    {availableRewards.map((reward) => (
+                        <Card key={reward.id}>
                             <CardHeader>
                                 <div className="flex items-center justify-between">
                                     <div className="rounded-full bg-primary/10 p-2">
@@ -53,13 +56,18 @@ export default function TabsRewards({
                             </CardHeader>
                             <CardFooter>
                                 <Button
-                                    variant={reward.redeemable ? 'default' : 'outline'}
+                                    variant={
+                                        reward.redeemable ? 'default' : 'outline'
+                                    }
                                     className="w-full"
-                                    disabled={!reward.redeemable}
+                                    disabled={!reward.redeemable || reward.status === 'redeemed'}
+                                    onClick={() => handleRedeemReward(reward)}
                                 >
-                                    {reward.redeemable
-                                        ? 'Redeem Now'
-                                        : `Need ${reward.points} more points`}
+                                    {reward.status === 'redeemed'
+                                        ? 'Redeemed'
+                                        : reward.status === 'available'
+                                            ? 'Redeem Now'
+                                            : `Need ${reward.points} more points`}
                                 </Button>
                             </CardFooter>
                         </Card>

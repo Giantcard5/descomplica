@@ -5,6 +5,7 @@ import { rewardsService } from '../_lib/api-service';
 
 import { SummaryRewardsProps } from '../_types/summary';
 import { NextRewardProps } from '../_types/next-rewards';
+import { AvailableRewardProps } from '../_types/tabs';
 
 const fetcher = () => rewardsService.getRewards();
 
@@ -39,6 +40,22 @@ export function useRewards() {
         );
     }, [data?.rewardsList, summaryRewards.points]);
 
+    const handleRedeemReward = async (reward: AvailableRewardProps) => {
+        if (!reward.redeemable) {
+            throw new Error('This reward is not redeemable');
+        }
+
+        if (summaryRewards.points < reward.points) {
+            throw new Error('You do not have enough points to redeem this reward');
+        }
+
+        try {
+            await rewardsService.redeemReward(reward.id);
+        } catch (error) {
+            throw new Error(error as string);
+        }
+    };
+
     return {
         summaryRewards,
         nextReward,
@@ -47,6 +64,7 @@ export function useRewards() {
         upcomingRewards: data?.upcomingRewards ?? [],
         redeemableRewards,
         nextRedeemableReward,
+        handleRedeemReward,
         isLoading,
         error
     }

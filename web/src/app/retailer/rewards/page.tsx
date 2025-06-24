@@ -20,7 +20,7 @@ export default function RewardsPage() {
         isLoading,
         error
     } = useRewards();
-
+    
     if (isLoading) {
         return <Loading />;
     };
