@@ -104,13 +104,6 @@ export class AuthService extends PrismaClientSingleton {
             path: '/',
         });
 
-        params.response.clearCookie('user_type', {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
-            path: '/',
-        });
-
         return { message: 'Logged out successfully' };
     }
 
