@@ -20,8 +20,11 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 import { User, LogOut, Settings, LayoutDashboard } from 'lucide-react';
 
+import { useLoadingBar } from '@/hooks/use-loading';
+
 export default function Header() {
-    const { user, logout, isLoading } = useAuth();
+    const { user, logout } = useAuth();
+    const { isLoading } = useLoadingBar();
 
     const getDashboardUrl = () => {
         return user?.type === 'retailer' ? '/retailer/' : '/industry/';
