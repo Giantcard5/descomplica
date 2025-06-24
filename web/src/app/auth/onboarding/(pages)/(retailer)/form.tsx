@@ -38,14 +38,8 @@ interface RetailerOnboardingFormProps {
 export function RetailerOnboardingForm({ step, onComplete }: RetailerOnboardingFormProps) {
     const router = useRouter();
 
-    const { user, isOnboarding, setIsOnboarding } = useAuth();
+    const { user } = useAuth();
     const { toast } = useToast();
-
-    useEffect(() => {
-        if (!isOnboarding) {
-            router.push(`/${user?.type}`);
-        }
-    }, [isOnboarding, router, user]);
 
     const getStepSchema = () => {
         switch (step) {
@@ -113,7 +107,6 @@ export function RetailerOnboardingForm({ step, onComplete }: RetailerOnboardingF
             });
         }
 
-        setIsOnboarding(false);
         router.push(`/${user?.type}`);
     };
 

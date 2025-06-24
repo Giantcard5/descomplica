@@ -89,21 +89,21 @@ export class AuthService extends PrismaClientSingleton {
                 console.error('Error deleting refresh token:', error);
             };
         };
-    
+
         params.response.clearCookie('refresh_token', {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax',
             path: '/',
         });
-    
+
         params.response.clearCookie('access_token', {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax',
             path: '/',
         });
-    
+
         params.response.clearCookie('user_type', {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
@@ -167,10 +167,26 @@ export class AuthService extends PrismaClientSingleton {
 
         try {
             if (params.type === 'retailer') {
+                const store = await this.prisma.store.create({
+                    data: {
+                        name: params.data.storeInfo.name,
+                        type: params.data.storeInfo.type,
+                        size: Number(params.data.storeInfo.size),
+                        employees: Number(params.data.storeInfo.employees),
+                        address: params.data.storeInfo.address,
+                        city: params.data.storeInfo.city,
+                        state: params.data.storeInfo.state,
+                        zipCode: params.data.storeInfo.zipCode,
+                        country: params.data.storeInfo.country,
+                        description: params.data.storeInfo.description,
+                        userId: decoded.sub
+                    }
+                });
+
                 await this.prisma.$transaction([
                     this.prisma.profile.updateMany({
                         where: {
-                            userId: decoded.sub,
+                            userId: decoded.sub as string,
                             type: 'retailer'
                         },
                         data: {
@@ -178,21 +194,6 @@ export class AuthService extends PrismaClientSingleton {
                             dateOfBirth: params.data.personalInfo.dateOfBirth,
                             phoneNumber: params.data.personalInfo.phoneNumber,
                             bio: params.data.personalInfo.bio,
-                        }
-                    }),
-                    this.prisma.store.create({
-                        data: {
-                            name: params.data.storeInfo.name,
-                            type: params.data.storeInfo.type,
-                            size: Number(params.data.storeInfo.size),
-                            employees: Number(params.data.storeInfo.employees),
-                            address: params.data.storeInfo.address,
-                            city: params.data.storeInfo.city,
-                            state: params.data.storeInfo.state,
-                            zipCode: params.data.storeInfo.zipCode,
-                            country: params.data.storeInfo.country,
-                            description: params.data.storeInfo.description,
-                            userId: decoded.sub
                         }
                     }),
                     this.prisma.userPreferences.create({
@@ -221,10 +222,10 @@ export class AuthService extends PrismaClientSingleton {
                         data: {
                             points: 0,
                             streak: 0,
-                            longest_streak: 0,
-                            storeId: decoded.sub as string
+                            longestStreak: 0,
+                            storeId: store.id
                         }
-                    })
+                    }),
                 ]);
             } else if (params.type === 'industry') {
                 console.log(params.data);
@@ -232,6 +233,7 @@ export class AuthService extends PrismaClientSingleton {
 
             return { message: 'Onboarding registered successfully' };
         } catch (error: any) {
+            console.error("Prisma transaction error:", error);
             throw new Error(error.message);
         };
     };

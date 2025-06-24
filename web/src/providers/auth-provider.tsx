@@ -16,8 +16,6 @@ import { useLoadingBar } from '@/hooks/use-loading';
 
 interface IAuthContext {
     user: IUser | null;
-    isOnboarding: boolean;
-    setIsOnboarding: (isOnboarding: boolean) => void;
     login: (email: string, password: string, rememberMe: boolean) => Promise<void>;
     register: (
         name: string,
@@ -37,7 +35,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { setLoading } = useLoadingBar();
 
     const [user, setUser] = useState<IUser | null>(null);
-    const [isOnboarding, setIsOnboarding] = useState(false);
 
     useEffect(() => {
         checkAuth();
@@ -46,15 +43,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const checkAuth = useCallback(async () => {
         setLoading(true);
         try {
-            const data = await tokenService.checkAuth();
-            setUser(data);
-
-            if (!isOnboarding) {
-                router.push(`/${data?.type}`);
-            } else {
-                setIsOnboarding(true);
-                router.push(`/auth/onboarding?type=${data?.type}`);
-            }
+            await tokenService.checkAuth().then((res) => {
+                setUser(res);
+            });
         } catch (error) {
             setUser(null);
             if (pathname !== '/' && !pathname.startsWith('/auth')) {
@@ -104,6 +95,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         try {
             await tokenService.register(name, email, password, type);
             await login(email, password, false);
+
+            router.push(`/auth/onboarding?type=${type}`);
         } catch (error) {
             throw new Error('Failed to register');
         } finally {
@@ -113,12 +106,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const value = useMemo(() => ({
         user,
-        isOnboarding,
-        setIsOnboarding,
         login,
         register,
         logout,
-    }), [user, isOnboarding]);
+    }), [user]);
 
     return (
         <AuthContext.Provider value={value}>

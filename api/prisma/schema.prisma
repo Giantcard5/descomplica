@@ -128,10 +128,10 @@ model Store {
 }
 
 model Rewards {
-  id             String @id @default(uuid())
-  points         Int
-  streak         Int
-  longest_streak Int
+  id            String @id @default(uuid())
+  points        Int
+  streak        Int
+  longestStreak Int
 
   store   Store  @relation("StoreRewards", fields: [storeId], references: [id])
   storeId String @unique
