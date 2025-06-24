@@ -30,4 +30,18 @@ router.get('/', async (request: Request, response: Response) => {
     return response.json(rewards);
 });
 
+router.post('/redeem', async (request: Request, response: Response) => {
+    try {
+        validateAccessToken(request);
+    } catch (error: any) {
+        if (error.message === 'No access token') {
+            return response.status(401).json({ message: 'Unauthorized' });
+        };
+    };
+
+    await rewardsService.redeemReward(request.body.rewardId, request.cookies.access_token);
+
+    return response.status(200).json({ message: 'Reward redeemed successfully' });
+});
+
 export const rewardsRouter = router;

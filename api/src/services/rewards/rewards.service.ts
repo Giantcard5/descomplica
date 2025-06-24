@@ -6,6 +6,10 @@ import {
     PrismaClientSingleton
 } from "../../utils/prismaClient";
 
+import {
+    IRewardRedeem
+} from '../../types/rewards';
+
 export class RewardsService extends PrismaClientSingleton {
     private static instance: RewardsService;
 
@@ -22,13 +26,13 @@ export class RewardsService extends PrismaClientSingleton {
 
     async getRewards(token: string) {
         const decoded = verify(token, process.env.JWT_SECRET as string);
-    
+
         const store = await this.prisma.store.findUnique({
             where: {
                 userId: decoded.sub as string
             }
         });
-    
+
         if (!store) {
             throw new Error('Store not found');
         };
@@ -111,10 +115,13 @@ export class RewardsService extends PrismaClientSingleton {
     async getRewardsList(userPoints: number) {
         const rewardsList = await this.prisma.rewardsList.findMany({});
 
-        return rewardsList.map(reward => ({
+        const enriched =  rewardsList.map(async reward => ({
             ...reward,
-            redeemable: reward.points <= userPoints
+            redeemable: reward.points <= userPoints,
+            status: await this.getRewardReedemStatus(reward.id)
         }));
+
+        return Promise.all(enriched);
     }
 
     async getRewardsSummary(id: string) {
@@ -124,6 +131,41 @@ export class RewardsService extends PrismaClientSingleton {
             }
         });
         return rewardsSummary;
+    }
+
+    async getRewardReedemStatus(id: string): Promise<'redeemed' | 'avaliable'> {
+        const rewardReedemed = await this.prisma.rewardsReedemed.findUnique({
+            where: {
+                rewardsListId: id
+            }
+        });
+
+        if (rewardReedemed?.rewardsListId) {
+            return 'redeemed';
+        } else {
+            return 'avaliable';
+        }
+    }
+
+    async redeemReward(rewardId: string, token: string) {
+        const decoded = verify(token, process.env.JWT_SECRET as string);
+
+        const store = await this.prisma.store.findUnique({
+            where: {
+                userId: decoded.sub as string
+            }
+        });
+
+        if (!store) {
+            throw new Error('Store not found');
+        };
+
+        await this.prisma.rewardsReedemed.create({
+            data: {
+                storeId: store.id,
+                rewardsListId: rewardId
+            }
+        });
     }
 };
 

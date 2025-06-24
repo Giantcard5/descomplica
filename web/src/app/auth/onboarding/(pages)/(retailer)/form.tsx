@@ -41,11 +41,11 @@ export function RetailerOnboardingForm({ step, onComplete }: RetailerOnboardingF
     const { user, isOnboarding, setIsOnboarding } = useAuth();
     const { toast } = useToast();
 
-    useEffect(() => {
-        if (!isOnboarding) {
-            router.push(`/${user?.type}`);
-        }
-    }, [isOnboarding, router, user]);
+    // useEffect(() => {
+    //     if (!isOnboarding) {
+    //         router.push(`/${user?.type}`);
+    //     }
+    // }, [isOnboarding, router, user]);
 
     const getStepSchema = () => {
         switch (step) {

@@ -116,8 +116,9 @@ model Store {
   country     String
   description String
 
-  rewards   Rewards? @relation("StoreRewards")
-  rewardsId String?  @unique
+  rewards Rewards? @relation("StoreRewards")
+
+  rewardsReedemed RewardsReedemed[] @relation("StoreRewardsReedemed")
 
   user    User      @relation(fields: [userId], references: [id])
   userId  String    @unique
@@ -145,7 +146,22 @@ model RewardsList {
   type        RewardsType
   points      Int
 
+  rewardsReedemed RewardsReedemed[] @relation("RewardsListReedemed")
+
   @@map("rewards_list")
+}
+
+model RewardsReedemed {
+  id String @id @default(uuid())
+
+  store   Store  @relation("StoreRewardsReedemed", fields: [storeId], references: [id])
+  storeId String
+
+  rewardsList   RewardsList @relation("RewardsListReedemed", fields: [rewardsListId], references: [id])
+  rewardsListId String
+
+  @@unique([storeId, rewardsListId])
+  @@map("rewards_reedemed")
 }
 
 model Product {
