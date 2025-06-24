@@ -152,8 +152,6 @@ model RewardsList {
 }
 
 model RewardsReedemed {
-  id String @id @default(uuid())
-
   store   Store  @relation("StoreRewardsReedemed", fields: [storeId], references: [id])
   storeId String
 

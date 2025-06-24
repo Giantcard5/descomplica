@@ -1,4 +1,4 @@
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import { useMemo } from 'react';
 
 import { rewardsService } from '../_lib/api-service';
@@ -12,14 +12,14 @@ const fetcher = () => rewardsService.getRewards();
 export function useRewards() {
     const { data, error, isLoading } = useSWR('rewards', fetcher);
 
-    const summaryRewards = data? {
+    const summaryRewards = data ? {
         points: data.points,
         streak: data.streak,
         longestStreak: data.longestStreak,
         redeemable: data.rewardsList.filter((i: { redeemable: boolean; }) => i.redeemable).length
     } : {} as SummaryRewardsProps;
 
-    const nextReward = data? {
+    const nextReward = data ? {
         title: data.nextReward?.title || '',
         description: data.nextReward?.description || '',
         type: data.nextReward?.type || '',
@@ -50,7 +50,9 @@ export function useRewards() {
         }
 
         try {
-            await rewardsService.redeemReward(reward.id);
+            await rewardsService.redeemReward(reward.id).then(() => {
+                mutate('rewards');
+            });
         } catch (error) {
             throw new Error(error as string);
         }
