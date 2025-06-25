@@ -43,9 +43,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const checkAuth = useCallback(async () => {
         setLoading(true);
         try {
-            await tokenService.checkAuth().then((res) => {
-                setUser(res);
-            });
+            const response = await tokenService.checkAuth();
+            if (response) {
+                setUser(response as IUser)
+            } else {
+                setUser(null);
+                if (pathname !== '/' && !pathname.startsWith('/auth')) {
+                    router.push('/auth/login');
+                };
+            };
         } catch (error) {
             setUser(null);
             if (pathname !== '/' && !pathname.startsWith('/auth')) {
@@ -63,7 +69,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     ) => {
         setLoading(true);
         try {
-            await tokenService.login(email, password, rememberMe);
+            const response = await tokenService.login(email, password, rememberMe);
+            router.push(`/${response.type}`);
             await checkAuth();
         } catch (error) {
             throw new Error('Failed to login');

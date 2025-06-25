@@ -38,13 +38,7 @@ router.post('/login', async (request: Request, response: Response) => {
             path: '/',
         });
 
-        return response.json({
-            accessToken: token.token,
-            accessTokenExpiresAt: token.expiresAt,
-            refreshToken: refreshToken.token,
-            refreshTokenExpiresAt: refreshToken.expiresAt,
-            type
-        });
+        return response.json({ type });
     } catch (error) {
         return response.status(400).json({ message: 'Email or password is incorrect' });
     };

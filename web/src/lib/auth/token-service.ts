@@ -1,9 +1,3 @@
-export interface ILoginResponse {
-    accessToken: string;
-    accessTokenExpiresAt: string;
-    type: 'retailer' | 'industry';
-}
-
 export interface IUser {
     id: string;
     name: string;
@@ -74,7 +68,7 @@ class TokenService {
         }
     }
 
-    async login(email: string, password: string, rememberMe: boolean): Promise<ILoginResponse> {
+    async login(email: string, password: string, rememberMe: boolean): Promise<{ type: 'retailer' | 'industry' }> {
         try {
             const response = await this.fetchWithError(`${this.API_URL}/api/auth/login`, {
                 method: 'POST',
