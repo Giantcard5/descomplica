@@ -76,7 +76,7 @@ export default function LoginPage() {
                         <div className="space-y-4">
                             <div className="space-y-2">
                                 <Label htmlFor="password">Password</Label>
-                                <Input {...register('password')} placeholder="Password" />
+                                <Input {...register('password')} type='password' placeholder="Password" />
                                 {errors.password && (
                                     <p className="text-red-500 text-sm">
                                         {errors.password.message}

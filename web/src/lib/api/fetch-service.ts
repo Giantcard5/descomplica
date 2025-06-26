@@ -1,5 +1,5 @@
 export class FetchService {
-    private readonly API_URL: string;
+    public readonly API_URL: string;
 
     constructor() {
         this.API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';

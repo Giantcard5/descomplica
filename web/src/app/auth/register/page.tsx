@@ -115,6 +115,7 @@ export default function RegisterPage() {
                                 {...register('password')}
                                 placeholder="examplePassword"
                                 disabled={isLoading}
+                                type='password' 
                             />
                             {errors.password && (
                                 <p className="text-red-500 text-sm">{errors.password.message}</p>

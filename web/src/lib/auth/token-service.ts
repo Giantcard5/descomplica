@@ -1,3 +1,5 @@
+import { FetchService } from "../api/fetch-service";
+
 export interface IUser {
     id: string;
     name: string;
@@ -5,17 +7,12 @@ export interface IUser {
     type: 'retailer' | 'industry';
 }
 
-class TokenService {
+class TokenService extends FetchService {
     private static instance: TokenService;
-    private readonly API_URL: string;
     private readonly ACCESS_TOKEN_KEY = 'access_token';
 
     private constructor() {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-        if (!apiUrl) {
-            console.warn('NEXT_PUBLIC_API_URL is not set, defaulting to http://localhost:3001');
-        }
-        this.API_URL = apiUrl || 'http://localhost:3001';
+        super();
     }
 
     static getInstance(): TokenService {
@@ -25,56 +22,13 @@ class TokenService {
         return TokenService.instance;
     }
 
-    private async fetchWithError(url: string, options: RequestInit = {}) {
-        try {
-            const response = await fetch(url, {
-                ...options,
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...options.headers,
-                },
-            });
-
-            if (!response.ok) {
-                if (response.status === 401) {
-                    await this.logout();
-                    window.location.href = '/auth/login';
-                    throw new Error('401');
-                }
-                const error = await response
-                    .json()
-                    .catch(() => ({ message: 'Unknown error occurred' }));
-                throw new Error(error.message || `HTTP error! status: ${response.status}`);
-            }
-
-            return response;
-        } catch (error) {
-            if (error instanceof Error) {
-                if (error.message === 'Failed to fetch') {
-                    throw new Error(
-                        'Unable to connect to the server. Please check your internet connection and try again.'
-                    );
-                }
-
-                if (error.message === '401') {
-                    await this.logout();
-                    window.location.href = '/auth/login';
-                    throw new Error('401');
-                }
-                throw error;
-            }
-            throw new Error('An unexpected error occurred');
-        }
-    }
-
     async login(
         email: string,
         password: string,
         rememberMe: boolean
     ): Promise<{ type: 'retailer' | 'industry' }> {
         try {
-            const response = await this.fetchWithError(`${this.API_URL}/api/auth/login`, {
+            const response = await this.fetch('/api/auth/login', {
                 method: 'POST',
                 body: JSON.stringify({ email, password, rememberMe }),
             });
@@ -93,7 +47,7 @@ class TokenService {
         type: 'retailer' | 'industry'
     ): Promise<IUser> {
         try {
-            const response = await this.fetchWithError(`${this.API_URL}/api/auth/register`, {
+            const response = await this.fetch('/api/auth/register', {
                 method: 'POST',
                 body: JSON.stringify({ name, email, password, type }),
             });
@@ -108,7 +62,7 @@ class TokenService {
 
     async logout(): Promise<void> {
         try {
-            await this.fetchWithError(`${this.API_URL}/api/auth/logout`, {
+            await this.fetch('/api/auth/logout', {
                 method: 'POST',
             });
         } catch (error) {
@@ -119,7 +73,7 @@ class TokenService {
 
     async checkAuth(): Promise<IUser | null> {
         try {
-            const response = await fetch(`${this.API_URL}/api/auth/check`, {
+            const response = await this.fetch('/api/auth/check', {
                 credentials: 'include',
             });
 
@@ -155,7 +109,7 @@ class TokenService {
             throw new Error('refreshToken can only be called on the client');
         }
         try {
-            const response = await this.fetchWithError(`${this.API_URL}/api/token/refresh-token`, {
+            const response = await this.fetch('${this.API_URL}/api/token/refresh-token', {
                 method: 'POST',
                 credentials: 'include',
             });
@@ -170,6 +124,10 @@ class TokenService {
             throw error;
         }
     }
+
+    async resetPassword(password: string, token: string): Promise<void> { }
+
+    async forgotPassword(email: string): Promise<void> { }
 }
 
 export const tokenService = TokenService.getInstance();
