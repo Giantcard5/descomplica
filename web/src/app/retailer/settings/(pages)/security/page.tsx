@@ -1,10 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { securityService } from './lib/api-service';
 
 import { formSchema, FormSchema } from './utils/schema';
 
@@ -19,9 +18,13 @@ import { Badge } from '@/components/ui/badge';
 import { Shield } from 'lucide-react';
 
 import { useToast } from '@/hooks/use-toast';
+import { useSecurity } from './hook/useSecurity';
 
 export default function SecuritySettingsPage() {
     const { toast } = useToast();
+    const { handleSecurity } = useSecurity({
+        onSuccess: (security) => setSecurity(security)
+    });
 
     const [security, setSecurity] = useState<{
         two_factor_authentication: boolean;
@@ -41,35 +44,26 @@ export default function SecuritySettingsPage() {
         resolver: zodResolver(formSchema),
     });
 
-    useEffect(() => {
-        const getSecurity = async () => {
-            const response = await securityService.getSecurity();
-
-            setSecurity(response);
-        };
-
-        getSecurity();
-    }, []);
-
-    const handleSecurity: SubmitHandler<FormSchema> = async (data) => {
+    const onSubmit = handleSubmit(async (data) => {
         try {
-            const response = await securityService.postSecurity(data);
+            const response = await handleSecurity(data);
 
-            if (response.status) {
-                toast({
-                    title: response.message,
-                    description: 'Your account security has been updated',
-                });
-            } else {
-                toast({
-                    title: response.message,
-                    description: 'Your account security could not be updated',
-                });
-            }
-        } catch (err: any) {
-            console.error(err);
-        }
-    };
+            toast({
+                title: response.message,
+                description: response.status
+                    ? 'Your account security has been updated'
+                    : 'Your account security could not be updated',
+                variant: response.status ? 'default' : 'destructive',
+            });
+        } catch (error) {
+            console.error('Error updating security:', error);
+            toast({
+                title: 'Error',
+                description: 'There was an issue updating your security details.',
+                variant: 'destructive',
+            });
+        };
+    });
 
     return (
         <Card>
@@ -78,7 +72,7 @@ export default function SecuritySettingsPage() {
                 <CardDescription>Manage your account security</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-                <form onSubmit={handleSubmit(handleSecurity)}>
+                <form onSubmit={onSubmit}>
                     <div className="space-y-4">
                         <h3 className="text-lg font-medium">Change Password</h3>
                         <div className="space-y-2">

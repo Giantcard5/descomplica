@@ -1,10 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { preferencesService } from './lib/api-service';
 
 import { formSchema, FormSchema } from './utils/schema';
 
@@ -29,9 +27,13 @@ import {
 } from '@/components/ui/select';
 
 import { useToast } from '@/hooks/use-toast';
+import { usePreferences } from './hook/usePreferences';
 
 export default function PreferencesSettingsPage() {
     const { toast } = useToast();
+    const { handlePreferences } = usePreferences({
+        onSuccess: (preferences) => reset(preferences),
+    });
 
     const {
         register,
@@ -44,38 +46,30 @@ export default function PreferencesSettingsPage() {
         resolver: zodResolver(formSchema),
     });
 
-    useEffect(() => {
-        const getPreferences = async () => {
-            const response = await preferencesService.getPreferences();
-            reset(response);
-        };
-
-        getPreferences();
-    }, []);
-
-    const handlePreferences: SubmitHandler<FormSchema> = async (data) => {
+    const onSubmit = handleSubmit(async (data) => {
         try {
-            const response = await preferencesService.postPreferences(data);
+            const response = await handlePreferences(data);
 
-            if (response.status) {
-                toast({
-                    title: response.message,
-                    description: 'Your app preferences have been updated',
-                });
-            } else {
-                toast({
-                    title: response.message,
-                    description: 'Your app preferences could not be updated',
-                });
-            }
-        } catch (err: any) {
-            console.error(err);
-        }
-    };
+            toast({
+                title: response.message,
+                description: response.status
+                    ? 'Your preferences details have been updated'
+                    : 'Your preferences details could not be updated',
+                variant: response.status ? 'default' : 'destructive',
+            });
+        } catch (error) {
+            console.error('Error updating preferences:', error);
+            toast({
+                title: 'Error',
+                description: 'There was an issue updating your preferences details.',
+                variant: 'destructive',
+            });
+        };
+    });
 
     return (
         <Card>
-            <form onSubmit={handleSubmit(handlePreferences)}>
+            <form onSubmit={onSubmit}>
                 <CardHeader>
                     <CardTitle>App Preferences</CardTitle>
                     <CardDescription>Customize your app experience</CardDescription>

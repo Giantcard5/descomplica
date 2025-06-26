@@ -1,10 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { notificationsService } from './lib/api-service';
 
 import { formSchema, FormSchema } from './utils/schema';
 
@@ -29,9 +27,13 @@ import {
 } from '@/components/ui/select';
 
 import { useToast } from '@/hooks/use-toast';
+import { useNotifications } from './hook/useNotifications';
 
 export default function NotificationSettingsPage() {
     const { toast } = useToast();
+    const { handleNotifications } = useNotifications({
+        onSuccess: (preferences) => reset(preferences),
+    })
 
     const {
         handleSubmit,
@@ -43,38 +45,31 @@ export default function NotificationSettingsPage() {
         resolver: zodResolver(formSchema),
     });
 
-    useEffect(() => {
-        const getPreferences = async () => {
-            const response = await notificationsService.getNotifications();
-            reset(response);
-        };
-
-        getPreferences();
-    }, []);
-
-    const handlePreferences: SubmitHandler<FormSchema> = async (data) => {
+    const onSubmit = handleSubmit(async (data) => {
         try {
-            const response = await notificationsService.postNotifications(data);
+            const response = await handleNotifications(data);
 
-            if (response.status) {
-                toast({
-                    title: response.message,
-                    description: 'Your notification preferences have been updated',
-                });
-            } else {
-                toast({
-                    title: response.message,
-                    description: 'Your notification preferences could not be updated',
-                });
-            }
-        } catch (err: any) {
-            console.error(err);
-        }
-    };
+            toast({
+                title: response.message,
+                description: response.status
+                    ? 'Your notification preferences have been updated'
+                    : 'Your notification preferences could not be updated',
+                variant: response.status ? 'default' : 'destructive',
+            });
+        } catch (error) {
+            console.error('Error updating notification:', error);
+            toast({
+                title: 'Error',
+                description: 'There was an issue updating your notification preferences.',
+                variant: 'destructive',
+            });
+        };
+    });
+
 
     return (
         <Card>
-            <form onSubmit={handleSubmit(handlePreferences)}>
+            <form onSubmit={onSubmit}>
                 <CardHeader>
                     <CardTitle>Notification Preferences</CardTitle>
                     <CardDescription>Manage how you receive notifications</CardDescription>

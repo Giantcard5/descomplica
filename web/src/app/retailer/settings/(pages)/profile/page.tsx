@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -21,14 +20,16 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 import { Upload } from 'lucide-react';
 
-import { profileService } from './lib/api-service';
-
 import { formSchema, FormSchema } from './utils/schema';
 
 import { useToast } from '@/hooks/use-toast';
+import { useProfile } from './hook/useProfile';
 
 export default function ProfileSettingsPage() {
     const { toast } = useToast();
+    const { handleProfile } = useProfile({
+        onSuccess: (profile) => reset(profile)
+    });
 
     const {
         register,
@@ -39,38 +40,30 @@ export default function ProfileSettingsPage() {
         resolver: zodResolver(formSchema),
     });
 
-    useEffect(() => {
-        const getProfile = async () => {
-            const response = await profileService.getProfile();
-            reset(response);
-        };
-
-        getProfile();
-    }, []);
-
-    const handleProfile: SubmitHandler<FormSchema> = async (data) => {
+    const onSubmit = handleSubmit(async (data) => {
         try {
-            const response = await profileService.postProfile(data);
+            const response = await handleProfile(data);
 
-            if (response.status) {
-                toast({
-                    title: response.message,
-                    description: 'Your profile has been updated',
-                });
-            } else {
-                toast({
-                    title: response.message,
-                    description: 'Your profile could not be updated',
-                });
-            }
-        } catch (err: any) {
-            console.error(err);
-        }
-    };
+            toast({
+                title: response.message,
+                description: response.status
+                    ? 'Your profile has been updated'
+                    : 'Your profile could not be updated',
+                variant: response.status ? 'default' : 'destructive',
+            });
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            toast({
+                title: 'Error',
+                description: 'There was an issue updating your profile details.',
+                variant: 'destructive',
+            });
+        };
+    });
 
     return (
         <Card>
-            <form onSubmit={handleSubmit(handleProfile)}>
+            <form onSubmit={onSubmit}>
                 <CardHeader>
                     <CardTitle>Profile Information</CardTitle>
                     <CardDescription>Update your personal information</CardDescription>

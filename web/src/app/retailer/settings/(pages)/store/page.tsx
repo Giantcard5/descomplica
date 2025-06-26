@@ -1,12 +1,10 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import { useToast } from '@/hooks/use-toast';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { storeService } from './lib/api-service';
 
 import { formSchema, FormSchema } from './utils/schema';
 
@@ -30,9 +28,13 @@ import {
 } from '@/components/ui/select';
 
 import { StoreType } from './types';
+import { useStore } from './hook/useStore';
 
 export default function StoreSettingsPage() {
     const { toast } = useToast();
+    const { handleStore } = useStore({
+        onSuccess: (store) => reset(store)
+    })
 
     const {
         register,
@@ -45,38 +47,30 @@ export default function StoreSettingsPage() {
         resolver: zodResolver(formSchema),
     });
 
-    useEffect(() => {
-        const getStore = async () => {
-            const response = await storeService.getStore();
-            reset(response);
-        };
-
-        getStore();
-    }, []);
-
-    const handleStore: SubmitHandler<FormSchema> = async (data) => {
+    const onSubmit = handleSubmit(async (data) => {
         try {
-            const response = await storeService.postStore(data);
+            const response = await handleStore(data);
 
-            if (response.status) {
-                toast({
-                    title: response.message,
-                    description: 'Your store details have been updated',
-                });
-            } else {
-                toast({
-                    title: response.message,
-                    description: 'Your store details could not be updated',
-                });
-            }
-        } catch (err: any) {
-            console.error(err);
-        }
-    };
+            toast({
+                title: response.message,
+                description: response.status
+                    ? 'Your store details have been updated'
+                    : 'Your store details could not be updated',
+                variant: response.status ? 'default' : 'destructive',
+            });
+        } catch (error) {
+            console.error('Error updating store:', error);
+            toast({
+                title: 'Error',
+                description: 'There was an issue updating your store details.',
+                variant: 'destructive',
+            });
+        };
+    });
 
     return (
         <Card>
-            <form onSubmit={handleSubmit(handleStore)}>
+            <form onSubmit={onSubmit}>
                 <CardHeader>
                     <CardTitle>Store Information</CardTitle>
                     <CardDescription>Update your store details</CardDescription>
