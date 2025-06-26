@@ -68,7 +68,11 @@ class TokenService {
         }
     }
 
-    async login(email: string, password: string, rememberMe: boolean): Promise<{ type: 'retailer' | 'industry' }> {
+    async login(
+        email: string,
+        password: string,
+        rememberMe: boolean
+    ): Promise<{ type: 'retailer' | 'industry' }> {
         try {
             const response = await this.fetchWithError(`${this.API_URL}/api/auth/login`, {
                 method: 'POST',

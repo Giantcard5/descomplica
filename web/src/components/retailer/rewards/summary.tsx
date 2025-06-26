@@ -1,22 +1,16 @@
 import { Button } from '@/components/ui/button';
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-import {
-    Gift,
-    Calendar,
-    Award,
-    TrendingUp,
-    Trophy
-} from 'lucide-react';
+import { Gift, Calendar, Award, TrendingUp, Trophy } from 'lucide-react';
 
 import { SummaryRewardsProps } from '@/app/retailer/rewards/_types/summary';
 
-export default function SummaryRewards({ points, streak, longestStreak, redeemable }: SummaryRewardsProps) {
+export default function SummaryRewards({
+    points,
+    streak,
+    longestStreak,
+    redeemable,
+}: SummaryRewardsProps) {
     return (
         <div className="space-y-6">
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -54,7 +48,9 @@ export default function SummaryRewards({ points, streak, longestStreak, redeemab
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">{streak}</div>
-                        <p className="text-xs text-muted-foreground">Your longest streak: {longestStreak}</p>
+                        <p className="text-xs text-muted-foreground">
+                            Your longest streak: {longestStreak}
+                        </p>
                     </CardContent>
                 </Card>
                 <Card>
@@ -80,4 +76,4 @@ export default function SummaryRewards({ points, streak, longestStreak, redeemab
             </div>
         </div>
     );
-};
+}

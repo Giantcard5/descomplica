@@ -10,7 +10,7 @@ import Loading from './loading';
 import { useRewards } from './_hooks/useRewards';
 
 export default function RewardsPage() {
-    const { 
+    const {
         summaryRewards,
         availableRewards,
         achievements,
@@ -18,16 +18,16 @@ export default function RewardsPage() {
         redeemableRewards,
         nextRedeemableReward,
         isLoading,
-        error
+        error,
     } = useRewards();
-    
+
     if (isLoading) {
         return <Loading />;
-    };
+    }
 
     if (error) {
         return <div>Error: {error.message}</div>;
-    };
+    }
 
     return (
         <div className="space-y-6">
@@ -46,10 +46,7 @@ export default function RewardsPage() {
                 totalPoints={nextRedeemableReward.points}
             />
 
-            <TabsRewards
-                availableRewards={availableRewards}
-                achievements={achievements}
-            />
+            <TabsRewards availableRewards={availableRewards} achievements={achievements} />
 
             <UpcomingRewards upcomingRewards={upcomingRewards} />
         </div>

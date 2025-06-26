@@ -31,7 +31,7 @@ class RewardsService extends FetchService {
         try {
             const response = await this.fetch('/api/rewards/redeem', {
                 method: 'POST',
-                body: JSON.stringify({ rewardId })
+                body: JSON.stringify({ rewardId }),
             });
 
             if (response.status === 200) {

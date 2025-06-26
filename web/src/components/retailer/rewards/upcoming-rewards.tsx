@@ -1,10 +1,4 @@
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
 import { Clock } from 'lucide-react';
@@ -14,9 +8,9 @@ import { UpcomingRewardProps } from '@/app/retailer/rewards/_types/upcoming';
 import { iconsByType } from '@/app/retailer/rewards/_utils/icons';
 
 export default function UpcomingRewards({
-    upcomingRewards
+    upcomingRewards,
 }: {
-    upcomingRewards: UpcomingRewardProps[]
+    upcomingRewards: UpcomingRewardProps[];
 }) {
     return (
         <Card>

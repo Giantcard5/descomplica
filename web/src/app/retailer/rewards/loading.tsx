@@ -1,6 +1,6 @@
-import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-import { Skeleton } from "@/components/ui/skeleton"
+import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Loading() {
     return (
@@ -50,7 +50,7 @@ export default function Loading() {
             {/* Tabs skeleton */}
             <Tabs defaultValue="rewards" className="space-y-4">
                 <TabsList className="flex gap-4">
-                    {["", "", ""].map((_, i) => (
+                    {['', '', ''].map((_, i) => (
                         <TabsTrigger key={i} value={`tab-${i}`} disabled>
                             <Skeleton className="h-8 w-24" />
                         </TabsTrigger>
@@ -71,7 +71,10 @@ export default function Loading() {
                     ))}
                 </TabsContent>
 
-                <TabsContent value="achievements" className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <TabsContent
+                    value="achievements"
+                    className="grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+                >
                     {Array.from({ length: 6 }).map((_, i) => (
                         <Card key={i}>
                             <CardHeader className="space-y-2">
@@ -117,4 +120,4 @@ export default function Loading() {
             </Card>
         </div>
     );
-};
+}

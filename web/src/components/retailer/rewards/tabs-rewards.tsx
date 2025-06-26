@@ -9,27 +9,19 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger
-} from '@/components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-import {
-    AvailableRewardProps,
-    AchievementProps,
-} from '@/app/retailer/rewards/_types/tabs';
+import { AvailableRewardProps, AchievementProps } from '@/app/retailer/rewards/_types/tabs';
 
 import { iconsByType } from '@/app/retailer/rewards/_utils/icons';
 import { useRewards } from '@/app/retailer/rewards/_hooks/useRewards';
 
 export default function TabsRewards({
     availableRewards,
-    achievements
+    achievements,
 }: {
-    availableRewards: AvailableRewardProps[],
-    achievements: AchievementProps[],
+    availableRewards: AvailableRewardProps[];
+    achievements: AchievementProps[];
 }) {
     const { handleRedeemReward } = useRewards();
 
@@ -56,9 +48,7 @@ export default function TabsRewards({
                             </CardHeader>
                             <CardFooter>
                                 <Button
-                                    variant={
-                                        reward.redeemable ? 'default' : 'outline'
-                                    }
+                                    variant={reward.redeemable ? 'default' : 'outline'}
                                     className="w-full"
                                     disabled={!reward.redeemable || reward.status === 'redeemed'}
                                     onClick={() => handleRedeemReward(reward)}
@@ -66,8 +56,8 @@ export default function TabsRewards({
                                     {reward.status === 'redeemed'
                                         ? 'Redeemed'
                                         : reward.status === 'available'
-                                            ? 'Redeem Now'
-                                            : `Need ${reward.points} more points`}
+                                          ? 'Redeem Now'
+                                          : `Need ${reward.points} more points`}
                                 </Button>
                             </CardFooter>
                         </Card>
@@ -82,16 +72,15 @@ export default function TabsRewards({
                             <CardHeader>
                                 <div className="flex items-center justify-between">
                                     <div
-                                        className={`rounded-full p-2 ${achievement.completed
-                                            ? 'bg-green-500/10 text-green-500'
-                                            : 'bg-muted text-muted-foreground'
-                                            }`}
+                                        className={`rounded-full p-2 ${
+                                            achievement.completed
+                                                ? 'bg-green-500/10 text-green-500'
+                                                : 'bg-muted text-muted-foreground'
+                                        }`}
                                     >
                                         {iconsByType[achievement.type]}
                                     </div>
-                                    <Badge
-                                        variant={achievement.completed ? 'default' : 'outline'}
-                                    >
+                                    <Badge variant={achievement.completed ? 'default' : 'outline'}>
                                         {achievement.completed ? 'Completed' : 'In Progress'}
                                     </Badge>
                                 </div>
@@ -107,8 +96,7 @@ export default function TabsRewards({
                                             </span>
                                             <span className="text-sm text-muted-foreground">
                                                 {Math.round(
-                                                    (achievement.value / achievement.total) *
-                                                    100
+                                                    (achievement.value / achievement.total) * 100
                                                 )}
                                                 %
                                             </span>

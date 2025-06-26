@@ -1,13 +1,6 @@
 'use client';
 
-import {
-    useState,
-    useEffect,
-    useCallback,
-    useMemo,
-    ReactNode,
-    createContext
-} from 'react';
+import { useState, useEffect, useCallback, useMemo, ReactNode, createContext } from 'react';
 
 import { useRouter, usePathname } from 'next/navigation';
 
@@ -45,13 +38,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         try {
             const response = await tokenService.checkAuth();
             if (response) {
-                setUser(response as IUser)
+                setUser(response as IUser);
             } else {
                 setUser(null);
                 if (pathname !== '/' && !pathname.startsWith('/auth')) {
                     router.push('/auth/login');
-                };
-            };
+                }
+            }
         } catch (error) {
             setUser(null);
             if (pathname !== '/' && !pathname.startsWith('/auth')) {
@@ -62,22 +55,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
     }, []);
 
-    const login = useCallback(async (
-        email: string,
-        password: string,
-        rememberMe: boolean,
-    ) => {
-        setLoading(true);
-        try {
-            const response = await tokenService.login(email, password, rememberMe);
-            router.push(`/${response.type}`);
-            await checkAuth();
-        } catch (error) {
-            throw new Error('Failed to login');
-        } finally {
-            setLoading(false);
-        }
-    }, [router]);
+    const login = useCallback(
+        async (email: string, password: string, rememberMe: boolean) => {
+            setLoading(true);
+            try {
+                const response = await tokenService.login(email, password, rememberMe);
+                router.push(`/${response.type}`);
+                await checkAuth();
+            } catch (error) {
+                throw new Error('Failed to login');
+            } finally {
+                setLoading(false);
+            }
+        },
+        [router]
+    );
 
     const logout = useCallback(async () => {
         setLoading(true);
@@ -89,38 +81,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             throw new Error('Failed to logout');
         } finally {
             setLoading(false);
-        };
+        }
     }, [router]);
 
-    const register = useCallback(async (
-        name: string,
-        email: string,
-        password: string,
-        type: 'retailer' | 'industry'
-    ) => {
-        setLoading(true);
-        try {
-            await tokenService.register(name, email, password, type);
-            await login(email, password, false);
+    const register = useCallback(
+        async (name: string, email: string, password: string, type: 'retailer' | 'industry') => {
+            setLoading(true);
+            try {
+                await tokenService.register(name, email, password, type);
+                await login(email, password, false);
 
-            router.push(`/auth/onboarding?type=${type}`);
-        } catch (error) {
-            throw new Error('Failed to register');
-        } finally {
-            setLoading(false);
-        };
-    }, [router]);
-
-    const value = useMemo(() => ({
-        user,
-        login,
-        register,
-        logout,
-    }), [user]);
-
-    return (
-        <AuthContext.Provider value={value}>
-            {children}
-        </AuthContext.Provider>
+                router.push(`/auth/onboarding?type=${type}`);
+            } catch (error) {
+                throw new Error('Failed to register');
+            } finally {
+                setLoading(false);
+            }
+        },
+        [router]
     );
+
+    const value = useMemo(
+        () => ({
+            user,
+            login,
+            register,
+            logout,
+        }),
+        [user]
+    );
+
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

@@ -3,4 +3,4 @@ export interface SummaryRewardsProps {
     streak: number;
     longestStreak: number;
     redeemable?: number;
-};
+}

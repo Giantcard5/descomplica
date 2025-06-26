@@ -12,10 +12,7 @@ interface MarkdownProps {
 const Markdown: React.FC<MarkdownProps> = ({ content }) => {
     return (
         <div className="prose prose-neutral dark:prose-invert max-w-none">
-            <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                rehypePlugins={[rehypeHighlight]}
-            >
+            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>
                 {content}
             </ReactMarkdown>
         </div>
