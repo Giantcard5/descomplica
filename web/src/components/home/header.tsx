@@ -26,10 +26,6 @@ export default function Header() {
     const { user, logout } = useAuth();
     const { isLoading } = useLoadingBar();
 
-    const getDashboardUrl = () => {
-        return user?.type === 'retailer' ? '/retailer/' : '/industry/';
-    };
-
     const getInitials = (name: string) => {
         return name
             .split(' ')
@@ -75,15 +71,15 @@ export default function Header() {
                 <div className="flex items-center gap-4">
                     <ModeToggle />
 
-                    {user && isLoading ? (
+                    {user?.id && isLoading ? (
                         <div className="flex items-center gap-4">
                             <Skeleton className="h-9 w-20 rounded-md" />
                             <Skeleton className="h-8 w-8 rounded-full" />
                         </div>
-                    ) : user ? (
+                    ) : user?.id ? (
                         <>
                             <Button variant="outline" size="sm" asChild>
-                                <Link href={getDashboardUrl()}>
+                                <Link href={user?.type}>
                                     <LayoutDashboard className="mr-2 h-4 w-4" />
                                     Dashboard
                                 </Link>
@@ -121,7 +117,7 @@ export default function Header() {
                                     </DropdownMenuItem>
                                     <DropdownMenuItem asChild>
                                         <Link
-                                            href={getDashboardUrl()}
+                                            href={user?.type}
                                             className="cursor-pointer flex w-full items-center"
                                         >
                                             <LayoutDashboard className="mr-2 h-4 w-4" />
