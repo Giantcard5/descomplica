@@ -33,26 +33,6 @@ export function PreferencesInfo({ watch, setValue, errors }: IPreferencesInfo) {
 
             <div className="space-y-4">
                 <div className="space-y-2">
-                    <Label htmlFor="theme">Theme</Label>
-                    <Select
-                        value={watch('theme')}
-                        onValueChange={(value) => {
-                            setValue('theme', value as 'light' | 'dark' | 'system');
-                        }}
-                    >
-                        <SelectTrigger id="theme">
-                            <SelectValue placeholder="Select theme" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="light">Light</SelectItem>
-                            <SelectItem value="dark">Dark</SelectItem>
-                            <SelectItem value="system">System</SelectItem>
-                        </SelectContent>
-                    </Select>
-                    {errors.theme && <p className="text-red-500 text-sm">{errors.theme.message}</p>}
-                </div>
-
-                <div className="space-y-2">
                     <Label htmlFor="language">Preferred Language</Label>
                     <Select
                         value={watch('language')}

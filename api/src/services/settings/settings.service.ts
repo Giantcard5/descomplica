@@ -104,7 +104,6 @@ export class SettingsService extends PrismaClientSingleton {
         };
     
         return {
-            theme: preferences.theme,
             language: preferences.language,
             dateFormat: preferences.dateFormat,
             reduceMotion: preferences.reduceMotion

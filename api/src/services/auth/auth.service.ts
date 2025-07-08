@@ -192,7 +192,6 @@ export class AuthService extends PrismaClientSingleton {
                     this.prisma.userPreferences.create({
                         data: {
                             language: params.data.preferencesInfo.language,
-                            theme: params.data.preferencesInfo.theme,
                             dateFormat: params.data.preferencesInfo.dateFormat,
                             reduceMotion: false,
                             userId: decoded.sub as string

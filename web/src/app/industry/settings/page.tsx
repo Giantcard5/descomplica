@@ -682,25 +682,6 @@ export default function SettingsPage() {
                         </CardHeader>
                         <CardContent className="space-y-6">
                             <div className="space-y-4">
-                                <h3 className="text-lg font-medium">Appearance</h3>
-                                <div className="space-y-2">
-                                    <Label htmlFor="theme">Theme</Label>
-                                    <Select defaultValue="system">
-                                        <SelectTrigger id="theme">
-                                            <SelectValue placeholder="Select theme" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="light">Light</SelectItem>
-                                            <SelectItem value="dark">Dark</SelectItem>
-                                            <SelectItem value="system">System</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                            </div>
-
-                            <Separator />
-
-                            <div className="space-y-4">
                                 <h3 className="text-lg font-medium">Language & Region</h3>
                                 <div className="space-y-2">
                                     <Label htmlFor="language">Language</Label>

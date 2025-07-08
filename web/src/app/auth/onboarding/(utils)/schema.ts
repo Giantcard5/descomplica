@@ -47,7 +47,6 @@ export const retailerFormSchema = z.object({
 
     // Preferences info
     language: z.string().min(1, { message: 'Language is required' }),
-    theme: z.enum(['light', 'dark', 'system'], { message: 'Theme is required' }),
     dateFormat: z.enum(['dd_mm_yyyy', 'mm_dd_yyyy', 'yyyy_mm_dd'], {
         message: 'Date format is required',
     }),
@@ -77,7 +76,6 @@ export const storeInfoSchema = retailerFormSchema.pick({
 
 export const preferencesInfoSchema = retailerFormSchema.pick({
     language: true,
-    theme: true,
     dateFormat: true,
     notification: true,
 });

@@ -1,5 +1,6 @@
 import type React from 'react';
 
+import Script from 'next/script';
 import type { Metadata } from 'next/types';
 
 import { Inter } from 'next/font/google';
@@ -23,6 +24,21 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en" suppressHydrationWarning>
+            <head>
+                <Script id="theme-init" strategy="beforeInteractive">
+                    {`
+                        (function(){
+                        const m = document.cookie.match(/(^| )theme=(light|dark|system)/);
+                        const theme = m?.[2] || 'system';
+                        const resolved = theme === 'system'
+                            ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+                            : theme;
+                        document.documentElement.classList.add(resolved);
+                        })();
+                    `}
+                </Script>
+            </head>
+
             <body className={inter.className}>
                 <ThemeProvider
                     attribute="class"

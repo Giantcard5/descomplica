@@ -19,12 +19,6 @@ enum NotificationFrequency {
   never
 }
 
-enum Theme {
-  light
-  dark
-  system
-}
-
 enum Language {
   en
   pt_BR
@@ -173,7 +167,6 @@ model Product {
 
 model UserPreferences {
   id           String     @id @default(uuid())
-  theme        Theme
   language     Language
   dateFormat   DateFormat
   reduceMotion Boolean
